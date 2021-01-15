@@ -46,7 +46,7 @@ public class GiftCertificateController {
     ) {
         GiftCertificateSearchCriteriaDto criteriaDto = new GiftCertificateSearchCriteriaDto(tags, name, description,
                 sortParams, order);
-        return giftCertificateService.findAll(criteriaDto);
+        return giftCertificateService.query(criteriaDto);
     }
 
     @ResponseBody

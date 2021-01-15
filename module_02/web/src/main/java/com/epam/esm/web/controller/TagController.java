@@ -32,7 +32,7 @@ public class TagController {
     @ResponseBody
     @GetMapping
     public List<TagDto> readAll(@RequestBody(required = false) @Valid TagSearchCriteriaDto searchCriteriaDto) {
-        return tagService.findAll(searchCriteriaDto);
+        return tagService.query(searchCriteriaDto);
     }
 
     @ResponseBody

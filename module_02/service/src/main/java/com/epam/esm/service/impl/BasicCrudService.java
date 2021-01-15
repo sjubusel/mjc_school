@@ -48,7 +48,7 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
     }
 
     @Override
-    public List<DTO> findAll(SearchCriteriaDto<DOMAIN> searchCriteria) {
+    public List<DTO> query(SearchCriteriaDto<DOMAIN> searchCriteria) {
         List<DOMAIN> domains = (List<DOMAIN>) crudRepository.query(getSqlSpecification(searchCriteria));
         if (domains.size() == 0) {
             throw new RuntimeException(); // FIXME

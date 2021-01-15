@@ -11,7 +11,7 @@ public interface CrudService<DTO extends EntityDto<ID>, DOMAIN extends Entity<ID
 
     ID create(DTO entity);
 
-    List<DTO> findAll(SearchCriteriaDto<DOMAIN> searchParams);
+    List<DTO> query(SearchCriteriaDto<DOMAIN> searchParams);
 
     DTO findOne(ID id);
 
