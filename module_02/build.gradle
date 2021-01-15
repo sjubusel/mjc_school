@@ -1,0 +1,41 @@
+allprojects {
+    apply plugin: 'java'
+
+    buildscript {
+        ext {
+            spring_framework_version = '5.3.2'
+            javax_servlet_api_version = '4.0.1'
+            hibernate_validator = '6.2.0.Final'
+            lombok_version = '1.18.16'
+        }
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    group = 'com.epam.esm'
+    version = '1.0-SNAPSHOT'
+
+    compileJava.options.encoding = "UTF-8"
+    compileTestJava.options.encoding = "UTF-8"
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+        implementation group: 'org.springframework', name: 'spring-core', version: spring_framework_version
+        implementation group: 'org.springframework', name: 'spring-beans', version: spring_framework_version
+        implementation group: 'org.springframework', name: 'spring-context', version: spring_framework_version
+
+        implementation group: 'org.projectlombok', name: 'lombok', version: lombok_version
+        annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombok_version
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}

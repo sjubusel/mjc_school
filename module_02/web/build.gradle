@@ -1,0 +1,32 @@
+apply plugin: 'war'
+
+dependencies {
+    implementation project(':model')
+    implementation project(':service')
+    implementation project(':repository') // in order to import SpringJdbcConfiguration
+
+    implementation group: 'org.springframework', name: 'spring-web', version: spring_framework_version
+    implementation group: 'org.springframework', name: 'spring-webmvc', version: spring_framework_version
+    implementation group: 'org.hibernate', name: 'hibernate-validator', version: hibernate_validator
+
+    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: javax_servlet_api_version
+}
+
+war {
+    archiveFileName = rootProject.name + '.war'
+    classpath = classpath.filter { file ->
+        (
+                !file.name.startsWith('slf4j-api')
+        )
+    }
+}
+
+task deploy() {
+    doLast {
+        copy {
+            from 'build/libs'
+            into 'E:\\25\\wokspace\\apache-tomcat-9.0.38\\webapps'
+            include '*war'
+        }
+    }
+}
