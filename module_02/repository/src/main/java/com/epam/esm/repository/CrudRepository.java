@@ -9,7 +9,7 @@ public interface CrudRepository<T, ID extends Serializable> {
 
     ID create(T entity);
 
-    Iterable<T> findAll(SqlSpecification specification);
+    Iterable<T> query(SqlSpecification specification);
 
     Optional<T> findOne(ID id);
 

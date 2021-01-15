@@ -74,8 +74,8 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
 
     @Transactional(readOnly = true)
     @Override
-    public Iterable<GiftCertificate> findAll(SqlSpecification specification) {
-        List<GiftCertificate> plainCertificates = (List<GiftCertificate>) super.findAll(specification);
+    public Iterable<GiftCertificate> query(SqlSpecification specification) {
+        List<GiftCertificate> plainCertificates = (List<GiftCertificate>) super.query(specification);
         return plainCertificates.stream().peek(
                 certificate -> certificate.setTags(tagRepository.receiveTagsByGiftCertificateId(certificate.getId()))
         ).collect(Collectors.toList());
