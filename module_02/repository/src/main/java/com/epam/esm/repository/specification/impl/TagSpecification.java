@@ -1,6 +1,5 @@
 package com.epam.esm.repository.specification.impl;
 
-import com.epam.esm.model.dto.TagSearchCriteriaDto;
 import com.epam.esm.repository.specification.SqlSpecification;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -18,9 +17,13 @@ public class TagSpecification implements SqlSpecification {
     public TagSpecification() {
     }
 
-    public TagSpecification(TagSearchCriteriaDto searchCriteriaDto) {
-        this.name = searchCriteriaDto.getName();
-        parameterSource = new MapSqlParameterSource("name", name);
+    public TagSpecification(String searchName) {
+        if (searchName == null) {
+            return;
+        }
+
+        this.name = searchName;
+        parameterSource = new MapSqlParameterSource("name", searchName);
     }
 
     @Override

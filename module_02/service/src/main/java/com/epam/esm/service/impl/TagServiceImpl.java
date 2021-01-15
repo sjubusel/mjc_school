@@ -28,15 +28,15 @@ public class TagServiceImpl extends BasicCrudService<TagDto, Tag, Long> implemen
     }
 
     @Override
-    protected SqlSpecification getSqlSpecification(SearchCriteriaDto<Tag> searchCriteria) {
-        if (searchCriteria == null) {
+    protected SqlSpecification getSqlSpecification(SearchCriteriaDto<Tag> criteria) {
+        if (criteria == null) {
             return new TagSpecification();
         }
 
-        if (searchCriteria.getClass() != TagSearchCriteriaDto.class) {
+        if (criteria.getClass() != TagSearchCriteriaDto.class) {
             throw new RuntimeException(); // FIXME
         }
-
-        return new TagSpecification(((TagSearchCriteriaDto) searchCriteria));
+        TagSearchCriteriaDto searchCriteria = (TagSearchCriteriaDto) criteria;
+        return new TagSpecification(searchCriteria.getName());
     }
 }

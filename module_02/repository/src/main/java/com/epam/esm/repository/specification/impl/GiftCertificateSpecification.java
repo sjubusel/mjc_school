@@ -1,6 +1,5 @@
 package com.epam.esm.repository.specification.impl;
 
-import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import com.epam.esm.repository.specification.SqlSpecification;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -29,15 +28,16 @@ public class GiftCertificateSpecification implements SqlSpecification {
     public GiftCertificateSpecification() {
     }
 
-    public GiftCertificateSpecification(GiftCertificateSearchCriteriaDto searchCriteria) {
-        if (searchCriteria == null) {
+    public GiftCertificateSpecification(List<String> searchTags, String searchName, String searchDescription,
+                                        List<String> sortParams, String orderParam) {
+        if (Stream.of(searchTags, searchName, searchDescription, sortParams, orderParam).allMatch(Objects::isNull)) {
             return;
         }
 
-        processTags(searchCriteria);
-        processGiftCertificateNamePart(searchCriteria);
-        processGiftCertificateDescriptionPart(searchCriteria);
-        processSortingParametersAndOrder(searchCriteria);
+        processTags(searchTags);
+        processGiftCertificateNamePart(searchName);
+        processGiftCertificateDescriptionPart(searchDescription);
+        processSortingParametersAndOrder(sortParams, orderParam);
     }
 
     @Override
@@ -52,8 +52,7 @@ public class GiftCertificateSpecification implements SqlSpecification {
         return Optional.ofNullable(parameterSource);
     }
 
-    private void processTags(GiftCertificateSearchCriteriaDto searchCriteria) {
-        List<String> searchTags = searchCriteria.getTags();
+    private void processTags(List<String> searchTags) {
         if (searchTags != null && searchTags.size() > 0) {
             joinBlock = createIfNotExists(joinBlock);
             joinBlock.add("LEFT OUTER JOIN  gift_certificates_system.join_certificates_tags_table jctt " +
@@ -68,8 +67,7 @@ public class GiftCertificateSpecification implements SqlSpecification {
         }
     }
 
-    private void processGiftCertificateNamePart(GiftCertificateSearchCriteriaDto searchCriteria) {
-        String searchName = searchCriteria.getName();
+    private void processGiftCertificateNamePart(String searchName) {
         if (searchName != null && !searchName.isEmpty()) {
             whereBlock = createIfNotExists(whereBlock);
             whereBlock.add("c.name LIKE :name");
@@ -79,8 +77,7 @@ public class GiftCertificateSpecification implements SqlSpecification {
         }
     }
 
-    private void processGiftCertificateDescriptionPart(GiftCertificateSearchCriteriaDto searchCriteria) {
-        String searchDescription = searchCriteria.getDescription();
+    private void processGiftCertificateDescriptionPart(String searchDescription) {
         if (searchDescription != null && !searchDescription.isEmpty()) {
             whereBlock = createIfNotExists(whereBlock);
             whereBlock.add("c.description LIKE :description");
@@ -98,8 +95,7 @@ public class GiftCertificateSpecification implements SqlSpecification {
         return Optional.ofNullable(parameterSource).orElseGet(MapSqlParameterSource::new);
     }
 
-    private void processSortingParametersAndOrder(GiftCertificateSearchCriteriaDto searchCriteria) {
-        List<String> sortParams = searchCriteria.getSortParams();
+    private void processSortingParametersAndOrder(List<String> sortParams, String orderParam) {
         if (sortParams != null && sortParams.size() > 0) {
             sortBlock = createIfNotExists(sortBlock);
 
@@ -108,7 +104,6 @@ public class GiftCertificateSpecification implements SqlSpecification {
                 sortBlock.add(someParam);
             }
 
-            String orderParam = searchCriteria.getOrder();
             orderBlock = ((orderParam != null) && orderParam.equalsIgnoreCase("DESC")) ? "DESC" : "ASC";
         }
     }

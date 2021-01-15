@@ -30,13 +30,15 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
     }
 
     @Override
-    protected SqlSpecification getSqlSpecification(SearchCriteriaDto<GiftCertificate> searchCriteria) {
-        if (searchCriteria == null) {
+    protected SqlSpecification getSqlSpecification(SearchCriteriaDto<GiftCertificate> criteria) {
+        if (criteria == null) {
             return new GiftCertificateSpecification();
         }
-        if (searchCriteria.getClass() != GiftCertificateSearchCriteriaDto.class) {
+        if (criteria.getClass() != GiftCertificateSearchCriteriaDto.class) {
             throw new RuntimeException(); // FIXME
         }
-        return new GiftCertificateSpecification(((GiftCertificateSearchCriteriaDto) searchCriteria));
+        GiftCertificateSearchCriteriaDto searchCriteria = (GiftCertificateSearchCriteriaDto) criteria;
+        return new GiftCertificateSpecification(searchCriteria.getTags(), searchCriteria.getName(),
+                searchCriteria.getDescription(), searchCriteria.getSortParams(), searchCriteria.getOrder());
     }
 }
