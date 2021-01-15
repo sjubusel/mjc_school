@@ -2,7 +2,7 @@ package com.epam.esm.service;
 
 import com.epam.esm.model.domain.Entity;
 import com.epam.esm.model.dto.EntityDto;
-import com.epam.esm.model.dto.SearchCriteriaDto;
+import com.epam.esm.service.dto.SearchCriteriaDto;
 
 import java.io.Serializable;
 import java.util.List;

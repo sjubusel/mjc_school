@@ -1,9 +1,9 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.model.domain.Tag;
-import com.epam.esm.model.dto.SearchCriteriaDto;
+import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.model.dto.TagDto;
-import com.epam.esm.model.dto.TagSearchCriteriaDto;
+import com.epam.esm.service.dto.TagSearchCriteriaDto;
 import com.epam.esm.repository.CrudRepository;
 import com.epam.esm.repository.specification.SqlSpecification;
 import com.epam.esm.repository.specification.impl.TagSpecification;

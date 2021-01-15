@@ -1,4 +1,4 @@
-package com.epam.esm.model.dto;
+package com.epam.esm.service.dto;
 
 public interface SearchCriteriaDto<T> {
 

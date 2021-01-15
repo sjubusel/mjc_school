@@ -1,4 +1,4 @@
-package com.epam.esm.model.dto;
+package com.epam.esm.service.dto;
 
 import com.epam.esm.model.domain.GiftCertificate;
 import lombok.Data;

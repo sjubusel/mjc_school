@@ -1,7 +1,7 @@
 package com.epam.esm.web.controller;
 
 import com.epam.esm.model.dto.TagDto;
-import com.epam.esm.model.dto.TagSearchCriteriaDto;
+import com.epam.esm.service.dto.TagSearchCriteriaDto;
 import com.epam.esm.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

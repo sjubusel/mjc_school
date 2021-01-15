@@ -1,6 +1,6 @@
 package com.epam.esm.repository.specification.impl;
 
-import com.epam.esm.model.dto.GiftCertificateSearchCriteriaDto;
+import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import com.epam.esm.repository.specification.SqlSpecification;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;

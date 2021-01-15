@@ -1,7 +1,7 @@
 package com.epam.esm.web.controller;
 
 import com.epam.esm.model.dto.GiftCertificateDto;
-import com.epam.esm.model.dto.GiftCertificateSearchCriteriaDto;
+import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import com.epam.esm.service.GiftCertificateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -2,8 +2,8 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.model.domain.GiftCertificate;
 import com.epam.esm.model.dto.GiftCertificateDto;
-import com.epam.esm.model.dto.GiftCertificateSearchCriteriaDto;
-import com.epam.esm.model.dto.SearchCriteriaDto;
+import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
+import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.repository.CrudRepository;
 import com.epam.esm.repository.specification.SqlSpecification;
 import com.epam.esm.repository.specification.impl.GiftCertificateSpecification;

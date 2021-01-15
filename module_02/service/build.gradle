@@ -2,4 +2,5 @@ dependencies {
     implementation project(':model')
     implementation project(':repository')
     implementation group: 'org.springframework', name: 'spring-tx', version: spring_framework_version // in order to use @Transactional
+    implementation group: 'org.hibernate', name: 'hibernate-validator', version: hibernate_validator // in order to verify SearchCriteriaDto
 }
