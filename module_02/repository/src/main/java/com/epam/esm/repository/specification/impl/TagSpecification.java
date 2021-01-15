@@ -4,8 +4,6 @@ import com.epam.esm.repository.specification.SqlSpecification;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
-import java.util.Optional;
-
 public class TagSpecification implements SqlSpecification {
 
     private static final String SELECT_TAGS = "SELECT t.tag_id, t.name from gift_certificates_system.tags t";
@@ -32,8 +30,8 @@ public class TagSpecification implements SqlSpecification {
     }
 
     @Override
-    public Optional<SqlParameterSource> params() {
-        return Optional.ofNullable(parameterSource);
+    public SqlParameterSource params() {
+        return parameterSource;
     }
 
     private String generateQuery() {

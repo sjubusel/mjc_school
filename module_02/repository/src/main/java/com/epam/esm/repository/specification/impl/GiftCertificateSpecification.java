@@ -48,8 +48,8 @@ public class GiftCertificateSpecification implements SqlSpecification {
     }
 
     @Override
-    public Optional<SqlParameterSource> params() {
-        return Optional.ofNullable(parameterSource);
+    public SqlParameterSource params() {
+        return parameterSource;
     }
 
     private void processTags(List<String> searchTags) {

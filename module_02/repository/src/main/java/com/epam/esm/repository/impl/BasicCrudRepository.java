@@ -71,9 +71,9 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
 
     @Override
     public Iterable<T> findAll(SqlSpecification specification) {
-        Optional<SqlParameterSource> params = specification.params();
-        return namedParameterJdbcTemplate.query(specification.toSql(), params.orElse(EmptySqlParameterSource.INSTANCE),
-                rowMapper);
+        SqlParameterSource params = specification.params();
+        SqlParameterSource parameterSource = Optional.ofNullable(params).orElse(EmptySqlParameterSource.INSTANCE);
+        return namedParameterJdbcTemplate.query(specification.toSql(), parameterSource, rowMapper);
     }
 
     @Override
