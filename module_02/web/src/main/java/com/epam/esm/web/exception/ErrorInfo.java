@@ -13,5 +13,5 @@ public class ErrorInfo {
     private Long errorCode;
     private String errorMessage;
     private String exceptionName;
-    private String contextPath;
+    private String uri;
 }
