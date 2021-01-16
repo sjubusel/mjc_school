@@ -1,9 +1,7 @@
 package com.epam.esm.web.exception;
 
 import com.epam.esm.repository.exception.NotImplementedRepositoryException;
-import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
-import com.epam.esm.service.exception.NotFoundResourceException;
-import com.epam.esm.service.exception.ResourceAlreadyExistsException;
+import com.epam.esm.service.exception.*;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -41,6 +39,18 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleOthers(IncompatibleSearchCriteriaException e, WebRequest request) {
         ErrorInfo errorInfo = generateStandardErrorInfo(50020L, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NoIdentifiableUpdateException.class)
+    public ResponseEntity<Object> handleOthers(NoIdentifiableUpdateException e, WebRequest request) {
+        ErrorInfo errorInfo = generateStandardErrorInfo(50030L, e, request);
+        return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(EmptyUpdateException.class)
+    public ResponseEntity<Object> handleOthers(EmptyUpdateException e, WebRequest request) {
+        ErrorInfo errorInfo = generateStandardErrorInfo(40020L, e, request);
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
     //    @ExceptionHandler({Exception.class})
