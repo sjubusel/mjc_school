@@ -1,7 +1,11 @@
 package com.epam.esm.web.exception;
 
 import com.epam.esm.repository.exception.NotImplementedRepositoryException;
-import com.epam.esm.service.exception.*;
+import com.epam.esm.service.exception.EmptyUpdateException;
+import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
+import com.epam.esm.service.exception.NoIdentifiableUpdateException;
+import com.epam.esm.service.exception.NotFoundResourceException;
+import com.epam.esm.service.exception.ResourceAlreadyExistsException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -40,7 +44,8 @@ public class GeneralExceptionHandler {
     }
 
     @ExceptionHandler(IncompatibleSearchCriteriaException.class)
-    public ResponseEntity<Object> handleIncompatibleSearchCriteriaException(IncompatibleSearchCriteriaException e, WebRequest request) {
+    public ResponseEntity<Object> handleIncompatibleSearchCriteriaException(IncompatibleSearchCriteriaException e,
+                                                                            WebRequest request) {
         ErrorInfo errorInfo = generateStandardErrorInfo(50020L, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -70,12 +75,7 @@ public class GeneralExceptionHandler {
                 .append(violation.getMessage())
                 .append("; "));
 
-        ErrorInfo errorInfo = ErrorInfo.builder()
-                .setErrorCode(40030L)
-                .setErrorMessage(new String(errorMessageBuilder))
-                .setExceptionName(e.getClass().getSimpleName())
-                .setContextPath(request.getContextPath())
-                .build();
+        ErrorInfo errorInfo = generateStandardErrorInfo(40030L, new String(errorMessageBuilder), e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
@@ -89,25 +89,16 @@ public class GeneralExceptionHandler {
                 .append(error.getDefaultMessage())
                 .append("; "));
 
-        ErrorInfo errorInfo = ErrorInfo.builder()
-                .setErrorCode(40050L)
-                .setErrorMessage(new String(errorMessageBuilder))
-                .setExceptionName(e.getClass().getSimpleName())
-                .setContextPath(request.getContextPath())
-                .build();
+        ErrorInfo errorInfo = generateStandardErrorInfo(40050L, new String(errorMessageBuilder), e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorInfo> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException e,
                                                                       WebRequest request) {
-        String errorMessage = e.getName() + " should be of type " + Objects.requireNonNull(e.getRequiredType()).getName();
-        ErrorInfo errorInfo = ErrorInfo.builder()
-                .setErrorCode(40040L)
-                .setErrorMessage(errorMessage)
-                .setExceptionName(e.getClass().getSimpleName())
-                .setContextPath(request.getContextPath())
-                .build();
+        String errorMessage = e.getName() + " should be of type " + Objects.requireNonNull(e.getRequiredType())
+                .getName();
+        ErrorInfo errorInfo = generateStandardErrorInfo(40040L, errorMessage, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
@@ -121,6 +112,15 @@ public class GeneralExceptionHandler {
         return ErrorInfo.builder()
                 .setErrorCode(customErrorCode)
                 .setErrorMessage(e.getMessage())
+                .setExceptionName(e.getClass().getSimpleName())
+                .setContextPath(request.getContextPath())
+                .build();
+    }
+
+    private ErrorInfo generateStandardErrorInfo(Long errorCode, String errorMessage, Exception e, WebRequest request) {
+        return ErrorInfo.builder()
+                .setErrorCode(errorCode)
+                .setErrorMessage(errorMessage)
                 .setExceptionName(e.getClass().getSimpleName())
                 .setContextPath(request.getContextPath())
                 .build();
