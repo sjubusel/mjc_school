@@ -4,7 +4,6 @@ import com.epam.esm.model.dto.GiftCertificateDto;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -25,7 +25,8 @@ public class GiftCertificateController {
     @PostMapping
     public ResponseEntity<GiftCertificateDto> create(@RequestBody @Valid GiftCertificateDto certificate) {
         Long createdId = giftCertificateService.create(certificate);
-        return ResponseEntity.status(HttpStatus.CREATED).body(giftCertificateService.findOne(createdId));
+        URI location = URI.create(String.format("/gift-certificates/%s", createdId));
+        return ResponseEntity.created(location).body(giftCertificateService.findOne(createdId));
     }
 
 

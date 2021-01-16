@@ -4,7 +4,6 @@ import com.epam.esm.model.dto.TagDto;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.dto.TagSearchCriteriaDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -24,7 +24,8 @@ public class TagController {
     @PostMapping
     public ResponseEntity<TagDto> create(@RequestBody @Valid TagDto certificate) {
         Long createdId = tagService.create(certificate);
-        return ResponseEntity.status(HttpStatus.CREATED).body(tagService.findOne(createdId));
+        URI location = URI.create(String.format("/tags/%s", createdId));
+        return ResponseEntity.created(location).body(tagService.findOne(createdId));
     }
 
     @GetMapping
