@@ -32,17 +32,16 @@ public class TagRepositoryImpl extends BasicCrudRepository<Tag, Long> implements
         super(rowMapper, namedParameterJdbcTemplate);
     }
 
-    @Transactional
-    @Override
-    public void delete(Long tagId) {
-        namedParameterJdbcTemplate.update(DELETE_LINK_BETWEEN_TAG_AND_GIFT_CERTIFICATES,
-                new MapSqlParameterSource("id", tagId));
-        super.delete(tagId);
-    }
-
     @Override
     public List<Tag> receiveTagsByGiftCertificateId(Long id) {
         return namedParameterJdbcTemplate.getJdbcTemplate().query(SELECT_TAGS_BY_CERTIFICATE_ID, rowMapper, id);
+    }
+
+    @Transactional
+    @Override
+    public void deleteLinkBetweenTagAndGiftCertificates(Long tagId) {
+        namedParameterJdbcTemplate.update(DELETE_LINK_BETWEEN_TAG_AND_GIFT_CERTIFICATES,
+                new MapSqlParameterSource("id", tagId));
     }
 
     @Override
