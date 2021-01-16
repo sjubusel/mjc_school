@@ -9,6 +9,7 @@ import com.epam.esm.repository.specification.SqlSpecification;
 import com.epam.esm.repository.specification.impl.TagSpecification;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.converter.EntityConverter;
+import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import com.epam.esm.service.validation.ServiceValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,8 +45,9 @@ public class TagServiceImpl extends BasicCrudService<TagDto, Tag, Long> implemen
         }
 
         if (criteria.getClass() != TagSearchCriteriaDto.class) {
-            throw new RuntimeException(); // FIXME
+            throw new IncompatibleSearchCriteriaException("Incompatible type of SearchCriteriaDto is passed");
         }
+
         TagSearchCriteriaDto searchCriteria = (TagSearchCriteriaDto) criteria;
         return new TagSpecification(searchCriteria.getName());
     }

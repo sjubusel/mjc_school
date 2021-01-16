@@ -13,6 +13,7 @@ import com.epam.esm.service.converter.EntityConverter;
 import com.epam.esm.service.converter.TagConverter;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import com.epam.esm.service.dto.SearchCriteriaDto;
+import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import com.epam.esm.service.validation.ServiceValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -101,9 +102,11 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
         if (criteria == null) {
             return new GiftCertificateSpecification();
         }
+
         if (criteria.getClass() != GiftCertificateSearchCriteriaDto.class) {
-            throw new RuntimeException(); // FIXME
+            throw new IncompatibleSearchCriteriaException("Incompatible type of SearchCriteriaDto is passed");
         }
+
         GiftCertificateSearchCriteriaDto searchCriteria = (GiftCertificateSearchCriteriaDto) criteria;
         return new GiftCertificateSpecification(searchCriteria.getTags(), searchCriteria.getName(),
                 searchCriteria.getDescription(), searchCriteria.getSortParams(), searchCriteria.getOrder());
