@@ -33,7 +33,8 @@ public class GiftCertificateController {
 
     @ResponseBody
     @GetMapping
-    public List<GiftCertificateDto> read(@RequestBody @Valid GiftCertificateSearchCriteriaDto criteriaDto) {
+    public List<GiftCertificateDto> read(@RequestBody(required = false) @Valid
+                                                 GiftCertificateSearchCriteriaDto criteriaDto) {
         return giftCertificateService.query(criteriaDto);
     }
 
