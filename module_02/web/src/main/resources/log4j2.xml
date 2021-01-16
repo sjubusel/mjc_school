@@ -7,10 +7,9 @@
         </Console>
 
         <RollingFile name="RollingFile"
-                     fileName="./logs/module-02-rest-basics.log"
-                     filePattern="./logs/$${date:yyyy-MM}/module-02-rest-basics-%d{-dd-MMMM-yyyy}-%i.log.gz">
-            <PatternLayout>
-                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+                     fileName="../logs/module-02-rest-basics.log"
+                     filePattern="../logs/$${date:yyyy-MM}/module-02-rest-basics-%d{-dd-MMMM-yyyy}-%i.log">
+            <PatternLayout pattern="%d %p %C{1.} [%t] %m%n">
             </PatternLayout>
             <Policies>
                 <!-- rollover on startup, daily and when the file reaches

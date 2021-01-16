@@ -19,11 +19,6 @@ dependencies {
 
 war {
     archiveFileName = rootProject.name + '.war'
-    classpath = classpath.filter { file ->
-        (
-                !file.name.startsWith('slf4j-api')
-        )
-    }
 }
 
 task deploy() {
