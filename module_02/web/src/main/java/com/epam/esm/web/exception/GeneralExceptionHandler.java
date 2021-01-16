@@ -6,16 +6,18 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.ConstraintViolationException;
+import java.util.Objects;
 
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
+public class GeneralExceptionHandler {
 
     @ExceptionHandler(NotImplementedRepositoryException.class)
     public ResponseEntity<ErrorInfo> handleNotImplementedRepositoryException(NotImplementedRepositoryException e,
@@ -71,6 +73,38 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorInfo errorInfo = ErrorInfo.builder()
                 .setErrorCode(40030L)
                 .setErrorMessage(new String(errorMessageBuilder))
+                .setExceptionName(e.getClass().getSimpleName())
+                .setContextPath(request.getContextPath())
+                .build();
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorInfo> handleMethodArgumentNotValidException(MethodArgumentNotValidException e,
+                                                                           WebRequest request) {
+        StringBuilder errorMessageBuilder = new StringBuilder();
+        e.getBindingResult().getAllErrors().forEach(error -> errorMessageBuilder
+                .append(error.getObjectName())
+                .append(": ")
+                .append(error.getDefaultMessage())
+                .append("; "));
+
+        ErrorInfo errorInfo = ErrorInfo.builder()
+                .setErrorCode(40050L)
+                .setErrorMessage(new String(errorMessageBuilder))
+                .setExceptionName(e.getClass().getSimpleName())
+                .setContextPath(request.getContextPath())
+                .build();
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorInfo> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException e,
+                                                                      WebRequest request) {
+        String errorMessage = e.getName() + " should be of type " + Objects.requireNonNull(e.getRequiredType()).getName();
+        ErrorInfo errorInfo = ErrorInfo.builder()
+                .setErrorCode(40040L)
+                .setErrorMessage(errorMessage)
                 .setExceptionName(e.getClass().getSimpleName())
                 .setContextPath(request.getContextPath())
                 .build();
