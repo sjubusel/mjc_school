@@ -32,6 +32,7 @@ public class TagRepositoryImpl extends BasicCrudRepository<Tag, Long> implements
         super(rowMapper, namedParameterJdbcTemplate);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Tag> receiveTagsByGiftCertificateId(Long id) {
         return namedParameterJdbcTemplate.getJdbcTemplate().query(SELECT_TAGS_BY_CERTIFICATE_ID, rowMapper, id);
