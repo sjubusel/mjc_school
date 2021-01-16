@@ -13,9 +13,9 @@ public interface CrudRepository<T, ID extends Serializable> {
 
     Optional<T> findOne(ID id);
 
-    void update(T entity);
+    boolean update(T entity);
 
-    void delete(ID id);
+    boolean delete(ID id);
 
     Long count();
 

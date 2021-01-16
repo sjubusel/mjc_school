@@ -39,6 +39,7 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
 
     protected abstract String getSqlQueryExistsName();
 
+    @SuppressWarnings("unused")
     protected abstract Class<T> getClassForQuery();
 
     protected abstract SqlParameterSource getSqlParameterSource(T entity);
@@ -64,14 +65,15 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
 
     @Transactional
     @Override
-    public void update(T entity) {
-        namedParameterJdbcTemplate.update(getSqlQueryUpdate(entity), getSqlParameterSourceForUpdate(entity));
+    public boolean update(T entity) {
+        return namedParameterJdbcTemplate.update(getSqlQueryUpdate(entity),
+                getSqlParameterSourceForUpdate(entity)) != 0;
     }
 
     @Transactional
     @Override
-    public void delete(ID id) {
-        namedParameterJdbcTemplate.update(getSqlQueryDelete(), new MapSqlParameterSource("id", id));
+    public boolean delete(ID id) {
+        return namedParameterJdbcTemplate.update(getSqlQueryDelete(), new MapSqlParameterSource("id", id)) != 0;
     }
 
     @Transactional(readOnly = true)
