@@ -7,7 +7,9 @@ import com.epam.esm.repository.CrudRepository;
 import com.epam.esm.repository.specification.SqlSpecification;
 import com.epam.esm.service.CrudService;
 import com.epam.esm.service.converter.EntityConverter;
+import com.epam.esm.service.exception.NoIdentifiableUpdateException;
 import com.epam.esm.service.exception.NotFoundResourceException;
+import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.ResourceAlreadyExistsException;
 import com.epam.esm.service.validation.ServiceValidator;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,7 +90,8 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
 
     protected DOMAIN generateUpdatingDomain(DTO targetDto) {
         if (!validator.isDtoValidToUpdate(targetDto)) {
-            throw new RuntimeException();
+            throw new NoIdentifiableUpdateException("Resource, which is to be updated, has no identifier " +
+                    "(in other words there is no id)");
         }
 
         Optional<DOMAIN> source = crudRepository.findOne(targetDto.getId());
@@ -96,7 +99,8 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
         DOMAIN updatingDomain = entityConverter.convertToUpdatingDomain(sourceDomain, targetDto);
 
         if (!validator.isDomainValidToUpdate(updatingDomain)) {
-            throw new RuntimeException(); // FIXME
+            throw new EmptyUpdateException(String.format("No changes are applied to Resource №%s",
+                    targetDto.getId()));
         }
 
         return updatingDomain;
