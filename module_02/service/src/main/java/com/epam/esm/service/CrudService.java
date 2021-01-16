@@ -15,7 +15,7 @@ public interface CrudService<DTO extends EntityDto<ID>, DOMAIN extends Entity<ID
 
     DTO findOne(ID id);
 
-    void update(DTO entity);
+    boolean update(DTO entity);
 
-    void delete(ID id);
+    boolean delete(ID id);
 }

@@ -75,20 +75,20 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
 
     @Transactional
     @Override
-    public void update(GiftCertificateDto targetDto) {
+    public boolean update(GiftCertificateDto targetDto) {
         GiftCertificate updatingGiftCertificate = generateUpdatingDomain(targetDto);
 
         List<Tag> updatingTags = updatingGiftCertificate.getTags();
         linkGiftCertificateWithTags(targetDto.getId(), updatingTags);
 
-        crudRepository.update(updatingGiftCertificate);
+        return crudRepository.update(updatingGiftCertificate);
     }
 
     @Transactional
     @Override
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         giftCertificateRepository.deleteLinkBetweenGiftCertificateAndTags(id);
-        super.delete(id);
+        return super.delete(id);
     }
 
     @Override

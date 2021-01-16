@@ -27,9 +27,9 @@ public class TagServiceImpl extends BasicCrudService<TagDto, Tag, Long> implemen
 
     @Transactional
     @Override
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         tagRepository.deleteLinkBetweenTagAndGiftCertificates(id);
-        super.delete(id);
+        return super.delete(id);
     }
 
     @Override
