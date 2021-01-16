@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
+
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
@@ -36,20 +38,42 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(IncompatibleSearchCriteriaException.class)
-    public ResponseEntity<Object> handleOthers(IncompatibleSearchCriteriaException e, WebRequest request) {
+    public ResponseEntity<Object> handleIncompatibleSearchCriteriaException(IncompatibleSearchCriteriaException e, WebRequest request) {
         ErrorInfo errorInfo = generateStandardErrorInfo(50020L, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(NoIdentifiableUpdateException.class)
-    public ResponseEntity<Object> handleOthers(NoIdentifiableUpdateException e, WebRequest request) {
+    public ResponseEntity<Object> handleNoIdentifiableUpdateException(NoIdentifiableUpdateException e,
+                                                                      WebRequest request) {
         ErrorInfo errorInfo = generateStandardErrorInfo(50030L, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(EmptyUpdateException.class)
-    public ResponseEntity<Object> handleOthers(EmptyUpdateException e, WebRequest request) {
+    public ResponseEntity<Object> handleEmptyUpdateException(EmptyUpdateException e, WebRequest request) {
         ErrorInfo errorInfo = generateStandardErrorInfo(40020L, e, request);
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e,
+                                                                     WebRequest request) {
+        StringBuilder errorMessageBuilder = new StringBuilder();
+        e.getConstraintViolations().forEach(violation -> errorMessageBuilder
+                .append(violation.getRootBeanClass().getName())
+                .append(" → ")
+                .append(violation.getPropertyPath())
+                .append(": ")
+                .append(violation.getMessage())
+                .append("; "));
+
+        ErrorInfo errorInfo = ErrorInfo.builder()
+                .setErrorCode(40030L)
+                .setErrorMessage(new String(errorMessageBuilder))
+                .setExceptionName(e.getClass().getSimpleName())
+                .setContextPath(request.getContextPath())
+                .build();
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
