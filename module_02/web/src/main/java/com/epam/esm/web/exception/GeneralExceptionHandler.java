@@ -6,6 +6,7 @@ import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import com.epam.esm.service.exception.NoIdentifiableUpdateException;
 import com.epam.esm.service.exception.NotFoundResourceException;
 import com.epam.esm.service.exception.ResourceAlreadyExistsException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import javax.validation.ConstraintViolationException;
 import java.util.Objects;
 
+@Slf4j
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GeneralExceptionHandler {
@@ -29,12 +31,16 @@ public class GeneralExceptionHandler {
     public ResponseEntity<ErrorInfo> handleNotImplementedRepositoryException(NotImplementedRepositoryException e,
                                                                              WebRequest request) {
         ErrorInfo errorInfo = generateStandardErrorInfo(50010L, e, request);
+        log.error("Not implemented method is used on the repository layer: errorInfo → {}; " +
+                "exception → {}; webRequest → {}", errorInfo, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(NotFoundResourceException.class)
     public ResponseEntity<ErrorInfo> handleNotFoundResourceException(NotFoundResourceException e, WebRequest request) {
         ErrorInfo errorInfo = generateStandardErrorInfo(40410L, e, request);
+        log.error("The requested resource is not found: errorInfo → {}; exception → {}; webRequest → {}",
+                errorInfo, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.NOT_FOUND);
     }
 
@@ -42,6 +48,8 @@ public class GeneralExceptionHandler {
     public ResponseEntity<ErrorInfo> handleResourceAlreadyExistsException(ResourceAlreadyExistsException e,
                                                                           WebRequest request) {
         ErrorInfo errorInfo = generateStandardErrorInfo(40010L, e, request);
+        log.error("An attempt to create an already existing resource: errorInfo → {}; exception → {}; webRequest → {}",
+                errorInfo, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
@@ -49,6 +57,8 @@ public class GeneralExceptionHandler {
     public ResponseEntity<Object> handleIncompatibleSearchCriteriaException(IncompatibleSearchCriteriaException e,
                                                                             WebRequest request) {
         ErrorInfo errorInfo = generateStandardErrorInfo(50020L, e, request);
+        log.error("Incompatible search criteria is passed: errorInfo → {}; exception → {}; webRequest → {}",
+                errorInfo, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -56,12 +66,16 @@ public class GeneralExceptionHandler {
     public ResponseEntity<Object> handleNoIdentifiableUpdateException(NoIdentifiableUpdateException e,
                                                                       WebRequest request) {
         ErrorInfo errorInfo = generateStandardErrorInfo(50030L, e, request);
+        log.error("An entity without id is called to be updated: errorInfo → {}; exception → {}; webRequest → {}",
+                errorInfo, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(EmptyUpdateException.class)
     public ResponseEntity<Object> handleEmptyUpdateException(EmptyUpdateException e, WebRequest request) {
         ErrorInfo errorInfo = generateStandardErrorInfo(40020L, e, request);
+        log.error("No changes are passed to update an entity: errorInfo → {}; exception → {}; webRequest → {}",
+                errorInfo, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
@@ -78,6 +92,8 @@ public class GeneralExceptionHandler {
                 .append("; "));
 
         ErrorInfo errorInfo = generateStandardErrorInfo(40030L, new String(errorMessageBuilder), e, request);
+        log.error("Incompatible parameters are passed: errorInfo → {}; exception → {}; webRequest → {}",
+                errorInfo, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
@@ -92,6 +108,8 @@ public class GeneralExceptionHandler {
                 .append("; "));
 
         ErrorInfo errorInfo = generateStandardErrorInfo(40040L, new String(errorMessageBuilder), e, request);
+        log.error("Incompatible parameters are passed: errorInfo → {}; exception → {}; webRequest → {}",
+                errorInfo, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
@@ -101,6 +119,8 @@ public class GeneralExceptionHandler {
         String errorMessage = e.getName() + " should be of type " + Objects.requireNonNull(e.getRequiredType())
                 .getName();
         ErrorInfo errorInfo = generateStandardErrorInfo(40050L, errorMessage, e, request);
+        log.error("Unexpected argument of a method is called: errorInfo → {}; exception → {}; webRequest → {}",
+                errorInfo, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
@@ -109,6 +129,8 @@ public class GeneralExceptionHandler {
                                                                           WebRequest request) {
         String errorMessage = e.getParameterName() + " parameter is missing";
         ErrorInfo errorInfo = generateStandardErrorInfo(40060L, errorMessage, e, request);
+        log.error("A request parameter is absent: errorInfo → {}; exception → {}; webRequest → {}",
+                errorInfo, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
@@ -117,12 +139,16 @@ public class GeneralExceptionHandler {
                                                                          WebRequest request) {
         String errorMessage = e.getMethod() + " method is not supported for this request.";
         ErrorInfo errorInfo = generateStandardErrorInfo(40510L, errorMessage, e, request);
+        log.error("Incompatible http method is called: errorInfo → {}; exception → {}; webRequest → {}",
+                errorInfo, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ExceptionHandler(RuntimeException.class)
     protected ResponseEntity<Object> handleOthers(RuntimeException e, WebRequest request) {
         ErrorInfo errorInfo = generateStandardErrorInfo(50040L, e, request);
+        log.error("An unexpected exception occurs: errorInfo → {}; exception → {}; webRequest → {}",
+                errorInfo, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
