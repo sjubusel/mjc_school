@@ -7,6 +7,7 @@ import com.epam.esm.repository.CrudRepository;
 import com.epam.esm.repository.specification.SqlSpecification;
 import com.epam.esm.service.CrudService;
 import com.epam.esm.service.converter.EntityConverter;
+import com.epam.esm.service.exception.NotFoundResourceException;
 import com.epam.esm.service.validation.ServiceValidator;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,7 +55,7 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
     public List<DTO> query(SearchCriteriaDto<DOMAIN> searchCriteria) {
         List<DOMAIN> domains = (List<DOMAIN>) crudRepository.query(getSqlSpecification(searchCriteria));
         if (domains.size() == 0) {
-            throw new RuntimeException(); // FIXME
+            throw new NotFoundResourceException("Requested resources are not found");
         }
         return domains.stream().map(entityConverter::convertToDto).collect(Collectors.toList());
     }
@@ -63,7 +64,7 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
     @Override
     public DTO findOne(ID id) {
         Optional<DOMAIN> entity = crudRepository.findOne(id);
-        return entityConverter.convertToDto(entity.orElseThrow(RuntimeException::new)); // FIXME
+        return entityConverter.convertToDto(entity.orElseThrow(() -> new NotFoundResourceException(id)));
     }
 
     @Transactional
@@ -77,7 +78,9 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
     @Override
     public boolean delete(ID id) {
         Optional<DOMAIN> entity = crudRepository.findOne(id);
-        entity.orElseThrow(RuntimeException::new); // FIXME add a custom exception
+
+        entity.orElseThrow(() -> new NotFoundResourceException(id));
+
         return crudRepository.delete(id);
     }
 
@@ -88,7 +91,7 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
         }
 
         Optional<DOMAIN> source = crudRepository.findOne(targetDto.getId());
-        DOMAIN sourceDomain = source.orElseThrow(RuntimeException::new); // FIXME add a custom exception
+        DOMAIN sourceDomain = source.orElseThrow(() -> new NotFoundResourceException(targetDto.getId()));
         DOMAIN updatingDomain = entityConverter.convertToUpdatingDomain(sourceDomain, targetDto);
 
         if (!validator.isDomainValidToUpdate(updatingDomain)) {
