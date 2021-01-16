@@ -31,7 +31,8 @@ public class GiftCertificateConverter implements EntityConverter<GiftCertificate
                 .setCreateDate(dto.getCreateDate())
                 .setUpdateDate(dto.getUpdateDate())
                 .setTags(dto.getTags().stream()
-                        .map(tagConverter::convertToDomain).collect(Collectors.toList()))
+                        .map(tagConverter::convertToDomain)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
@@ -46,7 +47,8 @@ public class GiftCertificateConverter implements EntityConverter<GiftCertificate
                 .setCreateDate(domain.getCreateDate())
                 .setUpdateDate(domain.getUpdateDate())
                 .setTags(domain.getTags().stream()
-                        .map(tagConverter::convertToDto).collect(Collectors.toList()))
+                        .map(tagConverter::convertToDto)
+                        .collect(Collectors.toList()))
                 .build();
     }
 

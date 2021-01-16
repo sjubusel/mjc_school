@@ -28,7 +28,7 @@ public class TagController {
     }
 
     @GetMapping
-    public List<TagDto> readAll(@RequestBody(required = false) @Valid TagSearchCriteriaDto searchCriteriaDto) {
+    public List<TagDto> read(@RequestBody(required = false) @Valid TagSearchCriteriaDto searchCriteriaDto) {
         return tagService.query(searchCriteriaDto);
     }
 
