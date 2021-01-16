@@ -2,6 +2,7 @@ package com.epam.esm.repository.impl;
 
 import com.epam.esm.model.domain.Entity;
 import com.epam.esm.repository.CrudRepository;
+import com.epam.esm.repository.exception.NotImplementedRepositoryException;
 import com.epam.esm.repository.mapper.EntityMapper;
 import com.epam.esm.repository.specification.SqlSpecification;
 import org.springframework.jdbc.core.namedparam.EmptySqlParameterSource;
@@ -95,12 +96,14 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
     @Transactional
     @Override
     public Long count() {
-        throw new RuntimeException(); // TODO realize a custom exception
+        throw new NotImplementedRepositoryException("Method \"Long count()\" is not already implemented due to " +
+                "lack of necessity");
     }
 
     @Transactional
     @Override
     public boolean exists(ID primaryKey) {
-        throw new RuntimeException(); // TODO realize a custom exception
+        throw new NotImplementedRepositoryException("Method \"boolean exists()\" is not already implemented due " +
+                "to lack of necessity");
     }
 }

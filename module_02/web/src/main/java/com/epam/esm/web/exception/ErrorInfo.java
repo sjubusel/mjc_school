@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(setterPrefix = "set")
 public class ErrorInfo {
     private Long errorCode;
     private String errorMessage;
