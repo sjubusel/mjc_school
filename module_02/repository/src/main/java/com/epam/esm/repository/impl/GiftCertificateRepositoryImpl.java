@@ -1,11 +1,8 @@
 package com.epam.esm.repository.impl;
 
 import com.epam.esm.model.domain.GiftCertificate;
-import com.epam.esm.model.domain.Tag;
 import com.epam.esm.repository.GiftCertificateRepository;
-import com.epam.esm.repository.TagRepository;
 import com.epam.esm.repository.mapper.EntityMapper;
-import com.epam.esm.repository.specification.SqlSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -13,9 +10,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
 public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCertificate, Long>
@@ -39,27 +34,10 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
     private static final String SELECT_GIFT_CERTIFICATE_ID_BY_NAME = "SELECT c.certificate_id " +
             "FROM gift_certificates_system.certificates c WHERE c.name = :name";
 
-    private final TagRepository tagRepository;
-
     @Autowired
     public GiftCertificateRepositoryImpl(EntityMapper<GiftCertificate, Long> rowMapper,
-                                         NamedParameterJdbcTemplate namedParameterJdbcTemplate,
-                                         TagRepository tagRepository) {
+                                         NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         super(rowMapper, namedParameterJdbcTemplate);
-        this.tagRepository = tagRepository;
-    }
-
-    @Transactional
-    @Override
-    public Long create(GiftCertificate certificate) {
-        Long generateId = super.create(certificate);
-        List<Tag> tags = certificate.getTags();
-
-        tags.stream().filter(tag -> !tagRepository.exists(tag.getName())).forEach(tagRepository::create);
-
-        tags.forEach(tag -> linkCertificateWithTag(generateId, tag.getName()));
-
-        return generateId;
     }
 
     @Transactional
@@ -72,41 +50,11 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
         namedParameterJdbcTemplate.update(LINK_CERTIFICATE_WITH_TAG, parameterSource);
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public Iterable<GiftCertificate> query(SqlSpecification specification) {
-        List<GiftCertificate> plainCertificates = (List<GiftCertificate>) super.query(specification);
-        return plainCertificates.stream().peek(
-                certificate -> certificate.setTags(tagRepository.receiveTagsByGiftCertificateId(certificate.getId()))
-        ).collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<GiftCertificate> findOne(Long aLong) {
-        Optional<GiftCertificate> result = super.findOne(aLong);
-        result.ifPresent(
-                certificate -> certificate.setTags(tagRepository.receiveTagsByGiftCertificateId(certificate.getId()))
-        );
-        return result;
-    }
-
     @Transactional
     @Override
-    public void update(GiftCertificate certificate) {
-        List<Tag> tags = certificate.getTags();
-        tags.stream().filter(tag -> !tagRepository.exists(tag.getName())).forEach(tagRepository::create);
-        tags.forEach(tag -> linkCertificateWithTag(certificate.getId(), tag.getName()));
-
-        super.update(certificate);
-    }
-
-    @Transactional
-    @Override
-    public void delete(Long certificateId) {
+    public void deleteLinkBetweenGiftCertificateAndTags(Long certificateId) {
         namedParameterJdbcTemplate.update(DELETE_LINK_BETWEEN_GIFT_CERTIFICATE_AND_TAGS,
                 new MapSqlParameterSource("id", certificateId));
-        super.delete(certificateId);
     }
 
     @Override

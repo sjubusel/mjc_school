@@ -8,6 +8,7 @@ import com.epam.esm.repository.specification.SqlSpecification;
 import com.epam.esm.service.CrudService;
 import com.epam.esm.service.converter.EntityConverter;
 import com.epam.esm.service.validation.ServiceValidator;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
@@ -38,6 +39,7 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
 
     protected abstract SqlSpecification getSqlSpecification(SearchCriteriaDto<DOMAIN> searchCriteria);
 
+    @Transactional
     @Override
     public ID create(DTO dto) {
         if (crudRepository.exists(getMainUniqueEntityValue(dto))) {
@@ -47,6 +49,7 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
         return crudRepository.create(domain);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<DTO> query(SearchCriteriaDto<DOMAIN> searchCriteria) {
         List<DOMAIN> domains = (List<DOMAIN>) crudRepository.query(getSqlSpecification(searchCriteria));
@@ -56,14 +59,30 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
         return domains.stream().map(entityConverter::convertToDto).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public DTO findOne(ID id) {
         Optional<DOMAIN> entity = crudRepository.findOne(id);
         return entityConverter.convertToDto(entity.orElseThrow(RuntimeException::new)); // FIXME
     }
 
+    @Transactional
     @Override
     public void update(DTO targetDto) {
+        DOMAIN updatingDomain = generateUpdatingDomain(targetDto);
+        crudRepository.update(updatingDomain);
+    }
+
+    @Transactional
+    @Override
+    public void delete(ID id) {
+        Optional<DOMAIN> entity = crudRepository.findOne(id);
+        entity.orElseThrow(RuntimeException::new); // FIXME add a custom exception
+        crudRepository.delete(id);
+    }
+
+
+    protected DOMAIN generateUpdatingDomain(DTO targetDto) {
         if (!validator.isDtoValidToUpdate(targetDto)) {
             throw new RuntimeException();
         }
@@ -76,13 +95,6 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
             throw new RuntimeException(); // FIXME
         }
 
-        crudRepository.update(updatingDomain);
-    }
-
-    @Override
-    public void delete(ID id) {
-        Optional<DOMAIN> entity = crudRepository.findOne(id);
-        entity.orElseThrow(RuntimeException::new); // FIXME add a custom exception
-        crudRepository.delete(id);
+        return updatingDomain;
     }
 }
