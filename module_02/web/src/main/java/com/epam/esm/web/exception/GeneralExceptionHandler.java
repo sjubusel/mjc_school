@@ -10,7 +10,9 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -89,7 +91,7 @@ public class GeneralExceptionHandler {
                 .append(error.getDefaultMessage())
                 .append("; "));
 
-        ErrorInfo errorInfo = generateStandardErrorInfo(40050L, new String(errorMessageBuilder), e, request);
+        ErrorInfo errorInfo = generateStandardErrorInfo(40040L, new String(errorMessageBuilder), e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
@@ -98,15 +100,31 @@ public class GeneralExceptionHandler {
                                                                       WebRequest request) {
         String errorMessage = e.getName() + " should be of type " + Objects.requireNonNull(e.getRequiredType())
                 .getName();
-        ErrorInfo errorInfo = generateStandardErrorInfo(40040L, errorMessage, e, request);
+        ErrorInfo errorInfo = generateStandardErrorInfo(40050L, errorMessage, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
-    //    @ExceptionHandler({Exception.class})
-//    public ResponseEntity<Object> handleOthers(Exception e, WebRequest request) {
-//        String bodyOfResponse = "This should be application specific";
-//        return handleExceptionInternal(e, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
-//    }
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ErrorInfo> handleMissingServletRequestParameter(MissingServletRequestParameterException e,
+                                                                          WebRequest request) {
+        String errorMessage = e.getParameterName() + " parameter is missing";
+        ErrorInfo errorInfo = generateStandardErrorInfo(40060L, errorMessage, e, request);
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e,
+                                                                         WebRequest request) {
+        String errorMessage = e.getMethod() + " method is not supported for this request.";
+        ErrorInfo errorInfo = generateStandardErrorInfo(40510L, errorMessage, e, request);
+        return new ResponseEntity<>(errorInfo, HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    protected ResponseEntity<Object> handleOthers(RuntimeException e, WebRequest request) {
+        ErrorInfo errorInfo = generateStandardErrorInfo(50040L, e, request);
+        return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     private ErrorInfo generateStandardErrorInfo(Long customErrorCode, Exception e, WebRequest request) {
         return ErrorInfo.builder()
