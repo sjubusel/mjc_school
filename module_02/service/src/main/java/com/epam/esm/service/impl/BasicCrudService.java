@@ -68,17 +68,17 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
 
     @Transactional
     @Override
-    public void update(DTO targetDto) {
+    public boolean update(DTO targetDto) {
         DOMAIN updatingDomain = generateUpdatingDomain(targetDto);
-        crudRepository.update(updatingDomain);
+        return crudRepository.update(updatingDomain);
     }
 
     @Transactional
     @Override
-    public void delete(ID id) {
+    public boolean delete(ID id) {
         Optional<DOMAIN> entity = crudRepository.findOne(id);
         entity.orElseThrow(RuntimeException::new); // FIXME add a custom exception
-        crudRepository.delete(id);
+        return crudRepository.delete(id);
     }
 
 

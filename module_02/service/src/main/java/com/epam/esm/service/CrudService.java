@@ -15,7 +15,8 @@ public interface CrudService<DTO extends EntityDto<ID>, DOMAIN extends Entity<ID
 
     DTO findOne(ID id);
 
-    void update(DTO entity);
+    @SuppressWarnings("UnusedReturnValue")
+    boolean update(DTO entity);
 
-    void delete(ID id);
+    boolean delete(ID id);
 }
