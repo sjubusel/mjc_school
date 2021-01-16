@@ -6,7 +6,6 @@ import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +14,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/gift-certificates")
 @Validated
 @RequiredArgsConstructor
@@ -23,7 +22,6 @@ public class GiftCertificateController {
 
     private final GiftCertificateService giftCertificateService;
 
-    @ResponseBody
     @PostMapping
     public ResponseEntity<GiftCertificateDto> create(@RequestBody @Valid GiftCertificateDto certificate) {
         Long createdId = giftCertificateService.create(certificate);
@@ -31,20 +29,17 @@ public class GiftCertificateController {
     }
 
 
-    @ResponseBody
     @GetMapping
     public List<GiftCertificateDto> read(@RequestBody(required = false) @Valid
                                                  GiftCertificateSearchCriteriaDto criteriaDto) {
         return giftCertificateService.query(criteriaDto);
     }
 
-    @ResponseBody
     @GetMapping("/{id}")
     public GiftCertificateDto readOne(@PathVariable("id") @Positive @Min(1) Long id) {
         return giftCertificateService.findOne(id);
     }
 
-    @ResponseBody
     @PatchMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable("id") @Positive @Min(1) Long id,
                                          @RequestBody @Valid GiftCertificateDto newCertificate) {
@@ -53,7 +48,6 @@ public class GiftCertificateController {
         return ResponseEntity.ok(String.format("Gift-certificate №%d is successfully updated", id));
     }
 
-    @ResponseBody
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") @Positive @Min(1) Long id) {
         giftCertificateService.delete(id);
