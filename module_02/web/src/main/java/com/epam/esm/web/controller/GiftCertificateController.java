@@ -44,13 +44,20 @@ public class GiftCertificateController {
     public ResponseEntity<String> update(@PathVariable("id") @Positive @Min(1) Long id,
                                          @RequestBody @Valid GiftCertificateDto newCertificate) {
         newCertificate.setId(id);
-        giftCertificateService.update(newCertificate);
+
+        if (giftCertificateService.update(newCertificate)) {
+            return ResponseEntity.badRequest().body(String.format("Gift-certificate №%d isn't updated", id));
+        }
+
         return ResponseEntity.ok(String.format("Gift-certificate №%d is successfully updated", id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") @Positive @Min(1) Long id) {
-        giftCertificateService.delete(id);
+        if (giftCertificateService.delete(id)) {
+            return ResponseEntity.badRequest().body(String.format("Gift-certificate №%s isn't deleted", id));
+        }
+
         return ResponseEntity.ok(String.format("Gift-certificate №%s is successfully deleted", id));
     }
 
