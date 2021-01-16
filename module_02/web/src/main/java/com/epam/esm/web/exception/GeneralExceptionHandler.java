@@ -1,6 +1,7 @@
 package com.epam.esm.web.exception;
 
 import com.epam.esm.repository.exception.NotImplementedRepositoryException;
+import com.epam.esm.service.exception.NotFoundResourceException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -16,7 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NotImplementedRepositoryException.class)
-    public ResponseEntity<Object> handleNotImplementedRepositoryException(NotImplementedRepositoryException e,
+    public ResponseEntity<ErrorInfo> handleNotImplementedRepositoryException(NotImplementedRepositoryException e,
                                                                           WebRequest request) {
         ErrorInfo errorInfo = ErrorInfo.builder()
                 .setErrorCode(50010L)
@@ -25,6 +26,17 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
                 .setContextPath(request.getContextPath())
                 .build();
         return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NotFoundResourceException.class)
+    public ResponseEntity<ErrorInfo> handleNotFoundResourceException(NotFoundResourceException e, WebRequest request) {
+        ErrorInfo errorInfo = ErrorInfo.builder()
+                .setErrorCode(40410L)
+                .setErrorMessage(e.getMessage())
+                .setExceptionName(e.getClass().getSimpleName())
+                .setContextPath(request.getContextPath())
+                .build();
+        return new ResponseEntity<>(errorInfo, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
