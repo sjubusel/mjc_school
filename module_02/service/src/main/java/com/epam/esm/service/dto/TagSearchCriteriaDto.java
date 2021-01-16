@@ -1,23 +1,21 @@
 package com.epam.esm.service.dto;
 
 import com.epam.esm.model.domain.Tag;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 
 @Data
-@EqualsAndHashCode
-@ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class TagSearchCriteriaDto implements SearchCriteriaDto<Tag> {
 
-    @Pattern(regexp = "[\\w\\s]{3,256}", message = "tag name must contain from 3 to 256 " +
+    @Pattern(regexp = "[\\w\\s]{1,256}", message = "tag name must contain from 3 to 256 " +
             "characters without punctuation marks")
-    private final String name;
+    private String name;
 
     @Null
     private Class<Tag> targetClassType = Tag.class;

@@ -1,10 +1,9 @@
 package com.epam.esm.service.dto;
 
 import com.epam.esm.model.domain.GiftCertificate;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Null;
@@ -12,27 +11,26 @@ import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode
-@ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Validated
 public class GiftCertificateSearchCriteriaDto implements SearchCriteriaDto<GiftCertificate> {
 
-    private final List<@Pattern(regexp = "[\\w\\s]{3,256}", message = "tag name must contain " +
+    private List<@Pattern(regexp = "[\\w\\s]{1,256}", message = "tag name must contain " +
             "from 3 to 256 characters without punctuation marks") String> tags;
 
-    @Pattern(regexp = "[\\w\\s]{3,256}", message = "certificate name must contain from 3 to 256 " +
+    @Pattern(regexp = "[\\w\\s]{1,256}", message = "certificate name must contain from 3 to 256 " +
             "characters without punctuation marks")
-    private final String name;
+    private String name;
 
-    @Pattern(regexp = "[-,.:!?\\w\\s]{3,1024}", message = "description must contain from 3 to 1024 " +
+    @Pattern(regexp = "[-,.:!?\\w\\s]{1,1024}", message = "description must contain from 3 to 1024 " +
             "characters with punctuation marks")
-    private final String description;
+    private String description;
 
-    private final List<@Pattern(regexp = "(name)|(create_date)|(last_update_date)") String> sortParams;
+    private List<@Pattern(regexp = "(name)|(create_date)|(last_update_date)") String> sortParams;
 
     @Pattern(regexp = "(DESC)|(ASC)")
-    private final String order;
+    private String order;
 
     @Null
     private Class<GiftCertificate> targetClassType = GiftCertificate.class;
