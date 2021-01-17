@@ -15,14 +15,14 @@ import java.util.List;
 @Validated
 public class GiftCertificateSearchCriteriaDto implements SearchCriteriaDto<GiftCertificate> {
 
-    private List<@Pattern(regexp = "[A-Za-zА-Яа-яЁё ]{1,256}", message = "tag name must contain " +
+    private List<@Pattern(regexp = "[0-9A-Za-zА-Яа-яЁё ]{1,256}", message = "tag name must contain " +
             "from 3 to 256 characters without punctuation marks") String> tags;
 
-    @Pattern(regexp = "[A-Za-zА-Яа-яЁё ]{1,256}", message = "certificate name must contain from 1 to 256 " +
+    @Pattern(regexp = "[0-9A-Za-zА-Яа-яЁё ]{1,256}", message = "certificate name must contain from 1 to 256 " +
             "characters without punctuation marks")
     private String name;
 
-    @Pattern(regexp = "[-,.:!?A-Za-zА-Яа-яЁё]{1,1024}", message = "description must contain from 1 to 1024 " +
+    @Pattern(regexp = "[-,.:!?0-9A-Za-zА-Яа-яЁё]{1,1024}", message = "description must contain from 1 to 1024 " +
             "characters with punctuation marks")
     private String description;
 
