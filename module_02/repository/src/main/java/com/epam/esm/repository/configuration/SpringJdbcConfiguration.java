@@ -19,13 +19,13 @@ import javax.sql.DataSource;
 @PropertySource("classpath:application-production.properties")
 public class SpringJdbcConfiguration {
 
-    @Value("${dbConfig.driverClassName}")
+    @Value("${spring.datasource.driverClassName}")
     private String dbDriverClassName;
-    @Value("${dbConfig.url}")
+    @Value("${spring.datasource.url}")
     private String dbUrl;
-    @Value("${dbConfig.login}")
+    @Value("${spring.datasource.login}")
     private String dbLogin;
-    @Value("${dbConfig.password}")
+    @Value("${spring.datasource.password}")
     private String dbPassword;
 
     @Bean
