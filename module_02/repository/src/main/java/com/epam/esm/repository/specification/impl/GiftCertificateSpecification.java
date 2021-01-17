@@ -12,8 +12,10 @@ import java.util.stream.Stream;
 
 public class GiftCertificateSpecification implements SqlSpecification {
 
-    private static final String SELECT_GIFT_CERTIFICATES = "SELECT DISTINCT c.certificate_id, c.name, c.description, c.price, " +
-            "c.duration, c.create_date, c.last_update_date FROM gift_certificates_system.certificates c ";
+    private static final String SELECT_GIFT_CERTIFICATES = "SELECT DISTINCT certificate.certificate_id, " +
+            "certificate.name, certificate.description, certificate.price, certificate.duration, " +
+            "certificate.create_date, certificate.last_update_date " +
+            "FROM gift_certificates_system.certificates certificate ";
     private static final String WHITESPACE = " ";
     private static final String PERCENT_SYMBOL = "%";
 
@@ -55,12 +57,12 @@ public class GiftCertificateSpecification implements SqlSpecification {
     private void processTags(List<String> searchTags) {
         if (searchTags != null && searchTags.size() > 0) {
             joinBlock = createIfNotExists(joinBlock);
-            joinBlock.add("LEFT OUTER JOIN  gift_certificates_system.join_certificates_tags_table jctt " +
-                    "ON c.certificate_id = jctt.certificate_id");
-            joinBlock.add("LEFT OUTER JOIN gift_certificates_system.tags t ON jctt.tag_id = t.tag_id");
+            joinBlock.add("LEFT OUTER JOIN  gift_certificates_system.join_certificates_tags_table join_table " +
+                    "ON certificate.certificate_id = join_table.certificate_id");
+            joinBlock.add("LEFT OUTER JOIN gift_certificates_system.tags tag ON join_table.tag_id = tag.tag_id");
 
             whereBlock = createIfNotExists(whereBlock);
-            whereBlock.add("t.name IN (:tags)");
+            whereBlock.add("tag.name IN (:tags)");
 
             parameterSource = createIfNotExists(parameterSource);
             parameterSource.addValue("tags", searchTags);
@@ -70,7 +72,7 @@ public class GiftCertificateSpecification implements SqlSpecification {
     private void processGiftCertificateNamePart(String searchName) {
         if (searchName != null && !searchName.isEmpty()) {
             whereBlock = createIfNotExists(whereBlock);
-            whereBlock.add("c.name LIKE :name");
+            whereBlock.add("certificate.name LIKE :name");
 
             parameterSource = createIfNotExists(parameterSource);
             parameterSource.addValue("name", generatePatternForLikeOperator(searchName));
@@ -80,7 +82,7 @@ public class GiftCertificateSpecification implements SqlSpecification {
     private void processGiftCertificateDescriptionPart(String searchDescription) {
         if (searchDescription != null && !searchDescription.isEmpty()) {
             whereBlock = createIfNotExists(whereBlock);
-            whereBlock.add("c.description LIKE :description");
+            whereBlock.add("certificate.description LIKE :description");
 
             parameterSource = createIfNotExists(parameterSource);
             parameterSource.addValue("description", generatePatternForLikeOperator(searchDescription));
@@ -100,7 +102,7 @@ public class GiftCertificateSpecification implements SqlSpecification {
             sortBlock = createIfNotExists(sortBlock);
 
             for (String sortParam : sortParams) {
-                String someParam = String.format("c.%s", sortParam);
+                String someParam = String.format("certificate.%s", sortParam);
                 sortBlock.add(someParam);
             }
 
