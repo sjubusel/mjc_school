@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -54,7 +55,9 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
     public ID create(T entity) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(getSqlQueryCreate(), getSqlParameterSource(entity), keyHolder);
-        return ((ID) Objects.requireNonNull(keyHolder.getKeys()).get("id"));
+        @SuppressWarnings("WrapperTypeMayBePrimitive") Long key
+                = ((BigInteger) Objects.requireNonNull(keyHolder.getKey())).longValueExact();
+        return ((ID) key);
     }
 
     @Transactional(readOnly = true)

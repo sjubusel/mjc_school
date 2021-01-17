@@ -22,7 +22,7 @@ public class TagRepositoryImpl extends BasicCrudRepository<Tag, Long> implements
     public static final String SELECT_TAGS_BY_CERTIFICATE_ID = "SELECT * FROM gift_certificates_system.tags t " +
             "JOIN gift_certificates_system.join_certificates_tags_table jt ON t.tag_id = jt.tag_id " +
             "WHERE jt.certificate_id = ?";
-    private static final String SELECT_TAG_ID_BY_NAME = "SELECT t.tag_id FROM gift_certificates_system.tags t " +
+    private static final String SELECT_TAG_ID_BY_NAME = "SELECT * FROM gift_certificates_system.tags t " +
             "WHERE t.name = :name";
     private static final String DELETE_LINK_BETWEEN_TAG_AND_GIFT_CERTIFICATES
             = "DELETE FROM gift_certificates_system.join_certificates_tags_table jctt WHERE jctt.tag_id = :id";
