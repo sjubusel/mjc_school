@@ -17,9 +17,5 @@ public interface CrudRepository<T, ID extends Serializable> {
 
     boolean delete(ID id);
 
-    Long count();
-
-    boolean exists(ID primaryKey);
-
-    boolean exists(String mainUniqueValue);
+    boolean exists(String uniqueConstraint);
 }
