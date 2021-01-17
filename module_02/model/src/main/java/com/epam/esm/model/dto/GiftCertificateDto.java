@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
@@ -57,6 +58,6 @@ public class GiftCertificateDto extends EntityDto<Long> {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Instant updateDate;
 
-    @NotNull(message = "tags must not be null")
+    @NotEmpty(message = "tags must not be null nor empty")
     private List<@Valid TagDto> tags;
 }
