@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 public class TagSpecification implements SqlSpecification {
 
-    private static final String SELECT_TAGS = "SELECT t.tag_id, t.name from gift_certificates_system.tags t";
+    private static final String SELECT_TAGS = "SELECT tag.tag_id, tag.name from gift_certificates_system.tags tag";
     private static final String WHITESPACE = " ";
 
     private String name;
@@ -35,7 +35,7 @@ public class TagSpecification implements SqlSpecification {
     }
 
     private String generateQuery() {
-        StringBuilder sb = new StringBuilder(SELECT_TAGS).append(WHITESPACE).append("WHERE t.name LIKE :name");
+        StringBuilder sb = new StringBuilder(SELECT_TAGS).append(WHITESPACE).append("WHERE tag.name LIKE :name");
         return new String(sb);
     }
 }
