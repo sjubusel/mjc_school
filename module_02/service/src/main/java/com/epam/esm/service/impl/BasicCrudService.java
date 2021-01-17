@@ -8,7 +8,7 @@ import com.epam.esm.repository.specification.SqlSpecification;
 import com.epam.esm.service.CrudService;
 import com.epam.esm.service.converter.EntityConverter;
 import com.epam.esm.service.exception.NoIdentifiableUpdateException;
-import com.epam.esm.service.exception.NotFoundResourceException;
+import com.epam.esm.service.exception.ResourceNotFoundException;
 import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.ResourceAlreadyExistsException;
 import com.epam.esm.service.validation.ServiceValidator;
@@ -58,7 +58,7 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
     public List<DTO> query(SearchCriteriaDto<DOMAIN> searchCriteria) {
         List<DOMAIN> domains = (List<DOMAIN>) crudRepository.query(getSqlSpecification(searchCriteria));
         if (domains.size() == 0) {
-            throw new NotFoundResourceException("Requested resources are not found");
+            throw new ResourceNotFoundException("Requested resources are not found");
         }
         return domains.stream().map(entityConverter::convertToDto).collect(Collectors.toList());
     }
@@ -67,7 +67,7 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
     @Override
     public DTO findOne(ID id) {
         Optional<DOMAIN> entity = crudRepository.findOne(id);
-        return entityConverter.convertToDto(entity.orElseThrow(() -> new NotFoundResourceException(id)));
+        return entityConverter.convertToDto(entity.orElseThrow(() -> new ResourceNotFoundException(id)));
     }
 
     @Transactional
@@ -85,7 +85,7 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
     public boolean delete(ID id) {
         Optional<DOMAIN> entity = crudRepository.findOne(id);
 
-        entity.orElseThrow(() -> new NotFoundResourceException(id));
+        entity.orElseThrow(() -> new ResourceNotFoundException(id));
 
         return crudRepository.delete(id);
     }
@@ -98,7 +98,7 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
         }
 
         Optional<DOMAIN> source = crudRepository.findOne(targetDto.getId());
-        DOMAIN sourceDomain = source.orElseThrow(() -> new NotFoundResourceException(targetDto.getId()));
+        DOMAIN sourceDomain = source.orElseThrow(() -> new ResourceNotFoundException(targetDto.getId()));
 
         return entityConverter.convertToUpdatingDomain(sourceDomain, targetDto);
     }

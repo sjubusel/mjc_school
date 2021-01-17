@@ -3,7 +3,7 @@ package com.epam.esm.web.exception;
 import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import com.epam.esm.service.exception.NoIdentifiableUpdateException;
-import com.epam.esm.service.exception.NotFoundResourceException;
+import com.epam.esm.service.exception.ResourceNotFoundException;
 import com.epam.esm.service.exception.ResourceAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -26,8 +26,8 @@ import java.util.Objects;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GeneralExceptionHandler {
 
-    @ExceptionHandler(NotFoundResourceException.class)
-    public ResponseEntity<ErrorInfo> handleNotFoundResourceException(NotFoundResourceException e,
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorInfo> handleResourceNotFoundException(ResourceNotFoundException e,
                                                                      HttpServletRequest request) {
         ErrorInfo errorInfo = generateStandardErrorInfo(40410L, e, request.getRequestURI());
         log.error("The requested resource is not found: errorInfo → {}; exception → {}; webRequest → {}",
