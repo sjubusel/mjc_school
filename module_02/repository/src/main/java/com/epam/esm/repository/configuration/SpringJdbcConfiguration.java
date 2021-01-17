@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan("com.epam.esm.repository")
-@PropertySource("classpath:application-production.properties")
+@PropertySource("classpath:application.properties")
 public class SpringJdbcConfiguration {
 
     @Value("${spring.datasource.driverClassName}")
@@ -27,6 +27,20 @@ public class SpringJdbcConfiguration {
     private String dbLogin;
     @Value("${spring.datasource.password}")
     private String dbPassword;
+    @Value("${spring.datasource.maxPoolSize}")
+    private Integer maxPoolSize;
+    @Value("${spring.datasource.source_property.cache}")
+    private String cacheProperty;
+    @Value("${spring.datasource.source_property.cache_value}")
+    private String cachePropertyValue;
+    @Value("${spring.datasource.source_property.cache_size}")
+    private String cacheSizeProperty;
+    @Value("${spring.datasource.source_property.cache_size_value}")
+    private String cacheSizeValue;
+    @Value("${spring.datasource.source_property.cache_limit}")
+    private String cacheLimitProperty;
+    @Value("${spring.datasource.source_property.cache_limit_value}")
+    private String cacheLimitValue;
 
     @Bean
     public DataSource dataSource() {
@@ -36,10 +50,10 @@ public class SpringJdbcConfiguration {
         hikariConfig.setUsername(dbLogin);
         hikariConfig.setPassword(dbPassword);
 
-        hikariConfig.setMaximumPoolSize(10);
-        hikariConfig.addDataSourceProperty("cachePrepStmts", "true");
-        hikariConfig.addDataSourceProperty("prepStmtCacheSize", "250");
-        hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        hikariConfig.setMaximumPoolSize(maxPoolSize);
+        hikariConfig.addDataSourceProperty(cacheProperty, cachePropertyValue);
+        hikariConfig.addDataSourceProperty(cacheSizeProperty, cacheSizeValue);
+        hikariConfig.addDataSourceProperty(cacheLimitProperty, cacheLimitValue);
 
         return new HikariDataSource(hikariConfig);
     }
