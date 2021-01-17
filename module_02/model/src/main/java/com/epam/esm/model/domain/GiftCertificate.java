@@ -9,7 +9,6 @@ import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -29,5 +28,5 @@ public class GiftCertificate extends Entity<Long> {
     private Integer duration;
     private Instant createDate;
     private Instant updateDate;
-    private List<Tag> tags = new ArrayList<>();
+    private List<Tag> tags;
 }
