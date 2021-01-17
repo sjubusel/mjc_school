@@ -28,7 +28,7 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
             "WHERE c.id=:id";
     private static final String LINK_CERTIFICATE_WITH_TAG
             = "INSERT INTO gift_certificates_system.join_certificates_tags_table (certificate_id, tag_id) " +
-            "VALUES (:certificateId, :tagId)";
+            "SELECT :certificateId, t.tag_id  FROM gift_certificates_system.tags t WHERE t.name = :tagName";
     private static final String DELETE_LINK_BETWEEN_GIFT_CERTIFICATE_AND_TAGS
             = "DELETE FROM gift_certificates_system.join_certificates_tags_table jctt WHERE jctt.certificate_id = :id";
     private static final String SELECT_GIFT_CERTIFICATE_ID_BY_NAME = "SELECT * " +
@@ -42,10 +42,10 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
 
     @Transactional
     @Override
-    public void linkCertificateWithTag(Long certificateId, Long tagId) {
+    public void linkCertificateWithTag(Long certificateId, String tagName) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("certificateId", certificateId);
-        parameterSource.addValue("tagId", tagId);
+        parameterSource.addValue("tagName", tagName);
 
         namedParameterJdbcTemplate.update(LINK_CERTIFICATE_WITH_TAG, parameterSource);
     }
