@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan("com.epam.esm.repository")
-@PropertySource("classpath:db.properties")
+@PropertySource("classpath:application.properties")
 public class SpringJdbcConfiguration {
 
     @Value("${dbConfig.driverClassName}")
@@ -29,7 +29,7 @@ public class SpringJdbcConfiguration {
     private String dbPassword;
 
     @Bean
-    public DataSource mysqlDataSource() {
+    public DataSource dataSource() {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName(dbDriverClassName);
         hikariConfig.setJdbcUrl(dbUrl);
@@ -46,13 +46,13 @@ public class SpringJdbcConfiguration {
 
     @Bean
     public NamedParameterJdbcTemplate jdbcTemplate() {
-        return new NamedParameterJdbcTemplate(mysqlDataSource());
+        return new NamedParameterJdbcTemplate(dataSource());
     }
 
     @Bean
     public DataSourceTransactionManager transactionManager() {
         DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
-        transactionManager.setDataSource(mysqlDataSource());
+        transactionManager.setDataSource(dataSource());
         return transactionManager;
     }
 }
