@@ -1,17 +1,19 @@
 package com.epam.esm.web.configuration;
 
+import com.epam.esm.repository.configuration.RepositoryConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@ComponentScan({"com.epam.esm"})
+@ComponentScan({"com.epam.esm.web"})
 @EnableWebMvc
-public class SpringConfiguration implements WebMvcConfigurer {
+@Import(RepositoryConfiguration.class)
+public class WebConfiguration {
 
     /**
      * a bean which allows to apply @org.springframework.validation.annotation.Validated

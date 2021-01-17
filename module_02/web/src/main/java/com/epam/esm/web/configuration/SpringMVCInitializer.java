@@ -1,6 +1,5 @@
 package com.epam.esm.web.configuration;
 
-import com.epam.esm.repository.configuration.RepositoryConfiguration;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -16,7 +15,7 @@ public class SpringMVCInitializer extends AbstractAnnotationConfigDispatcherServ
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{SpringConfiguration.class, RepositoryConfiguration.class};
+        return new Class[]{WebConfiguration.class};
     }
 
     @Override
