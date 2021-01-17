@@ -1,6 +1,5 @@
 package com.epam.esm.web.exception;
 
-import com.epam.esm.repository.exception.NotImplementedRepositoryException;
 import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import com.epam.esm.service.exception.NoIdentifiableUpdateException;
@@ -26,15 +25,6 @@ import java.util.Objects;
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GeneralExceptionHandler {
-
-    @ExceptionHandler(NotImplementedRepositoryException.class)
-    public ResponseEntity<ErrorInfo> handleNotImplementedRepositoryException(NotImplementedRepositoryException e,
-                                                                             HttpServletRequest request) {
-        ErrorInfo errorInfo = generateStandardErrorInfo(50010L, e, request.getRequestURI());
-        log.error("Not implemented method is used on the repository layer: errorInfo → {}; " +
-                "exception → {}; webRequest → {}", errorInfo, e, request);
-        return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
 
     @ExceptionHandler(NotFoundResourceException.class)
     public ResponseEntity<ErrorInfo> handleNotFoundResourceException(NotFoundResourceException e,
@@ -149,7 +139,7 @@ public class GeneralExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleOthers(RuntimeException e, HttpServletRequest request) {
-        ErrorInfo errorInfo = generateStandardErrorInfo(50040L, e, request.getRequestURI());
+        ErrorInfo errorInfo = generateStandardErrorInfo(50099L, e, request.getRequestURI());
         log.error("An unexpected exception occurs: errorInfo → {}; exception → {}; webRequest → {}",
                 errorInfo, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
