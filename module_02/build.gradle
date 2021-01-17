@@ -31,6 +31,8 @@ allprojects {
         implementation group: 'org.springframework', name: 'spring-beans', version: spring_framework_version
         implementation group: 'org.springframework', name: 'spring-context', version: spring_framework_version
 
+        implementation group: 'org.hibernate', name: 'hibernate-validator', version: hibernate_validator
+
         implementation group: 'org.projectlombok', name: 'lombok', version: lombok_version
         annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombok_version
 
