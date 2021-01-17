@@ -1,24 +1,11 @@
 package com.epam.esm.service.converter;
 
 import com.epam.esm.model.domain.GiftCertificate;
-import com.epam.esm.model.domain.Tag;
 import com.epam.esm.model.dto.GiftCertificateDto;
-import com.epam.esm.model.dto.TagDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.stream.Collectors;
 
 @Component
 public class GiftCertificateConverter implements EntityConverter<GiftCertificateDto, GiftCertificate, Long> {
-
-    private final EntityConverter<TagDto, Tag, Long> tagConverter;
-
-    @Autowired
-    public GiftCertificateConverter(EntityConverter<TagDto, Tag, Long> tagConverter) {
-        this.tagConverter = tagConverter;
-    }
-
 
     @Override
     public GiftCertificate convertToDomain(GiftCertificateDto dto) {
@@ -30,9 +17,6 @@ public class GiftCertificateConverter implements EntityConverter<GiftCertificate
                 .setDuration(dto.getDuration())
                 .setCreateDate(dto.getCreateDate())
                 .setUpdateDate(dto.getUpdateDate())
-                .setTags(dto.getTags().stream()
-                        .map(tagConverter::convertToDomain)
-                        .collect(Collectors.toList()))
                 .build();
     }
 
@@ -46,9 +30,6 @@ public class GiftCertificateConverter implements EntityConverter<GiftCertificate
                 .setDuration(domain.getDuration())
                 .setCreateDate(domain.getCreateDate())
                 .setUpdateDate(domain.getUpdateDate())
-                .setTags(domain.getTags().stream()
-                        .map(tagConverter::convertToDto)
-                        .collect(Collectors.toList()))
                 .build();
     }
 
