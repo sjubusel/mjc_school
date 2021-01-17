@@ -79,7 +79,16 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
     public boolean update(GiftCertificateDto targetDto) {
         GiftCertificate updatingGiftCertificate = generateUpdatingDomain(targetDto);
 
-        List<Tag> updatingTags = updatingGiftCertificate.getTags();
+        List<Tag> sourceTags = tagRepository.receiveTagsByGiftCertificateId(updatingGiftCertificate.getId());
+        List<Tag> updatingTags = targetDto.getTags().stream()
+                .filter(targetTagDto -> sourceTags.stream()
+                        .noneMatch(sourceTag -> sourceTag.getName().equals(targetTagDto.getName())))
+                .map(tagConverter::convertToDomain)
+                .collect(Collectors.toList());
+        updatingGiftCertificate.setTags(updatingTags);
+
+        checkIfUpdatingIsPossibleOrThrow(updatingGiftCertificate);
+
         linkGiftCertificateWithTags(targetDto.getId(), updatingTags);
 
         return crudRepository.update(updatingGiftCertificate);

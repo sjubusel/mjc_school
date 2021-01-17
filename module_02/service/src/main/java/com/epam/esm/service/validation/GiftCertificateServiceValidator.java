@@ -14,6 +14,6 @@ public class GiftCertificateServiceValidator extends BasicServiceValidator<GiftC
     public boolean isDomainValidToUpdate(GiftCertificate updatingDomain) {
         return Stream.of(updatingDomain.getName(), updatingDomain.getDescription(), updatingDomain.getPrice(),
                 updatingDomain.getDuration())
-                .anyMatch(Objects::nonNull);
+                .anyMatch(Objects::nonNull) || updatingDomain.getTags().size() > 0;
     }
 }

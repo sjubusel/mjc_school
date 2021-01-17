@@ -74,6 +74,9 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
     @Override
     public boolean update(DTO targetDto) {
         DOMAIN updatingDomain = generateUpdatingDomain(targetDto);
+
+        checkIfUpdatingIsPossibleOrThrow(updatingDomain);
+
         return crudRepository.update(updatingDomain);
     }
 
@@ -96,13 +99,14 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
 
         Optional<DOMAIN> source = crudRepository.findOne(targetDto.getId());
         DOMAIN sourceDomain = source.orElseThrow(() -> new NotFoundResourceException(targetDto.getId()));
-        DOMAIN updatingDomain = entityConverter.convertToUpdatingDomain(sourceDomain, targetDto);
 
+        return entityConverter.convertToUpdatingDomain(sourceDomain, targetDto);
+    }
+
+    protected void checkIfUpdatingIsPossibleOrThrow(DOMAIN updatingDomain) {
         if (!validator.isDomainValidToUpdate(updatingDomain)) {
             throw new EmptyUpdateException(String.format("No changes are applied to Resource №%s",
-                    targetDto.getId()));
+                    updatingDomain.getId()));
         }
-
-        return updatingDomain;
     }
 }
