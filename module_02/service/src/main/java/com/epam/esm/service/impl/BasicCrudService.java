@@ -2,15 +2,14 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.model.domain.Entity;
 import com.epam.esm.model.dto.EntityDto;
-import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.repository.CrudRepository;
 import com.epam.esm.repository.specification.SqlSpecification;
 import com.epam.esm.service.CrudService;
 import com.epam.esm.service.converter.EntityConverter;
-import com.epam.esm.service.exception.NoIdentifiableUpdateException;
-import com.epam.esm.service.exception.ResourceNotFoundException;
-import com.epam.esm.service.exception.EmptyUpdateException;
+import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.DuplicateResourceException;
+import com.epam.esm.service.exception.EmptyUpdateException;
+import com.epam.esm.service.exception.ResourceNotFoundException;
 import com.epam.esm.service.validation.ServiceValidator;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +23,10 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
 
     protected final EntityConverter<DTO, DOMAIN, ID> entityConverter;
     protected final CrudRepository<DOMAIN, ID> crudRepository;
-    protected final ServiceValidator<DTO, DOMAIN, ID> validator;
+    protected final ServiceValidator<DOMAIN, ID> validator;
 
     public BasicCrudService(EntityConverter<DTO, DOMAIN, ID> entityConverter, CrudRepository<DOMAIN, ID> crudRepository,
-                            ServiceValidator<DTO, DOMAIN, ID> validator) {
+                            ServiceValidator<DOMAIN, ID> validator) {
         this.entityConverter = entityConverter;
         this.crudRepository = crudRepository;
         this.validator = validator;
@@ -92,11 +91,6 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
 
 
     protected DOMAIN receiveUpdatingDomain(DTO targetDto) {
-        if (!validator.isDtoValidToUpdate(targetDto)) {
-            throw new NoIdentifiableUpdateException("Resource, which is to be updated, has no identifier " +
-                    "(in other words there is no id)");
-        }
-
         Optional<DOMAIN> source = crudRepository.findOne(targetDto.getId());
         DOMAIN sourceDomain = source.orElseThrow(() -> new ResourceNotFoundException(targetDto.getId()));
 
