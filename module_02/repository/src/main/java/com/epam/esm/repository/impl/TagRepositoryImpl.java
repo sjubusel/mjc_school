@@ -72,7 +72,7 @@ public class TagRepositoryImpl extends BasicCrudRepository<Tag, Long> implements
     }
 
     @Override
-    protected String getSqlQueryExistsName() {
+    protected String getSqlQueryExists() {
         return SELECT_TAG_ID_BY_NAME;
     }
 

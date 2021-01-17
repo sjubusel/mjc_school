@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
 
     protected abstract String getSqlQueryDelete();
 
-    protected abstract String getSqlQueryExistsName();
+    protected abstract String getSqlQueryExists();
 
     protected abstract SqlParameterSource getSqlParameterSource(T entity);
 
@@ -80,9 +81,9 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
     }
 
     @Override
-    public boolean exists(String uniqueConstraint) {
-        List<T> result = namedParameterJdbcTemplate.query(getSqlQueryExistsName(),
-                new MapSqlParameterSource("name", uniqueConstraint), rowMapper);
+    public boolean exists(Map<String, Object> uniqueConstraints) {
+        List<T> result = namedParameterJdbcTemplate.query(getSqlQueryExists(),
+                new MapSqlParameterSource(uniqueConstraints), rowMapper);
         return result.size() > 0;
     }
 }

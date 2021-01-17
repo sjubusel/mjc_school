@@ -89,7 +89,7 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
     }
 
     @Override
-    protected String getSqlQueryExistsName() {
+    protected String getSqlQueryExists() {
         return SELECT_GIFT_CERTIFICATE_ID_BY_NAME;
     }
 
