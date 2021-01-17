@@ -122,6 +122,6 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
         updatingTags.stream()
                 .filter(tag -> !tagRepository.exists(tag.getName()))
                 .forEach(tagRepository::create);
-        updatingTags.forEach(tag -> giftCertificateRepository.linkCertificateWithTag(certificateId, tag.getName()));
+        updatingTags.forEach(tag -> giftCertificateRepository.linkCertificateWithTag(certificateId, tag.getId()));
     }
 }

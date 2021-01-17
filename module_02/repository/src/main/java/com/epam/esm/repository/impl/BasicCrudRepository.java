@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -88,9 +89,9 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
     @Transactional
     @Override
     public boolean exists(String mainUniqueValue) {
-        Long entityId = namedParameterJdbcTemplate.queryForObject(getSqlQueryExistsName(),
-                new MapSqlParameterSource("name", mainUniqueValue), Long.class);
-        return entityId != null;
+        List<T> result = namedParameterJdbcTemplate.query(getSqlQueryExistsName(),
+                new MapSqlParameterSource("name", mainUniqueValue), rowMapper);
+        return result.size() > 0;
     }
 
     @Transactional
