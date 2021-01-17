@@ -73,7 +73,7 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
     @Transactional
     @Override
     public boolean update(DTO targetDto) {
-        DOMAIN updatingDomain = generateUpdatingDomain(targetDto);
+        DOMAIN updatingDomain = receiveUpdatingDomain(targetDto);
 
         checkIfUpdatingIsPossibleOrThrow(updatingDomain);
 
@@ -91,7 +91,7 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
     }
 
 
-    protected DOMAIN generateUpdatingDomain(DTO targetDto) {
+    protected DOMAIN receiveUpdatingDomain(DTO targetDto) {
         if (!validator.isDtoValidToUpdate(targetDto)) {
             throw new NoIdentifiableUpdateException("Resource, which is to be updated, has no identifier " +
                     "(in other words there is no id)");

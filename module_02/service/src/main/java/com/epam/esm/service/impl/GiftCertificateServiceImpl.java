@@ -79,7 +79,7 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
     @Transactional
     @Override
     public boolean update(GiftCertificateDto targetDto) {
-        GiftCertificate updatingGiftCertificate = generateUpdatingDomain(targetDto);
+        GiftCertificate updatingGiftCertificate = receiveUpdatingDomain(targetDto);
 
         List<Tag> sourceTags = tagRepository.receiveTagsByGiftCertificateId(updatingGiftCertificate.getId());
         List<Tag> updatingTags = targetDto.getTags().stream()
