@@ -4,7 +4,7 @@ import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import com.epam.esm.service.exception.NoIdentifiableUpdateException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
-import com.epam.esm.service.exception.ResourceAlreadyExistsException;
+import com.epam.esm.service.exception.DuplicateResourceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -35,8 +35,8 @@ public class GeneralExceptionHandler {
         return new ResponseEntity<>(errorInfo, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(ResourceAlreadyExistsException.class)
-    public ResponseEntity<ErrorInfo> handleResourceAlreadyExistsException(ResourceAlreadyExistsException e,
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<ErrorInfo> handleDuplicateResourceException(DuplicateResourceException e,
                                                                           HttpServletRequest request) {
         ErrorInfo errorInfo = generateStandardErrorInfo(40010L, e, request.getRequestURI());
         log.error("An attempt to create an already existing resource: errorInfo → {}; exception → {}; webRequest → {}",

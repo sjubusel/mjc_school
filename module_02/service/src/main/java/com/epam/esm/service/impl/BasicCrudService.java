@@ -10,7 +10,7 @@ import com.epam.esm.service.converter.EntityConverter;
 import com.epam.esm.service.exception.NoIdentifiableUpdateException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 import com.epam.esm.service.exception.EmptyUpdateException;
-import com.epam.esm.service.exception.ResourceAlreadyExistsException;
+import com.epam.esm.service.exception.DuplicateResourceException;
 import com.epam.esm.service.validation.ServiceValidator;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,7 +47,7 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
     @Override
     public ID create(DTO dto) {
         if (crudRepository.exists(getMainUniqueEntityValue(dto))) {
-            throw new ResourceAlreadyExistsException("Resource already exists in the system");
+            throw new DuplicateResourceException("Resource already exists in the system");
         }
         DOMAIN domain = entityConverter.convertToDomain(dto);
         return crudRepository.create(domain);
