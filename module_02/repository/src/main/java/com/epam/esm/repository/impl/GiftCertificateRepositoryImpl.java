@@ -19,7 +19,7 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
 
     private static final String INSERT_NEW_GIFT_CERTIFICATE = "INSERT INTO gift_certificates_system.certificates " +
             "(name, description, price, duration, create_date, last_update_date) " +
-            "VALUES (:name, :description, :price, :duration, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+            "VALUES (:name, :description, :price, :duration, :createDate, :lastUpdateDate)";
     private static final String SELECT_GIFT_CERTIFICATE_BY_ID = "SELECT * FROM gift_certificates_system.certificates " +
             "WHERE certificate_id = :id";
     private static final String UPDATE_GIFT_CERTIFICATE_START = "UPDATE gift_certificates_system.certificates c " +
@@ -106,7 +106,9 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
                 .addValue("name", certificate.getName())
                 .addValue("description", certificate.getDescription())
                 .addValue("price", certificate.getPrice())
-                .addValue("duration", certificate.getDuration());
+                .addValue("duration", certificate.getDuration())
+                .addValue("createDate", Timestamp.from(certificate.getCreateDate()))
+                .addValue("lastUpdateDate", Timestamp.from(certificate.getUpdateDate()));
     }
 
     @Override
