@@ -96,11 +96,6 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
     }
 
     @Override
-    protected Class<GiftCertificate> getClassForQuery() {
-        return GiftCertificate.class;
-    }
-
-    @Override
     protected SqlParameterSource getSqlParameterSource(GiftCertificate certificate) {
         return new MapSqlParameterSource()
                 .addValue("name", certificate.getName())

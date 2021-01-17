@@ -78,11 +78,6 @@ public class TagRepositoryImpl extends BasicCrudRepository<Tag, Long> implements
     }
 
     @Override
-    protected Class<Tag> getClassForQuery() {
-        return Tag.class;
-    }
-
-    @Override
     protected SqlParameterSource getSqlParameterSource(Tag tag) {
         return new MapSqlParameterSource().addValue("id", tag.getId()).addValue("name", tag.getName());
     }

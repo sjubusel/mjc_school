@@ -41,9 +41,6 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
 
     protected abstract String getSqlQueryExistsName();
 
-    @SuppressWarnings("unused")
-    protected abstract Class<T> getClassForQuery();
-
     protected abstract SqlParameterSource getSqlParameterSource(T entity);
 
     protected abstract SqlParameterSource getSqlParameterSourceForUpdate(T entity);
