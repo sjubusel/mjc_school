@@ -21,7 +21,7 @@ public class TagSpecification implements SqlSpecification {
         }
 
         this.name = searchName;
-        parameterSource = new MapSqlParameterSource("name", searchName);
+        parameterSource = new MapSqlParameterSource("name", "%" + searchName + "%");
     }
 
     @Override

@@ -17,7 +17,6 @@ public class TagSearchCriteriaDto implements SearchCriteriaDto<Tag> {
             "characters without punctuation marks")
     private String name;
 
-    @Null
     private Class<Tag> targetClassType = Tag.class;
 
     @Override
