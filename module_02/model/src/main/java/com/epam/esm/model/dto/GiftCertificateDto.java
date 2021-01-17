@@ -31,32 +31,32 @@ import java.util.List;
 public class GiftCertificateDto extends EntityDto<Long> {
 
     @NotBlank(message = "name must be not blank")
-    @Pattern(regexp = "[\\w\\s]{3,256}", message = "name must contain from 3 to 256 " +
+    @Pattern(regexp = "[\\-0-9A-Za-zА-Яа-яЁё ]{3,256}", message = "name must contain from 3 to 256 " +
             "characters without punctuation marks")
     private String name;
 
     @NotBlank(message = "description must be not blank")
-    @Pattern(regexp = "[-,.:!?\\w\\s]{3,1024}", message = "description must contain from 3 to 1024 " +
+    @Pattern(regexp = "[\\-,.:!?0-9A-Za-zА-Яа-яЁё ]{3,1024}", message = "description must contain from 3 to 1024 " +
             "characters with punctuation marks")
     private String description;
 
-    @NotNull
+    @NotNull(message = "price must not be null")
     @DecimalMin(value = "1.0", message = "minimal value of price is 1.0+")
     @Digits(integer = 15, fraction = 2)
     private BigDecimal price;
 
-    @NotNull
+    @NotNull(message = "duration must not be null")
     @Positive(message = "duration must be positive")
     private Integer duration;
 
-    @Null
+    @Null(message = "creation date must be null")
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Instant createDate;
 
-    @Null
+    @Null(message = "updating date must be null")
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Instant updateDate;
 
-    @NotNull
+    @NotNull(message = "tags must not be null")
     private List<@Valid TagDto> tags;
 }
