@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Optional;
@@ -41,7 +40,6 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
         super(rowMapper, namedParameterJdbcTemplate);
     }
 
-    @Transactional
     @Override
     public void linkCertificateWithTag(Long certificateId, String tagName) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
@@ -51,7 +49,6 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
         namedParameterJdbcTemplate.update(LINK_CERTIFICATE_WITH_TAG, parameterSource);
     }
 
-    @Transactional
     @Override
     public void deleteLinkBetweenGiftCertificateAndTags(Long certificateId) {
         namedParameterJdbcTemplate.update(DELETE_LINK_BETWEEN_GIFT_CERTIFICATE_AND_TAGS,

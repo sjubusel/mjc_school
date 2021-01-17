@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -46,7 +45,6 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
     protected abstract SqlParameterSource getSqlParameterSourceForUpdate(T entity);
 
     @SuppressWarnings("all")
-    @Transactional
     @Override
     public ID create(T entity) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -55,7 +53,6 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
         return ((ID) key);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Optional<T> findOne(ID id) {
         List<T> result = namedParameterJdbcTemplate.query(getSqlQueryReadById(), new MapSqlParameterSource("id", id),
@@ -64,20 +61,17 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
         return Optional.ofNullable(resource);
     }
 
-    @Transactional
     @Override
     public boolean update(T entity) {
         return namedParameterJdbcTemplate.update(getSqlQueryUpdate(entity),
                 getSqlParameterSourceForUpdate(entity)) != 0;
     }
 
-    @Transactional
     @Override
     public boolean delete(ID id) {
         return namedParameterJdbcTemplate.update(getSqlQueryDelete(), new MapSqlParameterSource("id", id)) != 0;
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Iterable<T> query(SqlSpecification specification) {
         SqlParameterSource params = specification.params();
@@ -85,7 +79,6 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
         return namedParameterJdbcTemplate.query(specification.toSql(), parameterSource, rowMapper);
     }
 
-    @Transactional
     @Override
     public boolean exists(String uniqueConstraint) {
         List<T> result = namedParameterJdbcTemplate.query(getSqlQueryExistsName(),

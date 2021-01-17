@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,13 +31,11 @@ public class TagRepositoryImpl extends BasicCrudRepository<Tag, Long> implements
         super(rowMapper, namedParameterJdbcTemplate);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<Tag> receiveTagsByGiftCertificateId(Long id) {
         return namedParameterJdbcTemplate.getJdbcTemplate().query(SELECT_TAGS_BY_CERTIFICATE_ID, rowMapper, id);
     }
 
-    @Transactional
     @Override
     public void deleteLinkBetweenTagAndGiftCertificates(Long tagId) {
         namedParameterJdbcTemplate.update(DELETE_LINK_BETWEEN_TAG_AND_GIFT_CERTIFICATES,
