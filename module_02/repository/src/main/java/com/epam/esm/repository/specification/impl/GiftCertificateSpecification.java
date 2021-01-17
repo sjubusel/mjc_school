@@ -12,8 +12,8 @@ import java.util.stream.Stream;
 
 public class GiftCertificateSpecification implements SqlSpecification {
 
-    private static final String SELECT_GIFT_CERTIFICATES = "SELECT certificate_id, name, description, price, " +
-            "duration, create_date, last_update_date FROM gift_certificates_system.certificates c ";
+    private static final String SELECT_GIFT_CERTIFICATES = "SELECT c.certificate_id, c.name, c.description, c.price, " +
+            "c.duration, c.create_date, c.last_update_date FROM gift_certificates_system.certificates c ";
     private static final String WHITESPACE = " ";
     private static final String PERCENT_SYMBOL = "%";
 
@@ -60,7 +60,7 @@ public class GiftCertificateSpecification implements SqlSpecification {
             joinBlock.add("LEFT OUTER JOIN gift_certificates_system.tags t ON jctt.tag_id = t.tag_id");
 
             whereBlock = createIfNotExists(whereBlock);
-            whereBlock.add("t.name = IN (:tags)");
+            whereBlock.add("t.name IN (:tags)");
 
             parameterSource = createIfNotExists(parameterSource);
             parameterSource.addValue("tags", searchTags);
