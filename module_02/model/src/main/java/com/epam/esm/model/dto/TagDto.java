@@ -19,7 +19,7 @@ import javax.validation.constraints.Pattern;
 public class TagDto extends EntityDto<Long> {
 
     @NotBlank(message = "tag name must be not blank")
-    @Pattern(regexp = "[\\w\\s]{3,256}", message = "tag name must contain from 3 to 256 " +
+    @Pattern(regexp = "[\\-0-9A-Za-zА-Яа-яЁё ]{3,256}", message = "tag name must contain from 3 to 256 " +
             "characters without punctuation marks")
     private String name;
 }
