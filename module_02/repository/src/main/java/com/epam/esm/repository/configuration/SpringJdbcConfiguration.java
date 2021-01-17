@@ -27,6 +27,7 @@ public class SpringJdbcConfiguration {
     private String dbLogin;
     @Value("${spring.datasource.password}")
     private String dbPassword;
+
     @Value("${spring.datasource.maxPoolSize}")
     private Integer maxPoolSize;
     @Value("${spring.datasource.source_property.cache}")
