@@ -2,7 +2,6 @@ package com.epam.esm.web.exception;
 
 import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
-import com.epam.esm.service.exception.NoIdentifiableUpdateException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 import com.epam.esm.service.exception.DuplicateResourceException;
 import lombok.extern.slf4j.Slf4j;
@@ -47,17 +46,8 @@ public class GeneralExceptionHandler {
     @ExceptionHandler(IncompatibleSearchCriteriaException.class)
     public ResponseEntity<Object> handleIncompatibleSearchCriteriaException(IncompatibleSearchCriteriaException e,
                                                                             HttpServletRequest request) {
-        ErrorInfo errorInfo = generateStandardErrorInfo(50020L, e, request.getRequestURI());
+        ErrorInfo errorInfo = generateStandardErrorInfo(50010L, e, request.getRequestURI());
         log.error("Incompatible search criteria is passed: errorInfo → {}; exception → {}; webRequest → {}",
-                errorInfo, e, request);
-        return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(NoIdentifiableUpdateException.class)
-    public ResponseEntity<Object> handleNoIdentifiableUpdateException(NoIdentifiableUpdateException e,
-                                                                      HttpServletRequest request) {
-        ErrorInfo errorInfo = generateStandardErrorInfo(50030L, e, request.getRequestURI());
-        log.error("An entity without id is called to be updated: errorInfo → {}; exception → {}; webRequest → {}",
                 errorInfo, e, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
     }
