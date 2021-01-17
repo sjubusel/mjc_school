@@ -7,7 +7,7 @@ public class NotFoundResourceException extends ServiceException {
     }
 
     public <T extends Serializable> NotFoundResourceException(T resourceId){
-        super(String.format("Requested resource is not found (resource's id = %s", resourceId));
+        super(String.format("Requested resource is not found (resource's id = %s)", resourceId));
     }
 
     public NotFoundResourceException(String message) {

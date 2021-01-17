@@ -63,9 +63,10 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
     @Transactional(readOnly = true)
     @Override
     public Optional<T> findOne(ID id) {
-        T entity = namedParameterJdbcTemplate.queryForObject(getSqlQueryReadById(),
-                new MapSqlParameterSource("id", id), rowMapper);
-        return Optional.ofNullable(entity);
+        List<T> result = namedParameterJdbcTemplate.query(getSqlQueryReadById(), new MapSqlParameterSource("id", id),
+                rowMapper);
+        T resource = result.size() > 0 ? result.get(0) : null;
+        return Optional.ofNullable(resource);
     }
 
     @Transactional
