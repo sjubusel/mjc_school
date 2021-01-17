@@ -21,18 +21,19 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
             "VALUES (:name, :description, :price, :duration, :createDate, :lastUpdateDate)";
     private static final String SELECT_GIFT_CERTIFICATE_BY_ID = "SELECT * FROM gift_certificates_system.certificates " +
             "WHERE certificate_id = :id";
-    private static final String UPDATE_GIFT_CERTIFICATE_START = "UPDATE gift_certificates_system.certificates c " +
-            "SET c.last_update_date=:lastUpdateDate";
-    public static final String UPDATE_GIFT_CERTIFICATE_ENG = " WHERE c.certificate_id=:id";
-    private static final String DELETE_GIFT_CERTIFICATE_BY_ID = "DELETE FROM gift_certificates_system.certificates c " +
-            "WHERE c.certificate_id=:id";
+    private static final String UPDATE_GIFT_CERTIFICATE_START = "UPDATE gift_certificates_system.certificates " +
+            "certificate SET certificate.last_update_date=:lastUpdateDate";
+    public static final String UPDATE_GIFT_CERTIFICATE_ENG = " WHERE certificate.certificate_id=:id";
+    private static final String DELETE_GIFT_CERTIFICATE_BY_ID = "DELETE FROM gift_certificates_system.certificates " +
+            "certificate WHERE certificate.certificate_id=:id";
     private static final String LINK_CERTIFICATE_WITH_TAG
             = "INSERT INTO gift_certificates_system.join_certificates_tags_table (certificate_id, tag_id) " +
-            "SELECT :certificateId, t.tag_id  FROM gift_certificates_system.tags t WHERE t.name = :tagName";
+            "SELECT :certificateId, tag.tag_id  FROM gift_certificates_system.tags tag WHERE tag.name = :tagName";
     private static final String DELETE_LINK_BETWEEN_GIFT_CERTIFICATE_AND_TAGS
-            = "DELETE FROM gift_certificates_system.join_certificates_tags_table jctt WHERE jctt.certificate_id = :id";
+            = "DELETE FROM gift_certificates_system.join_certificates_tags_table join_table " +
+            "WHERE join_table.certificate_id = :id";
     private static final String SELECT_GIFT_CERTIFICATE_ID_BY_NAME = "SELECT * " +
-            "FROM gift_certificates_system.certificates c WHERE c.name = :name";
+            "FROM gift_certificates_system.certificates certificate WHERE certificate.name = :name";
 
     @Autowired
     public GiftCertificateRepositoryImpl(EntityMapper<GiftCertificate, Long> rowMapper,
@@ -71,13 +72,13 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
 
         String setDelimiter = ", ";
         Optional.ofNullable(certificate.getName()).ifPresent(s -> setSection.append(setDelimiter)
-                .append("c.name=:name"));
+                .append("certificate.name=:name"));
         Optional.ofNullable(certificate.getDescription()).ifPresent(s -> setSection.append(setDelimiter)
-                .append("c.description=:description"));
+                .append("certificate.description=:description"));
         Optional.ofNullable(certificate.getPrice()).ifPresent(s -> setSection.append(setDelimiter)
-                .append("c.price=:price"));
+                .append("certificate.price=:price"));
         Optional.ofNullable(certificate.getDuration()).ifPresent(s -> setSection.append(setDelimiter)
-                .append("c.duration=:duration"));
+                .append("certificate.duration=:duration"));
 
         return UPDATE_GIFT_CERTIFICATE_START + new String(setSection) + UPDATE_GIFT_CERTIFICATE_ENG;
     }
