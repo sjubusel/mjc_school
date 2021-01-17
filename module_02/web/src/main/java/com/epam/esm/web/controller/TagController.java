@@ -43,7 +43,7 @@ public class TagController {
                                          @RequestBody @Valid TagDto tagDto) {
         tagDto.setId(id);
 
-        if (tagService.update(tagDto)) {
+        if (!tagService.update(tagDto)) {
             return ResponseEntity.badRequest().body(String.format("Tag №%d isn't updated", id));
         }
 
@@ -52,7 +52,7 @@ public class TagController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") @Positive @Min(1) Long id) {
-        if (tagService.delete(id)) {
+        if (!tagService.delete(id)) {
             return ResponseEntity.badRequest().body(String.format("Tag №%s isn't deleted", id));
         }
 

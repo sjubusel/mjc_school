@@ -55,7 +55,7 @@ public class GiftCertificateController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") @Positive @Min(1) Long id) {
-        if (giftCertificateService.delete(id)) {
+        if (!giftCertificateService.delete(id)) {
             return ResponseEntity.badRequest().body(String.format("Gift-certificate №%s isn't deleted", id));
         }
 
