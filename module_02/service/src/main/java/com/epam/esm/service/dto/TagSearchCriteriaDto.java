@@ -15,11 +15,4 @@ public class TagSearchCriteriaDto implements SearchCriteriaDto<Tag> {
     @Pattern(regexp = "[0-9A-Za-zА-Яа-яЁё ]{1,256}", message = "tag name must contain from 1 to 256 " +
             "characters without punctuation marks")
     private String name;
-
-    private Class<Tag> targetClassType = Tag.class;
-
-    @Override
-    public Class<Tag> getTargetClassType() {
-        return targetClassType;
-    }
 }

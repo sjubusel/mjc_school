@@ -30,11 +30,4 @@ public class GiftCertificateSearchCriteriaDto implements SearchCriteriaDto<GiftC
 
     @Pattern(regexp = "(DESC)|(ASC)")
     private String order;
-
-    private Class<GiftCertificate> targetClassType = GiftCertificate.class;
-
-    @Override
-    public Class<GiftCertificate> getTargetClassType() {
-        return targetClassType;
-    }
 }
