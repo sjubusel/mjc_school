@@ -21,7 +21,7 @@ public class TagServiceImpl extends BasicCrudService<TagDto, Tag, Long> implemen
 
     @Autowired
     public TagServiceImpl(EntityConverter<TagDto, Tag, Long> entityConverter, TagRepository tagRepository,
-                          ServiceValidator<TagDto, Tag, Long> validator) {
+                          ServiceValidator<Tag, Long> validator) {
         super(entityConverter, tagRepository, validator);
         this.tagRepository = tagRepository;
     }

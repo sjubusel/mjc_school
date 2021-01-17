@@ -32,7 +32,7 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
     @Autowired
     public GiftCertificateServiceImpl(EntityConverter<GiftCertificateDto, GiftCertificate, Long> entityConverter,
                                       GiftCertificateRepository giftCertificateRepository, TagRepository tagRepository,
-                                      ServiceValidator<GiftCertificateDto, GiftCertificate, Long> validator,
+                                      ServiceValidator<GiftCertificate, Long> validator,
                                       TagConverter tagConverter) {
         super(entityConverter, giftCertificateRepository, validator);
         this.giftCertificateRepository = giftCertificateRepository;
