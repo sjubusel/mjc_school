@@ -46,7 +46,7 @@ public class GiftCertificateController {
                                          @RequestBody @Valid GiftCertificateDto newCertificate) {
         newCertificate.setId(id);
 
-        if (giftCertificateService.update(newCertificate)) {
+        if (!giftCertificateService.update(newCertificate)) {
             return ResponseEntity.badRequest().body(String.format("Gift-certificate №%d isn't updated", id));
         }
 

@@ -13,7 +13,7 @@ public class GiftCertificateServiceValidator extends BasicServiceValidator<GiftC
     @Override
     public boolean isDomainValidToUpdate(GiftCertificate updatingDomain) {
         return Stream.of(updatingDomain.getName(), updatingDomain.getDescription(), updatingDomain.getPrice(),
-                updatingDomain.getDuration(), updatingDomain.getTags())
+                updatingDomain.getDuration())
                 .anyMatch(Objects::nonNull);
     }
 }
