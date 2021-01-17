@@ -147,7 +147,7 @@ public class GeneralExceptionHandler {
         return new ResponseEntity<>(errorInfo, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleOthers(RuntimeException e, HttpServletRequest request) {
         ErrorInfo errorInfo = generateStandardErrorInfo(50040L, e, request.getRequestURI());
         log.error("An unexpected exception occurs: errorInfo → {}; exception → {}; webRequest → {}",
