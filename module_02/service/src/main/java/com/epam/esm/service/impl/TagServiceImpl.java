@@ -1,19 +1,22 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.model.domain.Tag;
-import com.epam.esm.repository.TagRepository;
-import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.model.dto.TagDto;
-import com.epam.esm.service.dto.TagSearchCriteriaDto;
+import com.epam.esm.repository.TagRepository;
 import com.epam.esm.repository.specification.SqlSpecification;
 import com.epam.esm.repository.specification.impl.TagSpecification;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.converter.EntityConverter;
+import com.epam.esm.service.dto.SearchCriteriaDto;
+import com.epam.esm.service.dto.TagSearchCriteriaDto;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import com.epam.esm.service.validation.ServiceValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.Map;
 
 @Service
 public class TagServiceImpl extends BasicCrudService<TagDto, Tag, Long> implements TagService {
@@ -34,8 +37,8 @@ public class TagServiceImpl extends BasicCrudService<TagDto, Tag, Long> implemen
     }
 
     @Override
-    protected String getMainUniqueEntityValue(TagDto tagDto) {
-        return tagDto.getName();
+    protected Map<String, Object> receiveUniqueConstraints(TagDto tagDto) {
+        return Collections.singletonMap("name", tagDto.getName());
     }
 
     @Override

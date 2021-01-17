@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,14 +39,14 @@ public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends
      * @param dto an object which contains fields of an entity that should be created
      * @return a String, which unifies
      */
-    protected abstract String getMainUniqueEntityValue(DTO dto);
+    protected abstract Map<String, Object> receiveUniqueConstraints(DTO dto);
 
     protected abstract SqlSpecification getSqlSpecification(SearchCriteriaDto<DOMAIN> searchCriteria);
 
     @Transactional
     @Override
     public ID create(DTO dto) {
-        if (crudRepository.exists(getMainUniqueEntityValue(dto))) {
+        if (crudRepository.exists(receiveUniqueConstraints(dto))) {
             throw new DuplicateResourceException("Resource already exists in the system");
         }
         DOMAIN domain = entityConverter.convertToDomain(dto);

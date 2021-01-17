@@ -19,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -105,8 +107,8 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
     }
 
     @Override
-    protected String getMainUniqueEntityValue(GiftCertificateDto certificateDto) {
-        return certificateDto.getName();
+    protected Map<String, Object> receiveUniqueConstraints(GiftCertificateDto certificateDto) {
+        return Collections.singletonMap("name", certificateDto.getName());
     }
 
     @Override
