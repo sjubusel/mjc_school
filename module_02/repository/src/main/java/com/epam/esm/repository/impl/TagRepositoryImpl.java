@@ -15,16 +15,18 @@ import java.util.List;
 public class TagRepositoryImpl extends BasicCrudRepository<Tag, Long> implements TagRepository {
 
     private static final String INSERT_NEW_TAG = "INSERT INTO gift_certificates_system.tags (name) VALUES (:name)";
-    private static final String SELECT_TAG_BY_ID = "SELECT * FROM gift_certificates_system.tags t WHERE t.tag_id = :id";
+    private static final String SELECT_TAG_BY_ID = "SELECT * FROM gift_certificates_system.tags tag " +
+            "WHERE tag.tag_id = :id";
     private static final String UPDATE_TAG = "UPDATE gift_certificates_system.tags SET name = :name WHERE tag_id = :id";
     private static final String DELETE_TAG_BY_ID = "DELETE FROM gift_certificates_system.tags WHERE tag_id = :id";
-    public static final String SELECT_TAGS_BY_CERTIFICATE_ID = "SELECT * FROM gift_certificates_system.tags t " +
-            "JOIN gift_certificates_system.join_certificates_tags_table jt ON t.tag_id = jt.tag_id " +
-            "WHERE jt.certificate_id = ?";
-    private static final String SELECT_TAG_ID_BY_NAME = "SELECT * FROM gift_certificates_system.tags t " +
-            "WHERE t.name = :name";
+    public static final String SELECT_TAGS_BY_CERTIFICATE_ID = "SELECT * FROM gift_certificates_system.tags tag " +
+            "JOIN gift_certificates_system.join_certificates_tags_table join_table ON tag.tag_id = join_table.tag_id " +
+            "WHERE join_table.certificate_id = ?";
+    private static final String SELECT_TAG_ID_BY_NAME = "SELECT * FROM gift_certificates_system.tags tag " +
+            "WHERE tag.name = :name";
     private static final String DELETE_LINK_BETWEEN_TAG_AND_GIFT_CERTIFICATES
-            = "DELETE FROM gift_certificates_system.join_certificates_tags_table jctt WHERE jctt.tag_id = :id";
+            = "DELETE FROM gift_certificates_system.join_certificates_tags_table join_table " +
+            "WHERE join_table.tag_id = :id";
 
     @Autowired
     public TagRepositoryImpl(EntityMapper<Tag, Long> rowMapper, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
