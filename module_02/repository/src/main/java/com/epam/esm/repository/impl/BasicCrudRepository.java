@@ -48,14 +48,13 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
 
     protected abstract SqlParameterSource getSqlParameterSourceForUpdate(T entity);
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("all")
     @Transactional
     @Override
     public ID create(T entity) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(getSqlQueryCreate(), getSqlParameterSource(entity), keyHolder);
-        @SuppressWarnings("WrapperTypeMayBePrimitive") Long key
-                = ((BigInteger) Objects.requireNonNull(keyHolder.getKey())).longValueExact();
+        Long key = ((BigInteger) Objects.requireNonNull(keyHolder.getKey())).longValueExact();
         return ((ID) key);
     }
 
