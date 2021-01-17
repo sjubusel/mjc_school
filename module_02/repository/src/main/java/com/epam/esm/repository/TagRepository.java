@@ -9,4 +9,6 @@ public interface TagRepository extends CrudRepository<Tag, Long> {
     List<Tag> receiveTagsByGiftCertificateId(Long id);
 
     void deleteLinkBetweenTagAndGiftCertificates(Long id);
+
+    void createIfNotExist(List<Tag> tags);
 }

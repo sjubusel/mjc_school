@@ -48,6 +48,8 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
         List<Tag> updatingTags = certificateDto.getTags().stream()
                 .map(tagConverter::convertToDomain)
                 .collect(Collectors.toList());
+
+        tagRepository.createIfNotExist(updatingTags);
         linkGiftCertificateWithTags(createdId, updatingTags);
 
         return createdId;
@@ -89,6 +91,7 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
 
         checkIfUpdatingIsPossibleOrThrow(updatingGiftCertificate);
 
+        tagRepository.createIfNotExist(updatingTags);
         linkGiftCertificateWithTags(targetDto.getId(), updatingTags);
 
         return crudRepository.update(updatingGiftCertificate);
@@ -128,9 +131,6 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
     }
 
     private void linkGiftCertificateWithTags(Long certificateId, List<Tag> updatingTags) {
-        updatingTags.stream()
-                .filter(tag -> !tagRepository.exists(tag.getName()))
-                .forEach(tagRepository::create);
         updatingTags.forEach(tag -> giftCertificateRepository.linkCertificateWithTag(certificateId, tag.getName()));
     }
 }

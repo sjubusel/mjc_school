@@ -46,6 +46,13 @@ public class TagRepositoryImpl extends BasicCrudRepository<Tag, Long> implements
     }
 
     @Override
+    public void createIfNotExist(List<Tag> tags) {
+        tags.stream()
+                .filter(tag -> !exists(tag.getName()))
+                .forEach(this::create);
+    }
+
+    @Override
     protected String getSqlQueryCreate() {
         return INSERT_NEW_TAG;
     }
