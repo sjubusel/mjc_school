@@ -24,8 +24,8 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
     private static final String UPDATE_GIFT_CERTIFICATE_START = "UPDATE gift_certificates_system.certificates c " +
             "SET c.last_update_date=CURRENT_TIMESTAMP";
     public static final String UPDATE_GIFT_CERTIFICATE_ENG = " WHERE c.certificate_id=:id";
-    private static final String DELETE_GIFT_CERTIFICATE_BY_ID = "DELETE gift_certificates_system.certificates c " +
-            "WHERE c.id=:id";
+    private static final String DELETE_GIFT_CERTIFICATE_BY_ID = "DELETE FROM gift_certificates_system.certificates c " +
+            "WHERE c.certificate_id=:id";
     private static final String LINK_CERTIFICATE_WITH_TAG
             = "INSERT INTO gift_certificates_system.join_certificates_tags_table (certificate_id, tag_id) " +
             "SELECT :certificateId, t.tag_id  FROM gift_certificates_system.tags t WHERE t.name = :tagName";
