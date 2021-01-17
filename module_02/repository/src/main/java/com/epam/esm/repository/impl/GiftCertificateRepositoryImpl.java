@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 
 @Repository
@@ -22,7 +23,7 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
     private static final String SELECT_GIFT_CERTIFICATE_BY_ID = "SELECT * FROM gift_certificates_system.certificates " +
             "WHERE certificate_id = :id";
     private static final String UPDATE_GIFT_CERTIFICATE_START = "UPDATE gift_certificates_system.certificates c " +
-            "SET c.last_update_date=CURRENT_TIMESTAMP";
+            "SET c.last_update_date=:lastUpdateDate";
     public static final String UPDATE_GIFT_CERTIFICATE_ENG = " WHERE c.certificate_id=:id";
     private static final String DELETE_GIFT_CERTIFICATE_BY_ID = "DELETE FROM gift_certificates_system.certificates c " +
             "WHERE c.certificate_id=:id";
@@ -117,6 +118,8 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
         Optional.ofNullable(certificate.getDescription()).ifPresent(s -> parameterSource.addValue("description", s));
         Optional.ofNullable(certificate.getPrice()).ifPresent(s -> parameterSource.addValue("price", s));
         Optional.ofNullable(certificate.getDuration()).ifPresent(s -> parameterSource.addValue("duration", s));
+        Optional.ofNullable(certificate.getUpdateDate()).ifPresent(s -> parameterSource.addValue("lastUpdateDate",
+                Timestamp.from(s)));
 
         return parameterSource;
     }

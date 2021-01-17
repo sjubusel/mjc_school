@@ -4,6 +4,8 @@ import com.epam.esm.model.domain.GiftCertificate;
 import com.epam.esm.model.dto.GiftCertificateDto;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+
 @Component
 public class GiftCertificateConverter implements EntityConverter<GiftCertificateDto, GiftCertificate, Long> {
 
@@ -15,8 +17,8 @@ public class GiftCertificateConverter implements EntityConverter<GiftCertificate
                 .setDescription(dto.getDescription())
                 .setPrice(dto.getPrice())
                 .setDuration(dto.getDuration())
-                .setCreateDate(dto.getCreateDate())
-                .setUpdateDate(dto.getUpdateDate())
+                .setCreateDate(dto.getId() == null ? Instant.now() : null)
+                .setUpdateDate(Instant.now())
                 .build();
     }
 
@@ -37,6 +39,7 @@ public class GiftCertificateConverter implements EntityConverter<GiftCertificate
     public GiftCertificate convertToUpdatingDomain(GiftCertificate sourceDomain, GiftCertificateDto targetDto) {
         GiftCertificate updatingCertificate = new GiftCertificate();
         updatingCertificate.setId(targetDto.getId());
+        updatingCertificate.setUpdateDate(Instant.now());
 
         if ((targetDto.getName() != null) && !targetDto.getName().equals(sourceDomain.getName())) {
             updatingCertificate.setName(targetDto.getName());
