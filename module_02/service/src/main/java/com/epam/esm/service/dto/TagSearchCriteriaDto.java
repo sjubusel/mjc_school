@@ -13,7 +13,7 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 public class TagSearchCriteriaDto implements SearchCriteriaDto<Tag> {
 
-    @Pattern(regexp = "[\\w\\s]{1,256}", message = "tag name must contain from 3 to 256 " +
+    @Pattern(regexp = "[A-Za-zА-Яа-яЁё ]{1,256}", message = "tag name must contain from 1 to 256 " +
             "characters without punctuation marks")
     private String name;
 
