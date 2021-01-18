@@ -49,9 +49,6 @@ class GiftCertificateRepositoryImplTest {
                     "производителя", new BigDecimal("200.00"), 5, Instant.ofEpochSecond(1L), Instant.ofEpochSecond(1L),
             null);
 
-    @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
     static {
         FIRST_CERTIFICATE.setId(1L);
         SECOND_CERTIFICATE.setId(2L);
@@ -61,7 +58,13 @@ class GiftCertificateRepositoryImplTest {
     }
 
     @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Autowired
     private GiftCertificateRepository giftCertificateRepository;
+
+    @Autowired
+    private GiftCertificateMapper mapper;
 
     @DisplayName("test READ all operation without parameters")
     @Order(1)
@@ -202,7 +205,7 @@ class GiftCertificateRepositoryImplTest {
                         "AND duration = :duration " +
                         "AND create_date = :createDate " +
                         "AND last_update_date = :lastUpdateDate",
-                parameterSource, new GiftCertificateMapper());
+                parameterSource, mapper);
 
         assertEquals(expected, actual.get(0));
     }
@@ -231,7 +234,7 @@ class GiftCertificateRepositoryImplTest {
         assertTrue(isUpdated);
         List<GiftCertificate> expected = namedParameterJdbcTemplate.query("SELECT * " +
                         "FROM gift_certificates_system.certificates WHERE certificate_id = :id",
-                new MapSqlParameterSource("id", 5L), new GiftCertificateMapper());
+                new MapSqlParameterSource("id", 5L), mapper);
 
         FIFTH_CERTIFICATE.setName("Мобильный телефон за старый UPDATED");
         FIFTH_CERTIFICATE.setPrice(new BigDecimal("1.96"));
@@ -251,7 +254,7 @@ class GiftCertificateRepositoryImplTest {
 
         List<GiftCertificate> actual = namedParameterJdbcTemplate.query("SELECT * " +
                         "FROM gift_certificates_system.certificates WHERE certificate_id = :id",
-                new MapSqlParameterSource("id", idToDelete), new GiftCertificateMapper());
+                new MapSqlParameterSource("id", idToDelete), mapper);
 
         assertTrue(actual.isEmpty());
     }
