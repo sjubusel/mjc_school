@@ -32,6 +32,7 @@ public class TestRepositoryConfiguration {
     public DataSource testDataSource() {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
+                .setName("testDB;MODE=MySQL")
                 .setScriptEncoding(scriptEncoding)
                 .addScript(initScriptPath)
                 .addScript(fillScriptPath)
