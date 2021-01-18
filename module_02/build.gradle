@@ -7,6 +7,7 @@ allprojects {
             javax_servlet_api_version = '4.0.1'
             hibernate_validator = '6.2.0.Final'
             lombok_version = '1.18.16'
+            junit_jupiter_version = '5.6.2'
         }
     }
 
@@ -24,7 +25,7 @@ allprojects {
     }
 
     dependencies {
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junit_jupiter_version
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
         testImplementation group: 'org.springframework', name: 'spring-test', version: spring_framework_version
 
