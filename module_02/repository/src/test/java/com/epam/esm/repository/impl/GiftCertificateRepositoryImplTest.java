@@ -239,9 +239,10 @@ class GiftCertificateRepositoryImplTest {
         assertEquals(expected.get(0), FIFTH_CERTIFICATE);
     }
 
+    @DisplayName("test DELETE operation")
     @Order(15)
     @Test
-    void name() {
+    void testDelete() {
         Long idToDelete = 5L;
         namedParameterJdbcTemplate.update("DELETE FROM gift_certificates_system.join_certificates_tags_table " +
                 "WHERE certificate_id = :id", new MapSqlParameterSource("id", idToDelete));
