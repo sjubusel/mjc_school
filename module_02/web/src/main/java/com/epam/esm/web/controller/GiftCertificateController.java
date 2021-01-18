@@ -4,6 +4,7 @@ import com.epam.esm.model.dto.GiftCertificateDto;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -42,15 +43,14 @@ public class GiftCertificateController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable("id") @Positive @Min(1) Long id,
+    public ResponseEntity<GiftCertificateDto> update(@PathVariable("id") @Positive @Min(1) Long id,
                                          @RequestBody @Valid GiftCertificateDto newCertificate) {
         newCertificate.setId(id);
+        giftCertificateService.update(newCertificate);
 
-        if (!giftCertificateService.update(newCertificate)) {
-            return ResponseEntity.badRequest().body(String.format("Gift-certificate №%d isn't updated", id));
-        }
+        GiftCertificateDto updatedGiftCertificate = giftCertificateService.findOne(id);
 
-        return ResponseEntity.ok(String.format("Gift-certificate №%d is successfully updated", id));
+        return new ResponseEntity<>(updatedGiftCertificate, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
