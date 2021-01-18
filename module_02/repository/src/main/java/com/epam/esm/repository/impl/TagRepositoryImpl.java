@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -45,10 +46,8 @@ public class TagRepositoryImpl extends BasicCrudRepository<Tag, Long> implements
     }
 
     @Override
-    public void createIfNotExist(List<Tag> tags) {
-        tags.stream()
-                .filter(tag -> !exists(tag.getName()))
-                .forEach(this::create);
+    public boolean exists(String uniqueConstraint) {
+        return exists(Collections.singletonMap("name", uniqueConstraint));
     }
 
     @Override
