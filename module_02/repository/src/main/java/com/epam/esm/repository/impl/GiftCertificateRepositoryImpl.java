@@ -1,6 +1,7 @@
 package com.epam.esm.repository.impl;
 
 import com.epam.esm.model.domain.GiftCertificate;
+import com.epam.esm.model.domain.Tag;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.mapper.EntityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -42,12 +44,14 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
     }
 
     @Override
-    public void linkCertificateWithTag(Long certificateId, String tagName) {
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("certificateId", certificateId);
-        parameterSource.addValue("tagName", tagName);
+    public void linkGiftCertificateWithTags(Long certificateId, List<Tag> updatingTags) {
+        updatingTags.forEach(tag -> {
+            MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+            parameterSource.addValue("certificateId", certificateId);
+            parameterSource.addValue("tagName", tag.getName());
 
-        namedParameterJdbcTemplate.update(LINK_CERTIFICATE_WITH_TAG, parameterSource);
+            namedParameterJdbcTemplate.update(LINK_CERTIFICATE_WITH_TAG, parameterSource);
+        });
     }
 
     @Override
