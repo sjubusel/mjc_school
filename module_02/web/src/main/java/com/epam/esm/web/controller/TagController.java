@@ -42,12 +42,8 @@ public class TagController {
     public ResponseEntity<String> update(@PathVariable("id") @Positive @Min(1) Long id,
                                          @RequestBody @Valid TagDto tagDto) {
         tagDto.setId(id);
-
-        if (!tagService.update(tagDto)) {
-            return ResponseEntity.badRequest().body(String.format("Tag №%d isn't updated", id));
-        }
-
-        return ResponseEntity.ok(String.format("Tag №%d is successfully updated", id));
+        tagService.update(tagDto);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
