@@ -26,6 +26,7 @@ allprojects {
     dependencies {
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+        testImplementation group: 'org.springframework', name: 'spring-test', version: spring_framework_version
 
         implementation group: 'org.springframework', name: 'spring-core', version: spring_framework_version
         implementation group: 'org.springframework', name: 'spring-beans', version: spring_framework_version

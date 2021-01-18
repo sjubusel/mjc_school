@@ -1,9 +1,9 @@
-CREATE DATABASE gift_certificates_system;
+CREATE SCHEMA gift_certificates_system;
 
 CREATE TABLE gift_certificates_system.certificates
 (
-    certificate_id   BIGINT         NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
-    name             VARCHAR(256)   NOT NULL UNIQUE,
+    certificate_id   BIGINT         NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name             VARCHAR(256)   NOT NULL,
     description      VARCHAR(1024)  NOT NULL,
     price            DECIMAL(15, 2) NOT NULL,
     duration         INT(64)        NOT NULL,
@@ -13,8 +13,8 @@ CREATE TABLE gift_certificates_system.certificates
 
 CREATE TABLE gift_certificates_system.tags
 (
-    tag_id BIGINT       NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
-    name   VARCHAR(256) NOT NULL UNIQUE
+    tag_id BIGINT       NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name   VARCHAR(256) NOT NULL
 );
 
 CREATE TABLE gift_certificates_system.join_certificates_tags_table
