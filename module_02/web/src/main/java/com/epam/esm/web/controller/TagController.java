@@ -48,10 +48,7 @@ public class TagController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") @Positive @Min(1) Long id) {
-        if (!tagService.delete(id)) {
-            return ResponseEntity.badRequest().body(String.format("Tag №%s isn't deleted", id));
-        }
-
-        return ResponseEntity.ok(String.format("Tag №%s is successfully deleted", id));
+        tagService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }
