@@ -8,6 +8,7 @@ allprojects {
             hibernate_validator = '6.2.0.Final'
             lombok_version = '1.18.16'
             junit_jupiter_version = '5.6.2'
+            jackson_datatype_version = '2.12.1'
         }
     }
 
@@ -38,8 +39,10 @@ allprojects {
         implementation group: 'org.projectlombok', name: 'lombok', version: lombok_version
         annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombok_version
 
-        implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.12.1'
-        implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8', version: '2.12.1'
+        implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310',
+                version: jackson_datatype_version
+        implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8',
+                version: jackson_datatype_version
 
     }
 
