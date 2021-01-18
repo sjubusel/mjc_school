@@ -4,6 +4,7 @@ import com.epam.esm.model.dto.TagDto;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.dto.TagSearchCriteriaDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -39,11 +40,14 @@ public class TagController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable("id") @Positive @Min(1) Long id,
+    public ResponseEntity<TagDto> update(@PathVariable("id") @Positive @Min(1) Long id,
                                          @RequestBody @Valid TagDto tagDto) {
         tagDto.setId(id);
         tagService.update(tagDto);
-        return ResponseEntity.ok().build();
+
+        TagDto updatedTag = tagService.findOne(id);
+
+        return new ResponseEntity<>(updatedTag, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
