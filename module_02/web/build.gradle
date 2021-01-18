@@ -3,7 +3,6 @@ apply plugin: 'war'
 dependencies {
     implementation project(':model')
     implementation project(':service')
-    implementation project(':repository')
 
     implementation group: 'org.springframework', name: 'spring-web', version: spring_framework_version
     implementation group: 'org.springframework', name: 'spring-webmvc', version: spring_framework_version
