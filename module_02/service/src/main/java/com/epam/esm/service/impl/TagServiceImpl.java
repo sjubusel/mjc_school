@@ -18,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * a class which realizes business logic of CRUD operations applied to resources called "Tags"
+ */
 @Service
 public class TagServiceImpl extends BasicCrudService<TagDto, Tag, Long> implements TagService {
     private final TagRepository tagRepository;
@@ -29,6 +32,12 @@ public class TagServiceImpl extends BasicCrudService<TagDto, Tag, Long> implemen
         this.tagRepository = tagRepository;
     }
 
+    /**
+     * a method which deletes links between a target resource (tag) and secondary related resources (gift-certificates)
+     * and then deletes the resource from a datasource
+     * @param id an identification number of the resource that is to be deleted
+     * @return true if the resource is successfully deleted
+     */
     @Transactional
     @Override
     public boolean delete(Long id) {
