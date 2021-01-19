@@ -45,6 +45,15 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
 
     protected abstract SqlParameterSource getSqlParameterSourceForUpdate(T entity);
 
+    /**
+     * a standard CREATE method which saves a resource in a datasource (a MySql database).
+     * A cast to java.math.BigInteger is necessary because the main MySql database returns "BIGINT SQL TYPE" as
+     * java.math.BigInteger, not as the majority of other databases, which return java.lang.Long.
+     * SuppressWarnings annotation is forced because of an aforementioned a java.math.BigInteger return type.
+     *
+     * @param entity a resource which is to be saved in the datasource
+     * @return an Object which is an identifier of a newly created resource
+     */
     @SuppressWarnings("all")
     @Override
     public ID create(T entity) {
@@ -54,6 +63,12 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
         return ((ID) key);
     }
 
+    /**
+     * a method which retrieves a resource with <code>ID id</code>
+     *
+     * @param id an Object which is an identifier of a resource that is being searched for
+     * @return an Optional object which represent a searched resource if it exists
+     */
     @Override
     public Optional<T> findOne(ID id) {
         List<T> result = namedParameterJdbcTemplate.query(getSqlQueryReadById(), new MapSqlParameterSource("id", id),
@@ -62,17 +77,36 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
         return Optional.ofNullable(resource);
     }
 
+    /**
+     * a method which modifies a resource with its new state containing in a domain object <code>T entity</code>
+     *
+     * @param entity a domain object with new state of a resource
+     * @return true if updating is created successfully
+     */
     @Override
     public boolean update(T entity) {
         return namedParameterJdbcTemplate.update(getSqlQueryUpdate(entity),
                 getSqlParameterSourceForUpdate(entity)) != 0;
     }
 
+    /**
+     * a method which removes a resource with <code>ID id</code> from a datasource
+     *
+     * @param id an Object which is an identifier of a resource that is being searched for
+     * @return true if a resource is successfully removed
+     */
     @Override
     public boolean delete(ID id) {
         return namedParameterJdbcTemplate.update(getSqlQueryDelete(), new MapSqlParameterSource("id", id)) != 0;
     }
 
+    /**
+     * a method which finds resources with certain state by creating an adaptive SELECT statement on the basic of
+     * <code>SqlSpecification specification</code>
+     *
+     * @param specification a dto which contains logic of creation of the aforementioned SELECT statement
+     * @return a collection of resources which correspond to search criteria
+     */
     @Override
     public Iterable<T> query(SqlSpecification specification) {
         SqlParameterSource params = specification.params();
@@ -80,6 +114,12 @@ public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Seria
         return namedParameterJdbcTemplate.query(specification.toSql(), parameterSource, rowMapper);
     }
 
+    /**
+     * a method which verifies an existence of a resource in a datasource by evaluating of unique constraints,
+     *
+     * @param uniqueConstraints a Map containing pairs of "key - value"
+     * @return true if a resource exists in a database
+     */
     @Override
     public boolean exists(Map<String, Object> uniqueConstraints) {
         List<T> result = namedParameterJdbcTemplate.query(getSqlQueryExists(),
