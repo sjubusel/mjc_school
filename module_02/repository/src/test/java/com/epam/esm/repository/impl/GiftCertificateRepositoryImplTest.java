@@ -10,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Transactional
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
-@ActiveProfiles("test")
 class GiftCertificateRepositoryImplTest {
 
     private static final GiftCertificate FIRST_CERTIFICATE = new GiftCertificate("Скалодром", "Скалодром на " +
@@ -67,7 +65,6 @@ class GiftCertificateRepositoryImplTest {
     private GiftCertificateMapper mapper;
 
     @DisplayName("test READ all operation without parameters")
-    @Order(1)
     @Test
     void testQueryWithEmptySqlSpecification() {
         List<GiftCertificate> expected = Arrays.asList(FIRST_CERTIFICATE, SECOND_CERTIFICATE, THIRD_CERTIFICATE,
@@ -78,7 +75,6 @@ class GiftCertificateRepositoryImplTest {
     }
 
     @DisplayName("test READ operation by parameter (:name)")
-    @Order(2)
     @Test
     void testQueryWithSearchByName() {
         List<GiftCertificate> expected = Collections.singletonList(FIRST_CERTIFICATE);
@@ -88,7 +84,6 @@ class GiftCertificateRepositoryImplTest {
     }
 
     @DisplayName("test READ operation by parameter (:description)")
-    @Order(3)
     @Test
     void testQueryWithSearchByDescription() {
         List<GiftCertificate> expected = Collections.singletonList(SECOND_CERTIFICATE);
@@ -98,7 +93,6 @@ class GiftCertificateRepositoryImplTest {
     }
 
     @DisplayName("test READ operation by parameters (:description, :name)")
-    @Order(4)
     @Test
     void testQueryWithSearchByNameAndDescription() {
         List<GiftCertificate> expected = Collections.singletonList(THIRD_CERTIFICATE);
@@ -108,7 +102,6 @@ class GiftCertificateRepositoryImplTest {
     }
 
     @DisplayName("test READ operation by parameter (:tag)")
-    @Order(5)
     @Test
     void testQueryWithSearchByTag() {
         List<GiftCertificate> expected = Arrays.asList(FORTH_CERTIFICATE, FIFTH_CERTIFICATE);
@@ -118,7 +111,6 @@ class GiftCertificateRepositoryImplTest {
     }
 
     @DisplayName("test READ operation by parameters (:tags)")
-    @Order(6)
     @Test
     void testQueryWithSearchByTags() {
         List<GiftCertificate> expected = Arrays.asList(FIRST_CERTIFICATE, THIRD_CERTIFICATE);
@@ -128,7 +120,6 @@ class GiftCertificateRepositoryImplTest {
     }
 
     @DisplayName("test READ operation by parameter (:orderParam): no ordering applied because of absence of sortParams")
-    @Order(7)
     @Test
     void testQueryWithSearchByAscendingOrderParamNoResult() {
         List<GiftCertificate> expected = Arrays.asList(FIRST_CERTIFICATE, SECOND_CERTIFICATE, THIRD_CERTIFICATE,
@@ -139,7 +130,6 @@ class GiftCertificateRepositoryImplTest {
     }
 
     @DisplayName("test READ operation by parameter (:orderParam): no ordering applied because of absence of sortParams")
-    @Order(8)
     @Test
     void testQueryWithSearchByDescendingOrderParamNoResult() {
         List<GiftCertificate> expected = Arrays.asList(FIRST_CERTIFICATE, SECOND_CERTIFICATE, THIRD_CERTIFICATE,
@@ -150,7 +140,6 @@ class GiftCertificateRepositoryImplTest {
     }
 
     @DisplayName("test READ operation by parameters (:orderParam, :sortParam - name)")
-    @Order(9)
     @Test
     void testQueryWithSearchByDescendingOrderParamAndSortName() {
         List<GiftCertificate> expected = Arrays.asList(FIRST_CERTIFICATE, FORTH_CERTIFICATE, SECOND_CERTIFICATE,
@@ -161,7 +150,6 @@ class GiftCertificateRepositoryImplTest {
     }
 
     @DisplayName("test READ operation by all parameters")
-    @Order(10)
     @Test
     void testQueryWithSearchByParamsTogether() {
         List<GiftCertificate> expected = Collections.singletonList(FIRST_CERTIFICATE);
@@ -172,7 +160,6 @@ class GiftCertificateRepositoryImplTest {
     }
 
     @DisplayName("test READ operation by all parameters with no result")
-    @Order(11)
     @Test
     void testQueryWithSearchByParamsTogetherWithNoResult() {
         List<GiftCertificate> actual = (List<GiftCertificate>) giftCertificateRepository.query(
@@ -182,7 +169,6 @@ class GiftCertificateRepositoryImplTest {
     }
 
     @DisplayName("test CREATE operation")
-    @Order(12)
     @Test
     void testCreate() {
         GiftCertificate expected = new GiftCertificate("name", "description", new BigDecimal("1.00"), 1,
@@ -211,7 +197,6 @@ class GiftCertificateRepositoryImplTest {
     }
 
     @DisplayName("test READ operation by resource's id")
-    @Order(13)
     @Test
     void testFindOne() {
         Optional<GiftCertificate> actual = giftCertificateRepository.findOne(4L);
@@ -220,7 +205,6 @@ class GiftCertificateRepositoryImplTest {
     }
 
     @DisplayName("test UPDATE operation")
-    @Order(14)
     @Test
     void testUpdate() {
         Instant updatingDatetime = Instant.now();
@@ -243,7 +227,6 @@ class GiftCertificateRepositoryImplTest {
     }
 
     @DisplayName("test DELETE operation")
-    @Order(15)
     @Test
     void testDelete() {
         Long idToDelete = 5L;

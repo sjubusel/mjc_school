@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -27,7 +26,6 @@ public class TestRepositoryConfiguration {
     @Value("${spring.datasource.fill_script_path}")
     private String fillScriptPath;
 
-    @Profile("test")
     @Bean
     public DataSource testDataSource() {
         return new EmbeddedDatabaseBuilder()
@@ -39,13 +37,11 @@ public class TestRepositoryConfiguration {
                 .build();
     }
 
-    @Profile("test")
     @Bean
     public NamedParameterJdbcTemplate jdbcTemplate() {
         return new NamedParameterJdbcTemplate(testDataSource());
     }
 
-    @Profile("test")
     @Bean
     public DataSourceTransactionManager transactionManager() {
         DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();

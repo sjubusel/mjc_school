@@ -6,14 +6,12 @@ import com.epam.esm.repository.configuration.TestRepositoryConfiguration;
 import com.epam.esm.repository.mapper.TagMapper;
 import com.epam.esm.repository.specification.impl.TagSpecification;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
-@ActiveProfiles("test")
 class TagRepositoryImplTest {
 
     public static final Tag FIRST_TAG = new Tag("Развлечения");
@@ -58,7 +55,6 @@ class TagRepositoryImplTest {
     @Autowired
     private TagMapper mapper;
 
-    @Order(1)
     @Test
     void testQueryAllTags() {
         List<Tag> expected = Arrays.asList(FIRST_TAG, SECOND_TAG, THIRD_TAG, FORTH_TAG, FIFTH_TAG, SIXTH_TAG,
@@ -68,7 +64,6 @@ class TagRepositoryImplTest {
         assertEquals(expected, actual);
     }
 
-    @Order(2)
     @Test
     void testQueryTagsByParameter() {
         List<Tag> expected = Arrays.asList(FORTH_TAG, FIFTH_TAG);
@@ -77,15 +72,13 @@ class TagRepositoryImplTest {
         assertEquals(expected, actual);
     }
 
-    @Order(3)
     @Test
     void testFindOne() {
         Optional<Tag> actual = tagRepository.findOne(6L);
 
-        assertEquals(SIXTH_TAG, actual.orElse(FIRST_TAG));
+        assertEquals(SIXTH_TAG, actual.orElse(new Tag()));
     }
 
-    @Order(4)
     @Test
     void testDelete() {
         Long idToDelete = 1L;
