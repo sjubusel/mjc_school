@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * a class which realizes business logic of CRUD operations applied to resources called "Gift-certificates"
+ */
 @Service
 public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificateDto, GiftCertificate, Long>
         implements GiftCertificateService {
@@ -42,6 +45,15 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
         this.tagConverter = tagConverter;
     }
 
+    /**
+     * a method which is in for creation of a resource in a data source, creation of linked resources of Tags-type
+     * in a data source if they don't exist in a data source, and joining of a newly created resource with linked tag
+     *
+     * @param certificateDto an data transfer object which contains fields of a target entity (gift-certificate)
+     *                       and secondary entities (tags)
+     * @return an identification number of a newly created resource, which is bound with secondary resources if it is
+     * needed
+     */
     @Transactional
     @Override
     public Long create(GiftCertificateDto certificateDto) {
@@ -63,6 +75,14 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
         return createdId;
     }
 
+    /**
+     * a method which queries target resources (gift-certificate) with linked secondary resources (tags)
+     * from a data source according to search criteria (plural): first of all target resources are selected, then
+     * secondary resources are queried for each target resources
+     *
+     * @param searchCriteria an object which stores search criteria
+     * @return a collection of data transfer object which represent target resources
+     */
     @Transactional(readOnly = true)
     @Override
     public List<GiftCertificateDto> query(SearchCriteriaDto<GiftCertificate> searchCriteria) {
@@ -74,6 +94,13 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
                 )).collect(Collectors.toList());
     }
 
+    /**
+     * a method which fetches a target resource (gift-certificate) of a certain ID
+     * with linked secondary resources (tags)
+     *
+     * @param certificateId an identification number of a target resource
+     * @return a dto representation of a target resource with secondary ones
+     */
     @Transactional(readOnly = true)
     @Override
     public GiftCertificateDto findOne(Long certificateId) {
@@ -84,6 +111,15 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
         return certificateDto;
     }
 
+    /**
+     * a method which updates state of a target resource: it fetches current state of the resource from a datasource
+     * select fields which should be updated and collects secondary resources (tags) which should be linked, then
+     * link secondary resources with the resource and in the end modifies only selected fields of the resource
+     *
+     * @param targetDto an object which contains a mixture of unmodified and modified fields of a target repository and
+     *                  already linked or waiting to be linked secondary resources
+     * @return true if all modifications are successfully performed
+     */
     @Transactional
     @Override
     public boolean update(GiftCertificateDto targetDto) {
@@ -106,6 +142,13 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
         return crudRepository.update(updatingGiftCertificate);
     }
 
+    /**
+     * a method which delete a resource (gift-certificate) of a specific ID: it destructs links between
+     * all secondary resources (tags) and the resource and then deletes the resource
+     *
+     * @param id an identification number of the resource  which should be removed from a data source
+     * @return true if the resource is successfully deleted
+     */
     @Transactional
     @Override
     public boolean delete(Long id) {
