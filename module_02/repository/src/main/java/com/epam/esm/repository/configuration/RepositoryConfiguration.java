@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan("com.epam.esm.repository")
-@PropertySource("classpath:application.properties")
+@PropertySource(value = "classpath:application-${spring.profiles.active}.properties", ignoreResourceNotFound = true)
 public class RepositoryConfiguration {
 
     @Value("${spring.datasource.driverClassName}")
