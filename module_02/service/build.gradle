@@ -1,0 +1,17 @@
+plugins {
+    id 'jacoco'
+}
+
+dependencies {
+    implementation project(':model')
+    implementation project(':repository')
+    implementation group: 'org.springframework', name: 'spring-tx', version: spring_framework_version
+}
+
+test {
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+}

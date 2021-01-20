@@ -1,0 +1,55 @@
+allprojects {
+    apply plugin: 'java'
+
+    buildscript {
+        ext {
+            spring_framework_version = '5.3.2'
+            javax_servlet_api_version = '4.0.1'
+            hibernate_validator = '6.2.0.Final'
+            lombok_version = '1.18.16'
+            junit_jupiter_version = '5.6.2'
+            jackson_datatype_version = '2.12.1'
+            mockito_version = '3.7.7'
+        }
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    group = 'com.epam.esm'
+    version = '1.0-SNAPSHOT'
+
+    compileJava.options.encoding = "UTF-8"
+    compileTestJava.options.encoding = "UTF-8"
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junit_jupiter_version
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+        testImplementation group: 'org.springframework', name: 'spring-test', version: spring_framework_version
+        testImplementation group: 'org.mockito', name: 'mockito-core', version: mockito_version
+        testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: mockito_version
+
+        implementation group: 'org.springframework', name: 'spring-core', version: spring_framework_version
+        implementation group: 'org.springframework', name: 'spring-beans', version: spring_framework_version
+        implementation group: 'org.springframework', name: 'spring-context', version: spring_framework_version
+
+        implementation group: 'org.hibernate', name: 'hibernate-validator', version: hibernate_validator
+
+        implementation group: 'org.projectlombok', name: 'lombok', version: lombok_version
+        annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombok_version
+
+        implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310',
+                version: jackson_datatype_version
+        implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8',
+                version: jackson_datatype_version
+
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
