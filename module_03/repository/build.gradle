@@ -1,5 +1,7 @@
 dependencies {
     implementation project(':model')
+    runtimeOnly 'mysql:mysql-connector-java'
+    testImplementation 'com.h2database:h2'
 }
 
 bootJar {
