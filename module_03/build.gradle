@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version "${spring_boot_version}" apply false
+    id 'org.springframework.boot' version "${spring_boot_version}" apply true
     id 'io.spring.dependency-management' version "${spring_dependency_management_version}" apply false
     id 'java'
 }
