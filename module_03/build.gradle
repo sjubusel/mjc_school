@@ -48,3 +48,7 @@ subprojects {
         useJUnitPlatform()
     }
 }
+
+bootJar {
+    mainClass = 'com.epam.esm.Module03Application'
+}
