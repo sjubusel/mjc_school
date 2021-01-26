@@ -1,6 +1,6 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.model.domain.Entity;
+import com.epam.esm.model.domain.GeneralEntity;
 import com.epam.esm.model.dto.EntityDto;
 import com.epam.esm.repository.CrudRepository;
 import com.epam.esm.repository.specification.SqlSpecification;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * @param <DOMAIN> an object which represents a resource on :repository layer
  * @param <ID>     an object which represents identification number of a resource
  */
-public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends Entity<ID>, ID extends Serializable>
+public abstract class BasicCrudService<DTO extends EntityDto<ID>, DOMAIN extends GeneralEntity<ID>, ID extends Serializable>
         implements CrudService<DTO, DOMAIN, ID> {
 
     protected final EntityConverter<DTO, DOMAIN, ID> entityConverter;

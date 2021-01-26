@@ -17,7 +17,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @SuperBuilder(setterPrefix = "set")
-public class GiftCertificate extends Entity<Long> {
+public class GiftCertificate extends GeneralEntity<Long> {
 
     private String name;
     private String description;

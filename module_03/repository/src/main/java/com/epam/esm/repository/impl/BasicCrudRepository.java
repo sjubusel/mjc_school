@@ -1,6 +1,6 @@
 package com.epam.esm.repository.impl;
 
-import com.epam.esm.model.domain.Entity;
+import com.epam.esm.model.domain.GeneralEntity;
 import com.epam.esm.repository.CrudRepository;
 import com.epam.esm.repository.mapper.EntityMapper;
 import com.epam.esm.repository.specification.SqlSpecification;
@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 
-public abstract class BasicCrudRepository<T extends Entity<ID>, ID extends Serializable>
+public abstract class BasicCrudRepository<T extends GeneralEntity<ID>, ID extends Serializable>
         implements CrudRepository<T, ID> {
 
     protected final EntityMapper<T, ID> rowMapper;

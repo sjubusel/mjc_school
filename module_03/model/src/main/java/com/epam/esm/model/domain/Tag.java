@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @SuperBuilder(setterPrefix = "set")
-public class Tag extends Entity<Long> {
+public class Tag extends GeneralEntity<Long> {
 
     private String name;
 }
