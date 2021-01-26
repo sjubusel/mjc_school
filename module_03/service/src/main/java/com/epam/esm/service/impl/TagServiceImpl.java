@@ -6,7 +6,7 @@ import com.epam.esm.repository.TagRepository;
 import com.epam.esm.repository.specification.SqlSpecification;
 import com.epam.esm.repository.specification.impl.TagSpecification;
 import com.epam.esm.service.TagService;
-import com.epam.esm.service.converter.EntityConverter;
+import com.epam.esm.service.old.converter.EntityConverter;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.dto.TagSearchCriteriaDto;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
