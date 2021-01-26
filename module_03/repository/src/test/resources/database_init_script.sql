@@ -2,7 +2,7 @@ CREATE SCHEMA gift_certificates_system;
 
 CREATE TABLE gift_certificates_system.certificates
 (
-    certificate_id   BIGINT         NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id   BIGINT         NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name             VARCHAR(256)   NOT NULL,
     description      VARCHAR(1024)  NOT NULL,
     price            DECIMAL(15, 2) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE gift_certificates_system.certificates
 
 CREATE TABLE gift_certificates_system.tags
 (
-    tag_id BIGINT       NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id BIGINT       NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name   VARCHAR(256) NOT NULL
 );
 
@@ -28,8 +28,8 @@ ALTER TABLE gift_certificates_system.join_certificates_tags_table
 
 ALTER TABLE gift_certificates_system.join_certificates_tags_table
     ADD CONSTRAINT fk__join_certificates_tags_table__tags
-        FOREIGN KEY (tag_id) REFERENCES gift_certificates_system.tags (tag_id);
+        FOREIGN KEY (tag_id) REFERENCES gift_certificates_system.tags (id);
 
 ALTER TABLE gift_certificates_system.join_certificates_tags_table
     ADD CONSTRAINT fk__join_certificates_tags_table__certificates
-        FOREIGN KEY (certificate_id) REFERENCES gift_certificates_system.certificates (certificate_id);
+        FOREIGN KEY (certificate_id) REFERENCES gift_certificates_system.certificates (id);

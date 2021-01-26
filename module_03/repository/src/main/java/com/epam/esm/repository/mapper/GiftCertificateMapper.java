@@ -19,7 +19,7 @@ public class GiftCertificateMapper implements EntityMapper<GiftCertificate, Long
     public GiftCertificate mapRow(ResultSet rs, int rowNum) throws SQLException {
         GiftCertificate certificate = new GiftCertificate();
 
-        certificate.setId(rs.getLong("certificate_id"));
+        certificate.setId(rs.getLong("id"));
         certificate.setName(rs.getString("name"));
         certificate.setDescription(rs.getString("description"));
         certificate.setPrice(rs.getObject("price", BigDecimal.class));

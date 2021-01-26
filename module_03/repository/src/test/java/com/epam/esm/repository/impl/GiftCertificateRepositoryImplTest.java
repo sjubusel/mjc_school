@@ -217,7 +217,7 @@ class GiftCertificateRepositoryImplTest {
         boolean isUpdated = giftCertificateRepository.update(updatingCertificate);
         assertTrue(isUpdated);
         List<GiftCertificate> expected = namedParameterJdbcTemplate.query("SELECT * " +
-                        "FROM gift_certificates_system.certificates WHERE certificate_id = :id",
+                        "FROM gift_certificates_system.certificates WHERE id = :id",
                 new MapSqlParameterSource("id", 5L), mapper);
 
         FIFTH_CERTIFICATE.setName("Мобильный телефон за старый UPDATED");
@@ -236,7 +236,7 @@ class GiftCertificateRepositoryImplTest {
         assertTrue(isDeleted);
 
         List<GiftCertificate> actual = namedParameterJdbcTemplate.query("SELECT * " +
-                        "FROM gift_certificates_system.certificates WHERE certificate_id = :id",
+                        "FROM gift_certificates_system.certificates WHERE id = :id",
                 new MapSqlParameterSource("id", idToDelete), mapper);
 
         assertTrue(actual.isEmpty());

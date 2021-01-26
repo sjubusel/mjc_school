@@ -17,7 +17,7 @@ public class TagMapper implements EntityMapper<Tag, Long> {
     public Tag mapRow(ResultSet rs, int rowNum) throws SQLException {
         Tag tag = new Tag();
 
-        tag.setId(rs.getLong("tag_id"));
+        tag.setId(rs.getLong("id"));
         tag.setName(rs.getString("name"));
 
         return tag;
