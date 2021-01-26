@@ -1,9 +1,9 @@
-package com.epam.esm.repository.impl;
+package com.epam.esm.repository.old.impl;
 
 import com.epam.esm.model.domain.GiftCertificate;
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.repository.GiftCertificateRepository;
-import com.epam.esm.repository.mapper.EntityMapper;
+import com.epam.esm.repository.old.mapper.EntityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

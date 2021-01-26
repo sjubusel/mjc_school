@@ -1,10 +1,10 @@
-package com.epam.esm.repository.impl;
+package com.epam.esm.repository.old.impl;
 
 import com.epam.esm.model.domain.GiftCertificate;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.configuration.TestRepositoryConfiguration;
-import com.epam.esm.repository.mapper.GiftCertificateMapper;
-import com.epam.esm.repository.specification.impl.GiftCertificateSpecification;
+import com.epam.esm.repository.old.mapper.GiftCertificateMapper;
+import com.epam.esm.repository.old.specification.impl.GiftCertificateSpecification;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

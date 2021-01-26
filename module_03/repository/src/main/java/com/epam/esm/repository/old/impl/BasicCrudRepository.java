@@ -1,9 +1,9 @@
-package com.epam.esm.repository.impl;
+package com.epam.esm.repository.old.impl;
 
 import com.epam.esm.model.domain.GeneralEntity;
 import com.epam.esm.repository.CrudRepository;
-import com.epam.esm.repository.mapper.EntityMapper;
-import com.epam.esm.repository.specification.SqlSpecification;
+import com.epam.esm.repository.old.mapper.EntityMapper;
+import com.epam.esm.repository.old.specification.SqlSpecification;
 import org.springframework.jdbc.core.namedparam.EmptySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

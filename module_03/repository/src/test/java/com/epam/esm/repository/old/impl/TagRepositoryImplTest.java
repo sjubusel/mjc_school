@@ -1,10 +1,10 @@
-package com.epam.esm.repository.impl;
+package com.epam.esm.repository.old.impl;
 
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.repository.TagRepository;
 import com.epam.esm.repository.configuration.TestRepositoryConfiguration;
-import com.epam.esm.repository.mapper.TagMapper;
-import com.epam.esm.repository.specification.impl.TagSpecification;
+import com.epam.esm.repository.old.mapper.TagMapper;
+import com.epam.esm.repository.old.specification.impl.TagSpecification;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;

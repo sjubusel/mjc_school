@@ -6,7 +6,7 @@ import com.epam.esm.model.dto.GiftCertificateDto;
 import com.epam.esm.model.dto.TagDto;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.TagRepository;
-import com.epam.esm.repository.specification.SqlSpecification;
+import com.epam.esm.repository.old.specification.SqlSpecification;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.old.converter.GiftCertificateConverter;
 import com.epam.esm.service.old.converter.TagConverter;

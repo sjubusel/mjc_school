@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @PropertySource("classpath:application-test.properties")
-@ComponentScan(basePackages = {"com.epam.esm.repository.impl", "com.epam.esm.repository.mapper"})
+@ComponentScan(basePackages = {"com.epam.esm.repository.old.impl", "com.epam.esm.repository.old.mapper"})
 public class TestRepositoryConfiguration {
 
     @Value("${spring.datasource.script_encoding}")

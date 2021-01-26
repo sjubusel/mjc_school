@@ -1,4 +1,4 @@
-package com.epam.esm.repository.mapper;
+package com.epam.esm.repository.old.mapper;
 
 import com.epam.esm.model.domain.GiftCertificate;
 import org.springframework.stereotype.Component;

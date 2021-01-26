@@ -1,6 +1,6 @@
 package com.epam.esm.repository;
 
-import com.epam.esm.repository.specification.SqlSpecification;
+import com.epam.esm.repository.old.specification.SqlSpecification;
 
 import java.io.Serializable;
 import java.util.Map;
