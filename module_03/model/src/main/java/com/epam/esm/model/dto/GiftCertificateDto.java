@@ -19,7 +19,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -57,5 +57,5 @@ public class GiftCertificateDto extends EntityDto<Long> {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Instant updateDate;
 
-    private List<@Valid TagDto> tags;
+    private Set<@Valid TagDto> tags;
 }

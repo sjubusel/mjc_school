@@ -8,7 +8,9 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -22,4 +24,7 @@ public class TagDto extends EntityDto<Long> {
     @Pattern(regexp = "[\\-0-9A-Za-zА-Яа-яЁё ]{3,256}", message = "tag name must contain from 3 to 256 " +
             "characters without punctuation marks")
     private String name;
+
+    @Null
+    private Set<GiftCertificateDto> giftCertificates;
 }

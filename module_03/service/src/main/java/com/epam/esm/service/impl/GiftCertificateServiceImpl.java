@@ -19,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -90,7 +92,7 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
 
         return plainCertificates.stream()
                 .peek(certificateDto -> certificateDto.setTags(
-                        receiveListOfLinkedTagDto(certificateDto)
+                        new HashSet<>(receiveListOfLinkedTagDto(certificateDto))
                 )).collect(Collectors.toList());
     }
 
@@ -106,7 +108,7 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
     public GiftCertificateDto findOne(Long certificateId) {
         GiftCertificateDto certificateDto = super.findOne(certificateId);
         certificateDto.setTags(
-                receiveListOfLinkedTagDto(certificateDto)
+                new HashSet<>(receiveListOfLinkedTagDto(certificateDto))
         );
         return certificateDto;
     }
@@ -127,14 +129,14 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
 
         if (targetDto.getTags() != null) {
             List<Tag> sourceTags = tagRepository.receiveTagsByGiftCertificateId(updatingGiftCertificate.getId());
-            List<Tag> updatingTags = receiveUpdatingTags(targetDto.getTags(), sourceTags);
-            updatingGiftCertificate.setTags(updatingTags);
+            List<Tag> updatingTags = receiveUpdatingTags(new ArrayList<>(targetDto.getTags()), sourceTags);
+            updatingGiftCertificate.setTags(new HashSet<>(updatingTags));
         }
 
         checkIfUpdatingIsPossibleOrThrow(updatingGiftCertificate);
 
-        List<Tag> updatingTags = updatingGiftCertificate.getTags();
-        if ((updatingTags != null) && (updatingTags.size() > 0)) {
+        List<Tag> updatingTags = new ArrayList<>(updatingGiftCertificate.getTags());
+        if ((updatingTags != null) && (updatingTags.size() > 0)) { // FIXME delete null
             createIfNotExist(updatingTags);
             giftCertificateRepository.linkGiftCertificateWithTags(targetDto.getId(), updatingTags);
         }

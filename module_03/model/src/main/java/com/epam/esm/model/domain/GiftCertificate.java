@@ -15,8 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "certificates")
@@ -53,5 +53,5 @@ public class GiftCertificate extends GeneralEntity<Long> {
     @JoinTable(name = "join_certificates_tags_table",
             joinColumns = {@JoinColumn(name = "certificate_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "id")})
-    private List<Tag> tags = new ArrayList<>();
+    private Set<Tag> tags = new HashSet<>();
 }

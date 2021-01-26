@@ -25,6 +25,7 @@ import org.mockito.MockitoAnnotations;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,7 +56,7 @@ class GiftCertificateServiceImplTest {
                 .setDescription("description")
                 .setPrice(new BigDecimal(100))
                 .setDuration(5)
-                .setTags(Arrays.asList(new TagDto("tagName1"), new TagDto("tagName2")))
+                .setTags(new HashSet<>(Arrays.asList(new TagDto("tagName1", null), new TagDto("tagName2", null))))
                 .build();
 
         when(giftCertificateRepository.exists(Mockito.anyMap())).thenReturn(false);
@@ -126,7 +127,7 @@ class GiftCertificateServiceImplTest {
                 .setDescription("description")
                 .setPrice(new BigDecimal(100))
                 .setDuration(5)
-                .setTags(Arrays.asList(TagDto.builder().setId(1L).setName("tagDtoName").build()))
+                .setTags(new HashSet<>(Arrays.asList(TagDto.builder().setId(1L).setName("tagDtoName").build())))
                 .build();
 
         Assertions.assertEquals(expected, actual.get(0));
@@ -149,7 +150,7 @@ class GiftCertificateServiceImplTest {
                 .setDescription("description")
                 .setPrice(new BigDecimal(100))
                 .setDuration(5)
-                .setTags(new ArrayList<>())
+                .setTags(new HashSet<>())
                 .build();
         GiftCertificateDto actual = giftCertificateService.findOne(1L);
         Assertions.assertEquals(expected, actual);
@@ -160,7 +161,7 @@ class GiftCertificateServiceImplTest {
         GiftCertificateDto giftCertificateDto = GiftCertificateDto.builder()
                 .setId(1L)
                 .setName("name")
-                .setTags(Arrays.asList(new TagDto("tag1"), new TagDto("tag2")))
+                .setTags(new HashSet<>(Arrays.asList(new TagDto("tag1", null), new TagDto("tag2", null))))
                 .build();
         when(giftCertificateRepository.findOne(1L)).thenReturn(Optional.of(GiftCertificate.builder()
                 .setId(1L)
