@@ -20,7 +20,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @Transactional
@@ -28,13 +30,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 class TagRepositoryImplTest {
 
-    public static final Tag FIRST_TAG = new Tag("Развлечения");
-    public static final Tag SECOND_TAG = new Tag("Активный отдых");
-    public static final Tag THIRD_TAG = new Tag("Скидки");
-    public static final Tag FORTH_TAG = new Tag("Продовольственные товары");
-    public static final Tag FIFTH_TAG = new Tag("Непродовольственные товары");
-    public static final Tag SIXTH_TAG = new Tag("Техника");
-    public static final Tag SEVENTH_TAG = new Tag("Мода");
+    public static final Tag FIRST_TAG = new Tag("Развлечения", null);
+    public static final Tag SECOND_TAG = new Tag("Активный отдых", null);
+    public static final Tag THIRD_TAG = new Tag("Скидки", null);
+    public static final Tag FORTH_TAG = new Tag("Продовольственные товары", null);
+    public static final Tag FIFTH_TAG = new Tag("Непродовольственные товары", null);
+    public static final Tag SIXTH_TAG = new Tag("Техника", null);
+    public static final Tag SEVENTH_TAG = new Tag("Мода", null);
 
     static {
         FIRST_TAG.setId(1L);
@@ -88,7 +90,7 @@ class TagRepositoryImplTest {
         assertTrue(isDeleted);
 
         List<Tag> actual = namedParameterJdbcTemplate.query("SELECT * " +
-                        "FROM gift_certificates_system.tags WHERE tag_id = :id",
+                        "FROM gift_certificates_system.tags WHERE id = :id",
                 new MapSqlParameterSource("id", idToDelete), mapper);
 
         assertTrue(actual.isEmpty());
@@ -96,7 +98,7 @@ class TagRepositoryImplTest {
 
     @Test
     void testCreate() {
-        Tag expected = new Tag("new tag");
+        Tag expected = new Tag("new tag", null);
         assertThrows(ClassCastException.class, () -> tagRepository.create(expected));
         expected.setId(8L);
 
