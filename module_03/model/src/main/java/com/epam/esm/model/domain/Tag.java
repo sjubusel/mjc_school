@@ -19,8 +19,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "giftCertificates")
+@ToString(callSuper = true, exclude = "giftCertificates")
 @SuperBuilder(setterPrefix = "set")
 public class Tag extends GeneralEntity<Long> {
 
