@@ -14,7 +14,7 @@ import com.epam.esm.service.converter.TagConverter;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
-import com.epam.esm.service.validation.ServiceValidator;
+import com.epam.esm.service.old.validation.ServiceValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -10,7 +10,7 @@ import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.DuplicateResourceException;
 import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
-import com.epam.esm.service.validation.ServiceValidator;
+import com.epam.esm.service.old.validation.ServiceValidator;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;

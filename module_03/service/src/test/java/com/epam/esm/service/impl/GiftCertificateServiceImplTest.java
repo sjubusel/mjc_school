@@ -13,7 +13,7 @@ import com.epam.esm.service.converter.TagConverter;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import com.epam.esm.service.exception.DuplicateResourceException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
-import com.epam.esm.service.validation.GiftCertificateServiceValidator;
+import com.epam.esm.service.old.validation.GiftCertificateServiceValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
