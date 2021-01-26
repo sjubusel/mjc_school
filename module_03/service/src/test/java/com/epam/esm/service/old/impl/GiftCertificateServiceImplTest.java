@@ -1,4 +1,4 @@
-package com.epam.esm.service.impl;
+package com.epam.esm.service.old.impl;
 
 import com.epam.esm.model.domain.GiftCertificate;
 import com.epam.esm.model.domain.Tag;
