@@ -22,15 +22,15 @@ public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCerti
             "(name, description, price, duration, create_date, last_update_date) " +
             "VALUES (:name, :description, :price, :duration, :createDate, :lastUpdateDate)";
     private static final String SELECT_GIFT_CERTIFICATE_BY_ID = "SELECT * FROM gift_certificates_system.certificates " +
-            "WHERE certificate_id = :id";
+            "WHERE id = :id";
     private static final String UPDATE_GIFT_CERTIFICATE_START = "UPDATE gift_certificates_system.certificates " +
             "certificate SET certificate.last_update_date=:lastUpdateDate";
-    public static final String UPDATE_GIFT_CERTIFICATE_ENG = " WHERE certificate.certificate_id=:id";
+    public static final String UPDATE_GIFT_CERTIFICATE_ENG = " WHERE certificate.id=:id";
     private static final String DELETE_GIFT_CERTIFICATE_BY_ID = "DELETE FROM gift_certificates_system.certificates " +
-            "certificate WHERE certificate.certificate_id=:id";
+            "certificate WHERE certificate.id=:id";
     private static final String LINK_CERTIFICATE_WITH_TAG
             = "INSERT INTO gift_certificates_system.join_certificates_tags_table (certificate_id, tag_id) " +
-            "SELECT :certificateId, tag.tag_id  FROM gift_certificates_system.tags tag WHERE tag.name = :tagName";
+            "SELECT :certificateId, tag.id  FROM gift_certificates_system.tags tag WHERE tag.name = :tagName";
     private static final String DELETE_LINK_BETWEEN_GIFT_CERTIFICATE_AND_TAGS
             = "DELETE FROM gift_certificates_system.join_certificates_tags_table join_table " +
             "WHERE join_table.certificate_id = :id";

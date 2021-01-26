@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 public class GiftCertificateSpecification implements SqlSpecification {
 
-    private static final String SELECT_GIFT_CERTIFICATES = "SELECT DISTINCT certificate.certificate_id, " +
+    private static final String SELECT_GIFT_CERTIFICATES = "SELECT DISTINCT certificate.id, " +
             "certificate.name, certificate.description, certificate.price, certificate.duration, " +
             "certificate.create_date, certificate.last_update_date " +
             "FROM gift_certificates_system.certificates certificate ";
@@ -58,8 +58,8 @@ public class GiftCertificateSpecification implements SqlSpecification {
         if (searchTags != null && searchTags.size() > 0) {
             joinBlock = createIfNotExists(joinBlock);
             joinBlock.add("LEFT OUTER JOIN  gift_certificates_system.join_certificates_tags_table join_table " +
-                    "ON certificate.certificate_id = join_table.certificate_id");
-            joinBlock.add("LEFT OUTER JOIN gift_certificates_system.tags tag ON join_table.tag_id = tag.tag_id");
+                    "ON certificate.id = join_table.certificate_id");
+            joinBlock.add("LEFT OUTER JOIN gift_certificates_system.tags tag ON join_table.tag_id = tag.id");
 
             whereBlock = createIfNotExists(whereBlock);
             whereBlock.add("tag.name IN (:tags)");

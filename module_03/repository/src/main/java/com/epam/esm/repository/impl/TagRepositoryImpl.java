@@ -17,11 +17,11 @@ public class TagRepositoryImpl extends BasicCrudRepository<Tag, Long> implements
 
     private static final String INSERT_NEW_TAG = "INSERT INTO gift_certificates_system.tags (name) VALUES (:name)";
     private static final String SELECT_TAG_BY_ID = "SELECT * FROM gift_certificates_system.tags tag " +
-            "WHERE tag.tag_id = :id";
-    private static final String UPDATE_TAG = "UPDATE gift_certificates_system.tags SET name = :name WHERE tag_id = :id";
-    private static final String DELETE_TAG_BY_ID = "DELETE FROM gift_certificates_system.tags WHERE tag_id = :id";
+            "WHERE tag.id = :id";
+    private static final String UPDATE_TAG = "UPDATE gift_certificates_system.tags SET name = :name WHERE id = :id";
+    private static final String DELETE_TAG_BY_ID = "DELETE FROM gift_certificates_system.tags WHERE id = :id";
     public static final String SELECT_TAGS_BY_CERTIFICATE_ID = "SELECT * FROM gift_certificates_system.tags tag " +
-            "JOIN gift_certificates_system.join_certificates_tags_table join_table ON tag.tag_id = join_table.tag_id " +
+            "JOIN gift_certificates_system.join_certificates_tags_table join_table ON tag.id = join_table.tag_id " +
             "WHERE join_table.certificate_id = ?";
     private static final String SELECT_TAG_ID_BY_NAME = "SELECT * FROM gift_certificates_system.tags tag " +
             "WHERE tag.name = :name";

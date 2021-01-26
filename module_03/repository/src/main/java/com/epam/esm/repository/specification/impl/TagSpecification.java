@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 public class TagSpecification implements SqlSpecification {
 
-    private static final String SELECT_TAGS = "SELECT tag.tag_id, tag.name from gift_certificates_system.tags tag";
+    private static final String SELECT_TAGS = "SELECT tag.id, tag.name from gift_certificates_system.tags tag";
     private static final String WHITESPACE = " ";
 
     private String name;
