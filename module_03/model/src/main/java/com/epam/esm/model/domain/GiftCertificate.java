@@ -7,10 +7,19 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "certificates")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,14 +28,30 @@ import java.util.List;
 @SuperBuilder(setterPrefix = "set")
 public class GiftCertificate extends GeneralEntity<Long> {
 
+    @Column
     private String name;
+
+    @Column
     private String description;
+
+    @Column
     private BigDecimal price;
+
     /**
      * a period of time when a gift certificate is available after its activation
      */
+    @Column
     private Integer duration;
+
+    @Column(name = "create_date", updatable = false, columnDefinition = "TIMESTAMP")
     private Instant createDate;
+
+    @Column(name = "last_update_date", columnDefinition = "TIMESTAMP")
     private Instant updateDate;
-    private List<Tag> tags;
+
+    @ManyToMany
+    @JoinTable(name = "join_certificates_tags_table",
+            joinColumns = {@JoinColumn(name = "certificate_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "id")})
+    private List<Tag> tags = new ArrayList<>();
 }
