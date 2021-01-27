@@ -23,6 +23,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 public class TagController {
+
     private final TagService tagService;
 
     /**
