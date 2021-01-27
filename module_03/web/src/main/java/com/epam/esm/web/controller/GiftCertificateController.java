@@ -19,7 +19,7 @@ import java.util.List;
  * a class which performs REST's CRUD operations on a resource called "Gift-certificates"
  */
 @RestController
-@RequestMapping("/gift-certificates")
+@RequestMapping("/gift_certificates")
 @Validated
 @RequiredArgsConstructor
 public class GiftCertificateController {
