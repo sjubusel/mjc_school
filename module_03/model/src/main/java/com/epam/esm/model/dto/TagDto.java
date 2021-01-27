@@ -1,5 +1,6 @@
 package com.epam.esm.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +19,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @SuperBuilder(setterPrefix = "set")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TagDto extends GeneralEntityDto<Long> {
 
     @NotBlank(message = "tag name must be not blank")
