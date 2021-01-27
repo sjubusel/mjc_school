@@ -33,7 +33,8 @@ subprojects {
         implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-        implementation group: 'com.googlecode.jmapper-framework', name: 'jmapper-core', version: "${jmapper_version}"
+        implementation group: 'org.mapstruct', name: 'mapstruct', version: "${mapstruct_version}"
+        annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: "${mapstruct_version}"
 
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
