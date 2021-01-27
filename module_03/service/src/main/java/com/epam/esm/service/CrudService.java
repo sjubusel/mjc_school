@@ -1,13 +1,13 @@
 package com.epam.esm.service;
 
 import com.epam.esm.model.domain.GeneralEntity;
-import com.epam.esm.model.dto.EntityDto;
+import com.epam.esm.model.dto.GeneralEntityDto;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 
 import java.io.Serializable;
 import java.util.List;
 
-public interface CrudService<DTO extends EntityDto<ID>, DOMAIN extends GeneralEntity<ID>, ID extends Serializable> {
+public interface CrudService<DTO extends GeneralEntityDto<ID>, DOMAIN extends GeneralEntity<ID>, ID extends Serializable> {
 
     ID create(DTO entity);
 

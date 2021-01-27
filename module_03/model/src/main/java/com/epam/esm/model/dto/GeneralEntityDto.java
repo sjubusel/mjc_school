@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder(setterPrefix = "set")
-public abstract class EntityDto<T> {
+public abstract class GeneralEntityDto<T> {
 
     private T id;
 }

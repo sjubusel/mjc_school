@@ -28,7 +28,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 @SuperBuilder(setterPrefix = "set")
 @Validated
-public class GiftCertificateDto extends EntityDto<Long> {
+public class GiftCertificateDto extends GeneralEntityDto<Long> {
 
     @NotBlank(message = "name must be not blank")
     @Pattern(regexp = "[\\-0-9A-Za-zА-Яа-яЁё ]{3,256}", message = "name must contain from 3 to 256 " +

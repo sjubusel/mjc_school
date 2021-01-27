@@ -18,7 +18,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @SuperBuilder(setterPrefix = "set")
-public class TagDto extends EntityDto<Long> {
+public class TagDto extends GeneralEntityDto<Long> {
 
     @NotBlank(message = "tag name must be not blank")
     @Pattern(regexp = "[\\-0-9A-Za-zА-Яа-яЁё ]{3,256}", message = "tag name must contain from 3 to 256 " +
