@@ -15,8 +15,6 @@ import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import com.epam.esm.service.old.validation.ServiceValidator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -172,8 +170,8 @@ public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificate
         }
 
         GiftCertificateSearchCriteriaDto searchCriteria = (GiftCertificateSearchCriteriaDto) criteria;
-        return new GiftCertificateSpecification(searchCriteria.getTags(), searchCriteria.getName(),
-                searchCriteria.getDescription(), searchCriteria.getSortParams(), searchCriteria.getOrder());
+        return new GiftCertificateSpecification(searchCriteria.getTags(), searchCriteria.getNamePart(),
+                searchCriteria.getDescriptionPart(), searchCriteria.getSortParams(), null);
     }
 
     private List<TagDto> receiveListOfLinkedTagDto(GiftCertificateDto certificateDto) {
