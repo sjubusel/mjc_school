@@ -11,7 +11,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -28,5 +27,5 @@ public class Tag extends GeneralEntity<Long> {
     private String name;
 
     @ManyToMany(mappedBy = "tags")
-    private Set<GiftCertificate> giftCertificates = new HashSet<>();
+    private Set<GiftCertificate> giftCertificates;
 }

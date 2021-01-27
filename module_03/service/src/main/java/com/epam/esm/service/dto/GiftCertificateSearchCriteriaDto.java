@@ -28,10 +28,10 @@ public class GiftCertificateSearchCriteriaDto implements SearchCriteriaDto<GiftC
             "characters with punctuation marks")
     private String descriptionPart;
 
-    private List<@Pattern(regexp = "((asc)|(desc)name)|((asc)|(desc)create_date)|((asc)|(desc)last_update_date)")
+    private List<@Pattern(regexp = "([-+]name)|([-+]createDate)|([-+]updateDate)")
             String> sortParams;
 
     @Min(value = 1, message = "page must be greater than 1")
     @Digits(integer = 20, fraction = 0)
-    private Long page;
+    private Integer page;
 }

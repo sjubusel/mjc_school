@@ -2,7 +2,7 @@ package com.epam.esm.repository.impl;
 
 import com.epam.esm.model.domain.GeneralEntity;
 import com.epam.esm.repository.CrudRepository;
-import com.epam.esm.repository.old.specification.SqlSpecification;
+import com.epam.esm.repository.specification.JpaSpecification;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
@@ -38,8 +38,8 @@ public abstract class GeneralCrudRepository<T extends GeneralEntity<ID>, ID exte
     }
 
     @Override
-    public Iterable<T> query(SqlSpecification specification) {
-        return null;
+    public Iterable<T> query(JpaSpecification<T, ID> specification) {
+        return specification.toQuery(entityManager).getResultList();
     }
 
     @Override

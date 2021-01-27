@@ -1,16 +1,17 @@
 package com.epam.esm.repository;
 
-import com.epam.esm.repository.old.specification.SqlSpecification;
+import com.epam.esm.model.domain.GeneralEntity;
+import com.epam.esm.repository.specification.JpaSpecification;
 
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Optional;
 
-public interface CrudRepository<T, ID extends Serializable> {
+public interface CrudRepository<T extends GeneralEntity<ID>, ID extends Serializable> {
 
     ID create(T entity);
 
-    Iterable<T> query(SqlSpecification specification);
+    Iterable<T> query(JpaSpecification<T, ID> specification);
 
     Optional<T> findOne(ID id);
 
