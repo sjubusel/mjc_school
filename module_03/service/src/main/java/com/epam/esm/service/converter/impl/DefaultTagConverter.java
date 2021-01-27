@@ -6,10 +6,8 @@ import com.epam.esm.service.converter.GeneralEntityConverter;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
-@Component
 public interface DefaultTagConverter extends GeneralEntityConverter<TagDto, Tag, Long> {
 
     @Mapping(target = "giftCertificates", ignore = true)
