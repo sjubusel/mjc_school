@@ -36,9 +36,7 @@ public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAI
     public DTO findOne(ID id) {
         Optional<DOMAIN> entity = crudRepository.findOne(id);
         DOMAIN domain = entity.orElseThrow(() -> new ResourceNotFoundException(id));
-        DTO dto = converter.convertToDto(domain);
-        System.out.println(dto); // fixme
-        return dto;
+        return converter.convertToDto(domain);
     }
 
     @Override
