@@ -21,11 +21,9 @@ import java.util.Map;
 /**
  * a class which realizes business logic of CRUD operations applied to resources called "Tags"
  */
-@Service
 public class TagServiceImpl extends BasicCrudService<TagDto, Tag, Long> implements TagService {
     private final TagRepository tagRepository;
 
-    @Autowired
     public TagServiceImpl(EntityConverter<TagDto, Tag, Long> entityConverter, TagRepository tagRepository,
                           ServiceValidator<Tag, Long> validator) {
         super(entityConverter, tagRepository, validator);

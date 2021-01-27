@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 
-@Component
 public class GiftCertificateConverter implements EntityConverter<GiftCertificateDto, GiftCertificate, Long> {
 
     @Override

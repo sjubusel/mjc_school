@@ -10,7 +10,6 @@ import java.sql.SQLException;
  * a class which maps any com.epam.esm.model.domain.Tag object and its database analogy
  * while using org.springframework.jdbc.core.JdbcTemplate
  */
-@Component
 public class TagMapper implements EntityMapper<Tag, Long> {
 
     @Override

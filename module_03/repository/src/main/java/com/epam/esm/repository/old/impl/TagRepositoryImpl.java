@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Collections;
 import java.util.List;
 
-@Repository
 public class TagRepositoryImpl extends BasicCrudRepository<Tag, Long> implements TagRepository {
 
     private static final String INSERT_NEW_TAG = "INSERT INTO gift_certificates_system.tags (name) VALUES (:name)";

@@ -29,14 +29,12 @@ import java.util.stream.Collectors;
 /**
  * a class which realizes business logic of CRUD operations applied to resources called "Gift-certificates"
  */
-@Service
 public class GiftCertificateServiceImpl extends BasicCrudService<GiftCertificateDto, GiftCertificate, Long>
         implements GiftCertificateService {
     private final GiftCertificateRepository giftCertificateRepository;
     private final TagRepository tagRepository;
     private final TagConverter tagConverter;
 
-    @Autowired
     public GiftCertificateServiceImpl(EntityConverter<GiftCertificateDto, GiftCertificate, Long> entityConverter,
                                       GiftCertificateRepository giftCertificateRepository, TagRepository tagRepository,
                                       ServiceValidator<GiftCertificate, Long> validator,

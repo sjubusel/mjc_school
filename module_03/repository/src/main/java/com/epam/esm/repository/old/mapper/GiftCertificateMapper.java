@@ -12,7 +12,6 @@ import java.sql.Timestamp;
  * a class which maps any com.epam.esm.model.domain.GiftCertificate object and its database analogy
  * while using org.springframework.jdbc.core.JdbcTemplate
  */
-@Component
 public class GiftCertificateMapper implements EntityMapper<GiftCertificate, Long> {
 
     @Override

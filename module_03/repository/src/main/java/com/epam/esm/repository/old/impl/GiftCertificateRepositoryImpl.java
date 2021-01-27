@@ -14,7 +14,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class GiftCertificateRepositoryImpl extends BasicCrudRepository<GiftCertificate, Long>
         implements GiftCertificateRepository {
 

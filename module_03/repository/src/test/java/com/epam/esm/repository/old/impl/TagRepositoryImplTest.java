@@ -5,6 +5,7 @@ import com.epam.esm.repository.TagRepository;
 import com.epam.esm.repository.configuration.TestRepositoryConfiguration;
 import com.epam.esm.repository.old.mapper.TagMapper;
 import com.epam.esm.repository.old.specification.impl.TagSpecification;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -24,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Disabled
 @ExtendWith(SpringExtension.class)
 @Transactional
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

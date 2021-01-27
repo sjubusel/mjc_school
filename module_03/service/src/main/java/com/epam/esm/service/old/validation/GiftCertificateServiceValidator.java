@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-@Component
 public class GiftCertificateServiceValidator implements ServiceValidator<GiftCertificate, Long> {
 
     @Override
