@@ -7,6 +7,7 @@ import com.epam.esm.repository.old.specification.SqlSpecification;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -27,9 +28,8 @@ public abstract class GeneralCrudRepository<T extends GeneralEntity<ID>, ID exte
      */
     @Override
     public Optional<T> findOne(ID id) {
-        T result = entityManager.createQuery(getCriteriaQueryReadById(id)).getSingleResult();
-        return Optional.ofNullable(result);
-
+        List<T> resultList = entityManager.createQuery(getCriteriaQueryReadById(id)).getResultList();
+        return Optional.ofNullable(resultList.size() > 0 ? resultList.get(0) : null);
     }
 
     @Override
