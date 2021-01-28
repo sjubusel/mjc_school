@@ -12,6 +12,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,7 +41,25 @@ public class DefaultGiftCertificateRepository extends GeneralCrudRepository<Gift
 
     @Override
     public void linkGiftCertificateWithTags(Long createdId, Set<Tag> updatingTags) {
-        // fixme
+        GiftCertificate giftCertificate = entityManager.find(GiftCertificate.class, createdId);
+        HashSet<Tag> tagsToLink = new HashSet<>();
+
+        for (Tag tag : updatingTags) {
+            //noinspection JpaQlInspection
+            List<Tag> resultList = entityManager.createQuery("SELECT t FROM Tag t WHERE t.name=:name ",
+                    Tag.class).setParameter("name", tag.getName()).getResultList();
+
+            if (resultList.isEmpty()) {
+                entityManager.persist(tag);
+                tagsToLink.add(tag);
+            } else {
+                tagsToLink.add(resultList.get(0));
+            }
+        }
+
+        if (!tagsToLink.isEmpty()) {
+            giftCertificate.setTags(tagsToLink);
+        }
     }
 
     @Override
