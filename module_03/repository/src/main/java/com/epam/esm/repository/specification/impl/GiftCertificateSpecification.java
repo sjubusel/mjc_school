@@ -1,16 +1,23 @@
 package com.epam.esm.repository.specification.impl;
 
 import com.epam.esm.model.domain.GiftCertificate;
+import com.epam.esm.model.domain.Tag;
 import com.epam.esm.repository.specification.JpaSpecification;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
+import java.util.*;
 import java.util.stream.Stream;
 
 @NoArgsConstructor
@@ -19,6 +26,7 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
 
     private List<Predicate> whereConditions;
     private List<Order> orderConditions;
+    private Map<String, String> jpaTagParameters;
 
     private List<String> tags;
     private String namePart;
@@ -48,7 +56,46 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
             return query;
         }
 
-        processTags(criteriaBuilder, root);
+//        processTags(criteriaBuilder, root);
+
+        if (tags != null && tags.size() > 0) {
+            createWhereConditionsIfNotExists();
+            jpaTagParameters = new HashMap<>();
+
+            Subquery<String> subQueryForTags = criteriaQuery.subquery(String.class);
+            Root<Tag> subRoot = subQueryForTags.from(Tag.class);
+            Join<Object, Object> subJoin = subRoot.join("giftCertificates");
+            subQueryForTags.select(subRoot.get("name")).where(criteriaBuilder.equal(subJoin.get("id"), root.get("id")));
+
+            for (int i = 0; i < tags.size(); i++) {
+                String parameter = "tag" + i;
+                jpaTagParameters.putIfAbsent(parameter, tags.get(i));
+                ParameterExpression<String> jpaParameter = criteriaBuilder.parameter(String.class, parameter);
+                CriteriaBuilder.In<String> inClause = criteriaBuilder.in(jpaParameter).value(subQueryForTags);
+                whereConditions.add(inClause);
+            }
+
+//            ParameterExpression<String> tag1 = criteriaBuilder.parameter(String.class, "tag");
+//            ParameterExpression<String> tag2 = criteriaBuilder.parameter(String.class, "tag2");
+//
+//            CriteriaBuilder.In<String> inTag1 = criteriaBuilder.in(tag1).value(subQueryForTags);
+//            CriteriaBuilder.In<String> inTag2 = criteriaBuilder.in(tag2).value(subQueryForTags);
+//
+//            whereConditions.add(inTag1);
+//            whereConditions.add(inTag2);
+//              ##############################
+//            createWhereConditionsIfNotExists();
+//
+//            Join<Object, Object> tagJoin = root.join("tags", JoinType.LEFT);
+//            Path<Object> tagName = tagJoin.get("name");
+//
+//            CriteriaBuilder.In<Object> inClause = criteriaBuilder.in(tagName);
+//            inClause.value(tags.get(0));
+//            inClause.value(tags.get(1));
+//
+//            whereConditions.add(inClause);
+        }
+
         processNamePart(criteriaBuilder, root);
         processDescriptionPart(criteriaBuilder, root);
         processSortingParameters(criteriaBuilder, root);
@@ -59,6 +106,7 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
         if (orderConditions != null) {
             criteriaQuery.orderBy(orderConditions);
         }
+        criteriaQuery.distinct(true);
 
         if (page == null) {
             page = 1;
@@ -67,6 +115,13 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
         TypedQuery<GiftCertificate> targetQuery = entityManager.createQuery(criteriaQuery);
         targetQuery.setFirstResult(PAGE_SIZE * (page - 1));
         targetQuery.setMaxResults(PAGE_SIZE);
+
+        if (jpaTagParameters != null && jpaTagParameters.size() > 0) {
+            jpaTagParameters.forEach(targetQuery::setParameter);
+        }
+
+//        targetQuery.setParameter("tag0", tags.get(0));
+//        targetQuery.setParameter("tag1", tags.get(1));
 
         return targetQuery;
     }
@@ -111,7 +166,17 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
 
             Join<Object, Object> tagJoin = root.join("tags", JoinType.LEFT);
             Path<Object> tagName = tagJoin.get("name");
-            tags.forEach(tag -> whereConditions.add(criteriaBuilder.equal(tagName, tag)));
+
+            ParameterExpression<String> tag1 = criteriaBuilder.parameter(String.class, "tag1");
+            new HashMap<String, ParameterExpression<String>>();
+
+            CriteriaBuilder.In<Object> inClause = criteriaBuilder.in(tagName);
+            inClause.value(tags.get(0));
+            inClause.value(tags.get(1));
+
+            whereConditions.add(inClause);
+
+//            tags.forEach(tag -> whereConditions.add(criteriaBuilder.equal(tagName, tag)));
         }
     }
 
