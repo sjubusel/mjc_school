@@ -76,14 +76,7 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
             page = 1;
         }
 
-        TypedQuery<GiftCertificate> targetQuery = entityManager.createQuery(criteriaQuery);
-        targetQuery.setFirstResult(PAGE_SIZE * (page - 1));
-        targetQuery.setMaxResults(PAGE_SIZE);
-        if (jpaTagParameters != null && jpaTagParameters.size() > 0) {
-            jpaTagParameters.forEach(targetQuery::setParameter);
-        }
-
-        return targetQuery;
+        return receiveTypedQuery(entityManager, criteriaQuery);
     }
 
     private void processTags(CriteriaBuilder criteriaBuilder, CriteriaQuery<GiftCertificate> criteriaQuery,
@@ -160,6 +153,16 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
 
     private void createWhereConditionsIfNotExists() {
         this.whereConditions = Optional.ofNullable(whereConditions).orElseGet(ArrayList::new);
+    }
+
+    private TypedQuery<GiftCertificate> receiveTypedQuery(EntityManager entityManager, CriteriaQuery<GiftCertificate> criteriaQuery) {
+        TypedQuery<GiftCertificate> targetQuery = entityManager.createQuery(criteriaQuery);
+        targetQuery.setFirstResult(PAGE_SIZE * (page - 1));
+        targetQuery.setMaxResults(PAGE_SIZE);
+        if (jpaTagParameters != null && jpaTagParameters.size() > 0) {
+            jpaTagParameters.forEach(targetQuery::setParameter);
+        }
+        return targetQuery;
     }
 
 }
