@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class DefaultGiftCertificateRepository extends GeneralCrudRepository<GiftCertificate, Long>
@@ -40,5 +41,22 @@ public class DefaultGiftCertificateRepository extends GeneralCrudRepository<Gift
     @Override
     public void deleteLinkBetweenGiftCertificateAndTags(Long certificateId) {
         // fixme
+    }
+
+    @Override
+    protected CriteriaQuery<GiftCertificate> getCriteriaQueryExists(Map<String, Object> uniqueConstraints) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
+        Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
+
+        Predicate nameCondition = criteriaBuilder.equal(root.get("name"), uniqueConstraints.get("name"));
+        Predicate descriptionCondition = criteriaBuilder.equal(root.get("description"),
+                uniqueConstraints.get("description"));
+        Predicate priceCondition = criteriaBuilder.equal(root.get("price"), uniqueConstraints.get("price"));
+        Predicate durationCondition = criteriaBuilder.equal(root.get("duration"), uniqueConstraints.get("duration"));
+        Predicate finalPredicate = criteriaBuilder.and(nameCondition, descriptionCondition, priceCondition,
+                durationCondition);
+
+        return criteriaQuery.select(root).where(finalPredicate);
     }
 }
