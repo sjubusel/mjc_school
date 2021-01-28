@@ -145,7 +145,8 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
         this.whereConditions = Optional.ofNullable(whereConditions).orElseGet(ArrayList::new);
     }
 
-    private void adjustCriteriaQuery(CriteriaBuilder criteriaBuilder, CriteriaQuery<GiftCertificate> criteriaQuery, Root<GiftCertificate> root) {
+    private void adjustCriteriaQuery(CriteriaBuilder criteriaBuilder, CriteriaQuery<GiftCertificate> criteriaQuery,
+                                     Root<GiftCertificate> root) {
         criteriaQuery.select(root);
         Predicate finalPredicate = receiveFinalPredicate(criteriaBuilder);
         criteriaQuery.where(finalPredicate);
@@ -159,7 +160,8 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
         }
     }
 
-    private TypedQuery<GiftCertificate> receiveTypedQuery(EntityManager entityManager, CriteriaQuery<GiftCertificate> criteriaQuery) {
+    private TypedQuery<GiftCertificate> receiveTypedQuery(EntityManager entityManager,
+                                                          CriteriaQuery<GiftCertificate> criteriaQuery) {
         TypedQuery<GiftCertificate> targetQuery = entityManager.createQuery(criteriaQuery);
         targetQuery.setFirstResult(PAGE_SIZE * (page - 1));
         targetQuery.setMaxResults(PAGE_SIZE);
