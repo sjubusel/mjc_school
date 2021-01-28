@@ -1,0 +1,24 @@
+plugins {
+    id 'jacoco'
+}
+
+dependencies {
+    implementation project(':model')
+    implementation project(':repository')
+}
+
+test {
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
