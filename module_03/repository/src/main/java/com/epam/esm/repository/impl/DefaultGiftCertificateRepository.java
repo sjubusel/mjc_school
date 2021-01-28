@@ -7,9 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.*;
-import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.Map;
+import java.util.Set;
 
 @Repository
 public class DefaultGiftCertificateRepository extends GeneralCrudRepository<GiftCertificate, Long>
@@ -34,7 +38,7 @@ public class DefaultGiftCertificateRepository extends GeneralCrudRepository<Gift
     }
 
     @Override
-    public void linkGiftCertificateWithTags(Long createdId, List<Tag> updatingTags) {
+    public void linkGiftCertificateWithTags(Long createdId, Set<Tag> updatingTags) {
         // fixme
     }
 

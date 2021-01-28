@@ -1,12 +1,14 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.model.domain.GiftCertificate;
+import com.epam.esm.model.domain.Tag;
 import com.epam.esm.model.dto.GiftCertificateDto;
-import com.epam.esm.repository.CrudRepository;
+import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.specification.JpaSpecification;
 import com.epam.esm.repository.specification.impl.GiftCertificateSpecification;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
+import com.epam.esm.service.converter.impl.DefaultTagConverter;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
@@ -15,17 +17,33 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertificateDto, GiftCertificate, Long>
         implements GiftCertificateService {
 
+    private final GiftCertificateRepository giftCertificateRepository;
+    private final DefaultTagConverter tagConverter;
+
     @Autowired
-    protected DefaultGiftCertificateService(
-            CrudRepository<GiftCertificate, Long> crudRepository,
-            GeneralEntityConverter<GiftCertificateDto, GiftCertificate, Long> converter
-    ) {
-        super(crudRepository, converter);
+    protected DefaultGiftCertificateService(GeneralEntityConverter<GiftCertificateDto, GiftCertificate, Long> converter,
+                                            GiftCertificateRepository giftCertificateRepository, DefaultTagConverter tagConverter) {
+        super(giftCertificateRepository, converter);
+        this.giftCertificateRepository = giftCertificateRepository;
+        this.tagConverter = tagConverter;
+    }
+
+    @Override
+    public Long create(GiftCertificateDto dto) {
+        Long createdId = super.create(dto);
+        Set<Tag> tagsToLink = dto.getTags().stream()
+                .map(tagConverter::convertToDomain)
+                .collect(Collectors.toSet());
+
+        giftCertificateRepository.linkGiftCertificateWithTags(createdId, tagsToLink);
+        return createdId;
     }
 
     @Override
