@@ -6,17 +6,59 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @NoArgsConstructor
 public class TagSpecification implements JpaSpecification<Tag, Long> {
-    private String name;
+    private static final Integer PAGE_SIZE = 20;
 
-    public TagSpecification(String name) {
+    private String name;
+    private Integer page;
+
+    public TagSpecification(String name, Integer page) {
         this.name = name;
+        this.page = page;
     }
 
     @Override
     public TypedQuery<Tag> toQuery(EntityManager entityManager) {
-        return null;
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Tag> criteriaQuery = criteriaBuilder.createQuery(Tag.class);
+        Root<Tag> root = criteriaQuery.from(Tag.class);
+
+        if (Stream.of(name, page).allMatch(Objects::isNull)) {
+            TypedQuery<Tag> query = entityManager.createQuery(criteriaQuery);
+            query.setFirstResult(0);
+            query.setMaxResults(PAGE_SIZE);
+            return query;
+        }
+
+        adjustCriteriaQuery(criteriaBuilder, criteriaQuery, root);
+
+        return entityManager.createQuery(criteriaQuery)
+                .setFirstResult(PAGE_SIZE * (page - 1))
+                .setMaxResults(PAGE_SIZE);
+    }
+
+    private void adjustCriteriaQuery(CriteriaBuilder criteriaBuilder, CriteriaQuery<Tag> criteriaQuery,
+                                     Root<Tag> root) {
+        Predicate likeCondition = null;
+        if (name != null) {
+            likeCondition = criteriaBuilder.like(root.get("name"), "%" + name + "%");
+        }
+        if (likeCondition != null) {
+            criteriaQuery.select(root).where(likeCondition);
+        } else {
+            criteriaQuery.select(root);
+        }
+
+        if (page == null) {
+            page = 1;
+        }
     }
 }

@@ -33,6 +33,6 @@ public class DefaultTagService extends GeneralCrudService<TagDto, Tag, Long> imp
         }
 
         TagSearchCriteriaDto params = (TagSearchCriteriaDto) searchCriteria;
-        return new TagSpecification(params.getName());
+        return new TagSpecification(params.getName(), params.getPage());
     }
 }
