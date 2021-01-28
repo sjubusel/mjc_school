@@ -64,17 +64,7 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
         processDescriptionPart(criteriaBuilder, root);
         processSortingParameters(criteriaBuilder, root);
 
-        criteriaQuery.select(root);
-        Predicate finalPredicate = receiveFinalPredicate(criteriaBuilder);
-        criteriaQuery.where(finalPredicate);
-        if (orderConditions != null) {
-            criteriaQuery.orderBy(orderConditions);
-        }
-        criteriaQuery.distinct(true);
-
-        if (page == null) {
-            page = 1;
-        }
+        adjustCriteriaQuery(criteriaBuilder, criteriaQuery, root);
 
         return receiveTypedQuery(entityManager, criteriaQuery);
     }
@@ -153,6 +143,20 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
 
     private void createWhereConditionsIfNotExists() {
         this.whereConditions = Optional.ofNullable(whereConditions).orElseGet(ArrayList::new);
+    }
+
+    private void adjustCriteriaQuery(CriteriaBuilder criteriaBuilder, CriteriaQuery<GiftCertificate> criteriaQuery, Root<GiftCertificate> root) {
+        criteriaQuery.select(root);
+        Predicate finalPredicate = receiveFinalPredicate(criteriaBuilder);
+        criteriaQuery.where(finalPredicate);
+        if (orderConditions != null) {
+            criteriaQuery.orderBy(orderConditions);
+        }
+        criteriaQuery.distinct(true);
+
+        if (page == null) {
+            page = 1;
+        }
     }
 
     private TypedQuery<GiftCertificate> receiveTypedQuery(EntityManager entityManager, CriteriaQuery<GiftCertificate> criteriaQuery) {
