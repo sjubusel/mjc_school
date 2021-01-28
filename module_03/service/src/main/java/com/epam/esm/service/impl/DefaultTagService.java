@@ -13,6 +13,9 @@ import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class DefaultTagService extends GeneralCrudService<TagDto, Tag, Long> implements TagService {
 
@@ -34,5 +37,12 @@ public class DefaultTagService extends GeneralCrudService<TagDto, Tag, Long> imp
 
         TagSearchCriteriaDto params = (TagSearchCriteriaDto) searchCriteria;
         return new TagSpecification(params.getName(), params.getPage());
+    }
+
+    @Override
+    protected Map<String, Object> receiveUniqueConstraints(TagDto dto) {
+        Map<String, Object> uniqueConstrains = new HashMap<>();
+        uniqueConstrains.putIfAbsent("name", dto.getName());
+        return uniqueConstrains;
     }
 }

@@ -7,11 +7,13 @@ import com.epam.esm.repository.specification.JpaSpecification;
 import com.epam.esm.service.CrudService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.SearchCriteriaDto;
+import com.epam.esm.service.exception.DuplicateResourceException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -53,10 +55,17 @@ public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAI
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
-    public ID create(DTO entity) {
-        return null;
+    public ID create(DTO dto) {
+        if (crudRepository.exists(receiveUniqueConstraints(dto))) {
+            throw new DuplicateResourceException(); // fixme add an entity as a parameter
+        }
+        DOMAIN entity = converter.convertToDomain(dto);
+        return crudRepository.create(entity);
     }
+
+    protected abstract Map<String, Object> receiveUniqueConstraints(DTO dto);
 
     @Override
     public boolean update(DTO entity) {

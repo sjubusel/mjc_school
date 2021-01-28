@@ -13,6 +13,9 @@ import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertificateDto, GiftCertificate, Long>
         implements GiftCertificateService {
@@ -38,5 +41,15 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
         GiftCertificateSearchCriteriaDto params = (GiftCertificateSearchCriteriaDto) searchCriteria;
         return new GiftCertificateSpecification(params.getTags(), params.getNamePart(), params.getDescriptionPart(),
                 params.getSortParams(), params.getPage());
+    }
+
+    @Override
+    protected Map<String, Object> receiveUniqueConstraints(GiftCertificateDto dto) {
+        Map<String, Object> uniqueConstrains = new HashMap<>();
+        uniqueConstrains.putIfAbsent("name", dto.getName());
+        uniqueConstrains.putIfAbsent("description", dto.getDescription());
+        uniqueConstrains.putIfAbsent("price", dto.getPrice());
+        uniqueConstrains.putIfAbsent("duration", dto.getDuration());
+        return uniqueConstrains;
     }
 }
