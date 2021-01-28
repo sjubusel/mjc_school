@@ -59,7 +59,7 @@ public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAI
     @Override
     public ID create(DTO dto) {
         if (crudRepository.exists(receiveUniqueConstraints(dto))) {
-            throw new DuplicateResourceException(); // fixme add an entity as a parameter
+            throw new DuplicateResourceException(dto + "already exists"); // fixme add an entity as a parameter
         }
         DOMAIN entity = converter.convertToDomain(dto);
         return crudRepository.create(entity);

@@ -15,6 +15,7 @@ public interface DefaultGiftCertificateConverter extends GeneralEntityConverter<
     @Mappings({
             @Mapping(target = "createDate", source = "createDate", defaultExpression = "java(java.time.Instant.now())"),
             @Mapping(target = "updateDate", source = "updateDate", defaultExpression = "java(java.time.Instant.now())"),
+            @Mapping(target = "tags", ignore = true)
     })
     @Override
     GiftCertificate convertToDomain(GiftCertificateDto dto);

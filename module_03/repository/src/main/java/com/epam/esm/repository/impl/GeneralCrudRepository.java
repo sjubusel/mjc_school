@@ -34,7 +34,8 @@ public abstract class GeneralCrudRepository<T extends GeneralEntity<ID>, ID exte
 
     @Override
     public ID create(T entity) {
-        return null;
+        entityManager.persist(entity);
+        return entity.getId();
     }
 
     @Override
