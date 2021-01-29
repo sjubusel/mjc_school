@@ -3,7 +3,9 @@ package com.epam.esm.service.impl;
 import com.epam.esm.model.domain.GiftCertificate;
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.model.dto.GiftCertificateDto;
+import com.epam.esm.model.dto.TagDto;
 import com.epam.esm.repository.GiftCertificateRepository;
+import com.epam.esm.repository.TagRepository;
 import com.epam.esm.repository.specification.JpaSpecification;
 import com.epam.esm.repository.specification.impl.GiftCertificateSpecification;
 import com.epam.esm.service.GiftCertificateService;
@@ -12,41 +14,79 @@ import com.epam.esm.service.converter.impl.DefaultTagConverter;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.EmptyUpdateException;
+import com.epam.esm.service.exception.IllegalGiftCertificateUpdate;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertificateDto, GiftCertificate, Long>
         implements GiftCertificateService {
 
     private final GiftCertificateRepository giftCertificateRepository;
+    private final TagRepository tagRepository;
     private final DefaultTagConverter tagConverter;
 
     @Autowired
     protected DefaultGiftCertificateService(GeneralEntityConverter<GiftCertificateDto, GiftCertificate, Long> converter,
-                                            GiftCertificateRepository giftCertificateRepository, DefaultTagConverter tagConverter) {
+                                            GiftCertificateRepository giftCertificateRepository, TagRepository tagRepository, DefaultTagConverter tagConverter) {
         super(giftCertificateRepository, converter);
         this.giftCertificateRepository = giftCertificateRepository;
+        this.tagRepository = tagRepository;
         this.tagConverter = tagConverter;
     }
 
+    @Transactional
     @Override
     public Long create(GiftCertificateDto dto) {
         Long createdId = super.create(dto);
-        Set<Tag> tagsToLink = dto.getTags().stream()
-                .map(tagConverter::convertToDomain)
-                .collect(Collectors.toSet());
 
-        giftCertificateRepository.linkGiftCertificateWithTags(createdId, tagsToLink);
+        if (dto.getTags() == null) {
+            return createdId;
+        }
+
+        if (!dto.getTags().isEmpty()) {
+            Set<Tag> tagsToLink = dto.getTags().stream()
+                    .map(tagConverter::convertToDomain)
+                    .collect(Collectors.toSet());
+            createIfNotExist(tagsToLink);
+            giftCertificateRepository.linkGiftCertificateWithTags(createdId, tagsToLink);
+        }
+
         return createdId;
+    }
+
+    @Override
+    public boolean update(GiftCertificateDto dto) {
+        GiftCertificate sourceDomain = receiveDomainWhichIsToBeUpdated(dto);
+
+        boolean areAssociationsWithTagsUpdated = updateAssociationsWithTags(sourceDomain, dto);
+
+        GiftCertificate targetDomain = receiveUpdatingDomain(sourceDomain, dto);
+
+        checkIfUpdatingIsPossibleOrThrow(sourceDomain, targetDomain, areAssociationsWithTagsUpdated);
+
+        return giftCertificateRepository.update(targetDomain);
+    }
+
+    private boolean updateAssociationsWithTags(GiftCertificate sourceDomain, GiftCertificateDto dto) {
+        if (dto.getTags() != null && !dto.getTags().isEmpty()) {
+            Set<Tag> updatingTags = receiveUpdatingTags(sourceDomain, dto);
+
+            if (!updatingTags.isEmpty()) {
+                createIfNotExist(updatingTags);
+                giftCertificateRepository.linkGiftCertificateWithTags(sourceDomain.getId(), updatingTags);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -76,36 +116,65 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
 
     @Override
     protected GiftCertificate receiveUpdatingDomain(GiftCertificate domain, GiftCertificateDto dto) {
-        if (Stream.of(dto.getPrice(), dto.getDuration(), dto.getTags()).allMatch(Objects::isNull)) {
+        if (dto.getPrice() != null && dto.getDuration() != null) {
+            throw new IllegalGiftCertificateUpdate();
+        }
+
+        GiftCertificate targetGiftCertificate = new GiftCertificate();
+
+        if (dto.getPrice() != null) {
+            targetGiftCertificate.setPrice(dto.getPrice());
+        }
+        if (dto.getDuration() != null) {
+            targetGiftCertificate.setDuration(dto.getDuration());
+        }
+
+        targetGiftCertificate.setId(domain.getId());
+        targetGiftCertificate.setName(domain.getName());
+        targetGiftCertificate.setDescription(domain.getDescription());
+        targetGiftCertificate.setUpdateDate(Instant.now());
+
+        return targetGiftCertificate;
+    }
+
+    private void createIfNotExist(Set<Tag> tagsToLink) {
+        tagsToLink.stream()
+                .filter(tag -> !tagRepository.exists(tag.getName()))
+                .collect(Collectors.toSet())
+                .forEach(tag -> {
+                    Long createdId = tagRepository.create(tag);
+                    tag.setId(createdId);
+                });
+    }
+
+    private void checkIfUpdatingIsPossibleOrThrow(GiftCertificate sourceDomain, GiftCertificate targetDomain,
+                                                  boolean areAssociationsUpdated) {
+        if (areGiftCertificatesEqual(sourceDomain, targetDomain) && !areAssociationsUpdated) {
             throw new EmptyUpdateException();
         }
+    }
 
-        if (dto.getTags() != null) {
-            // fixme
+    private boolean areGiftCertificatesEqual(GiftCertificate sourceDomain, GiftCertificate targetDomain) {
+        return sourceDomain.getId().equals(targetDomain.getId())
+                && sourceDomain.getName().equals(targetDomain.getName())
+                && sourceDomain.getDescription().equals(targetDomain.getDescription())
+                && sourceDomain.getPrice().equals(targetDomain.getPrice())
+                && sourceDomain.getDuration().equals(targetDomain.getDuration());
+    }
+
+    private Set<Tag> receiveUpdatingTags(GiftCertificate sourceDomain, GiftCertificateDto dto) {
+        Set<Tag> domainTags = sourceDomain.getTags();
+        Set<TagDto> newTags;
+
+        if (domainTags != null) {
+            newTags = dto.getTags().stream()
+                    .filter(tagDto -> domainTags.stream()
+                            .noneMatch(tag -> tag.getName().equals(tagDto.getName())))
+                    .collect(Collectors.toSet());
+        } else {
+            newTags = dto.getTags();
         }
 
-//        if (dto.getPrice() != null && dto.getDuration() != null) {
-//            throw new IllegalGiftCertificateUpdate();
-//        }
-//
-//        boolean isDomainChanged;
-//        if (dto.getPrice() != null && dto.getPrice().equals(domain.getPrice())) {
-//            throw new EmptyUpdateException();
-//        } else {
-//            domain.setPrice(dto.getPrice());
-//            isDomainChanged = true;
-//        }
-//
-//        if (dto.getDuration() != null && dto.getDuration().equals(domain.getDuration())) {
-//            throw new EmptyUpdateException();
-//        } else {
-//            domain.setDuration(dto.getDuration());
-//        }
-//
-//        if (dto.getTags() == null && !isDomainChanged) {
-//            throw new EmptyUpdateException();
-//        }
-
-        return null;
+        return newTags.stream().map(tagConverter::convertToDomain).collect(Collectors.toSet());
     }
 }

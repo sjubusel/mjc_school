@@ -9,6 +9,7 @@ import com.epam.esm.service.TagService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.dto.TagSearchCriteriaDto;
+import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,16 @@ public class DefaultTagService extends GeneralCrudService<TagDto, Tag, Long> imp
 
         TagSearchCriteriaDto params = (TagSearchCriteriaDto) searchCriteria;
         return new TagSpecification(params.getName(), params.getPage());
+    }
+
+    @Override
+    protected Tag receiveUpdatingDomain(Tag sourceDomain, TagDto dto) {
+        String newName = dto.getName();
+        if (newName == null || newName.equals(sourceDomain.getName())) {
+            throw new EmptyUpdateException();
+        }
+        sourceDomain.setName(newName);
+        return sourceDomain;
     }
 
     @Override

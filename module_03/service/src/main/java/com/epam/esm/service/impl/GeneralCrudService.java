@@ -8,7 +8,6 @@ import com.epam.esm.service.CrudService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.DuplicateResourceException;
-import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,7 +59,7 @@ public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAI
     @Override
     public ID create(DTO dto) {
         if (crudRepository.exists(receiveUniqueConstraints(dto))) {
-            throw new DuplicateResourceException(dto + "already exists"); // fixme add an entity as a parameter
+            throw new DuplicateResourceException(dto + " already exists"); // fixme add an entity as a parameter
         }
         DOMAIN entity = converter.convertToDomain(dto);
         return crudRepository.create(entity);
@@ -71,12 +70,9 @@ public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAI
     @Transactional
     @Override
     public boolean update(DTO dto) {
-        Optional<DOMAIN> result = crudRepository.findOne(dto.getId());
-        DOMAIN domain = result.orElseThrow(() -> new ResourceNotFoundException(dto.getId()));
-
-        DOMAIN updatingDomain = receiveUpdatingDomain(domain, dto);
-
-        return crudRepository.update(updatingDomain);
+        DOMAIN sourceDomain = receiveDomainWhichIsToBeUpdated(dto);
+        DOMAIN targetDomain = receiveUpdatingDomain(sourceDomain, dto);
+        return crudRepository.update(targetDomain);
     }
 
     @Override
@@ -86,11 +82,11 @@ public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAI
 
     protected abstract JpaSpecification<DOMAIN, ID> getDataSourceSpecification(SearchCriteriaDto<DOMAIN> searchCriteria);
 
-    protected DOMAIN receiveUpdatingDomain(DOMAIN domain, DTO dto) {
-        DOMAIN updatingDomain = converter.convertToDomain(dto);
-        if (updatingDomain.equals(domain)) {
-            throw new EmptyUpdateException();
-        }
-        return updatingDomain;
+    protected DOMAIN receiveDomainWhichIsToBeUpdated(DTO dto) {
+        Optional<DOMAIN> result = crudRepository.findOne(dto.getId());
+        return result.orElseThrow(() -> new ResourceNotFoundException(dto.getId()));
     }
+
+    protected abstract DOMAIN receiveUpdatingDomain(DOMAIN sourceDomain, DTO dto);
+
 }
