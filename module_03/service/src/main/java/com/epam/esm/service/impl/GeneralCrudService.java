@@ -8,6 +8,7 @@ import com.epam.esm.service.CrudService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.DuplicateResourceException;
+import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,7 +70,15 @@ public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAI
 
     @Override
     public boolean update(DTO entity) {
-        return false;
+        Optional<DOMAIN> result = crudRepository.findOne(entity.getId());
+        DOMAIN domain = result.orElseThrow(() -> new ResourceNotFoundException(entity.getId()));
+
+        DOMAIN updatingDomain = converter.convertToDomain(entity);
+        if (updatingDomain.equals(domain)) {
+            throw new EmptyUpdateException();
+        }
+
+        return crudRepository.update(updatingDomain);
     }
 
     @Override
