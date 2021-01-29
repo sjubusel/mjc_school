@@ -70,4 +70,10 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
         uniqueConstrains.putIfAbsent("duration", dto.getDuration());
         return uniqueConstrains;
     }
+
+    @Override
+    protected GiftCertificate receiveUpdatingDomain(GiftCertificate domain, GiftCertificateDto dto) {
+
+        return null; // fixme
+    }
 }

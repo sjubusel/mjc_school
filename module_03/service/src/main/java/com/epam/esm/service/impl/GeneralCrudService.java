@@ -68,15 +68,13 @@ public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAI
 
     protected abstract Map<String, Object> receiveUniqueConstraints(DTO dto);
 
+    @Transactional
     @Override
-    public boolean update(DTO entity) {
-        Optional<DOMAIN> result = crudRepository.findOne(entity.getId());
-        DOMAIN domain = result.orElseThrow(() -> new ResourceNotFoundException(entity.getId()));
+    public boolean update(DTO dto) {
+        Optional<DOMAIN> result = crudRepository.findOne(dto.getId());
+        DOMAIN domain = result.orElseThrow(() -> new ResourceNotFoundException(dto.getId()));
 
-        DOMAIN updatingDomain = converter.convertToDomain(entity);
-        if (updatingDomain.equals(domain)) {
-            throw new EmptyUpdateException();
-        }
+        DOMAIN updatingDomain = receiveUpdatingDomain(domain, dto);
 
         return crudRepository.update(updatingDomain);
     }
@@ -87,4 +85,12 @@ public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAI
     }
 
     protected abstract JpaSpecification<DOMAIN, ID> getDataSourceSpecification(SearchCriteriaDto<DOMAIN> searchCriteria);
+
+    protected DOMAIN receiveUpdatingDomain(DOMAIN domain, DTO dto) {
+        DOMAIN updatingDomain = converter.convertToDomain(dto);
+        if (updatingDomain.equals(domain)) {
+            throw new EmptyUpdateException();
+        }
+        return updatingDomain;
+    }
 }

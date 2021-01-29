@@ -45,7 +45,8 @@ public abstract class GeneralCrudRepository<T extends GeneralEntity<ID>, ID exte
 
     @Override
     public boolean update(T entity) {
-        return false;
+        entityManager.merge(entity);
+        return true;
     }
 
     @Override
