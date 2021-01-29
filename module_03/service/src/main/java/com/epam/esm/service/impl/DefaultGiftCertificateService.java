@@ -63,6 +63,7 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
         return createdId;
     }
 
+    @Transactional
     @Override
     public boolean update(GiftCertificateDto dto) {
         GiftCertificate sourceDomain = receiveDomainWhichIsToBeUpdated(dto);
@@ -140,11 +141,7 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
     private void createIfNotExist(Set<Tag> tagsToLink) {
         tagsToLink.stream()
                 .filter(tag -> !tagRepository.exists(tag.getName()))
-                .collect(Collectors.toSet())
-                .forEach(tag -> {
-                    Long createdId = tagRepository.create(tag);
-                    tag.setId(createdId);
-                });
+                .forEach(tagRepository::create);
     }
 
     private void checkIfUpdatingIsPossibleOrThrow(GiftCertificate sourceDomain, GiftCertificate targetDomain,

@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +46,9 @@ public class DefaultTagRepository extends GeneralCrudRepository<Tag, Long> imple
 
     @Override
     public boolean exists(String uniqueConstraint) {
-        return false; // fixme
+        HashMap<String, Object> uniqueConstraints = new HashMap<>();
+        uniqueConstraints.putIfAbsent("name", uniqueConstraint);
+        return exists(uniqueConstraints);
     }
 
     @Override

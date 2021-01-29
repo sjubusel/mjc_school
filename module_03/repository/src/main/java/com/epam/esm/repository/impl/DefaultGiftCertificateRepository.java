@@ -40,10 +40,9 @@ public class DefaultGiftCertificateRepository extends GeneralCrudRepository<Gift
     @Override
     public void linkGiftCertificateWithTags(Long createdId, Set<Tag> updatingTags) {
         GiftCertificate giftCertificate = entityManager.find(GiftCertificate.class, createdId);
-//        HashSet<Tag> tagsToLink = new HashSet<>();
 
         updatingTags.forEach(tag -> {
-            if (tag.getId() != null) {
+            if (tag.getId() == null) {
                 //noinspection JpaQlInspection
                 Long tagId = entityManager.createQuery("SELECT t.id FROM Tag t WHERE t.name=:name ",
                         Long.class).setParameter("name", tag.getName()).getSingleResult();
@@ -53,21 +52,6 @@ public class DefaultGiftCertificateRepository extends GeneralCrudRepository<Gift
 
         giftCertificate.setTags(updatingTags);
 
-//        for (Tag tag : updatingTags) {
-//            //noinspection JpaQlInspection
-//            List<Tag> resultList = entityManager.createQuery("SELECT t FROM Tag t WHERE t.name=:name ",
-//                    Tag.class).setParameter("name", tag.getName()).getResultList();
-//
-//            if (resultList.isEmpty()) {
-//                entityManager.persist(tag);
-//                tagsToLink.add(tag);
-//            } else {
-//                tagsToLink.add(resultList.get(0));
-//            }
-//        }
-//        if (!tagsToLink.isEmpty()) {
-//            giftCertificate.setTags(tagsToLink);
-//        }
     }
 
     @Override
