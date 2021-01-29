@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class DefaultTagService extends GeneralCrudService<TagDto, Tag, Long> implements TagService {
+public class DefaultTagService extends GeneralCrudService<TagDto, Tag, Long, TagDto> implements TagService {
 
     @Autowired
     protected DefaultTagService(CrudRepository<Tag, Long> crudRepository,

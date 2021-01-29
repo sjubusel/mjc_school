@@ -7,7 +7,8 @@ import com.epam.esm.service.dto.SearchCriteriaDto;
 import java.io.Serializable;
 import java.util.List;
 
-public interface CrudService<DTO extends GeneralEntityDto<ID>, DOMAIN extends GeneralEntity<ID>, ID extends Serializable> {
+public interface CrudService<DTO extends GeneralEntityDto<ID>, DOMAIN extends GeneralEntity<ID>,
+        ID extends Serializable, UPDATE_DTO extends GeneralEntityDto<ID>> {
 
     ID create(DTO entity);
 
@@ -15,7 +16,7 @@ public interface CrudService<DTO extends GeneralEntityDto<ID>, DOMAIN extends Ge
 
     DTO findOne(ID id);
 
-    boolean update(DTO entity);
+    boolean update(UPDATE_DTO entity);
 
     boolean delete(ID id);
 }

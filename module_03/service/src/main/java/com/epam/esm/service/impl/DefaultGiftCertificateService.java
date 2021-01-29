@@ -3,6 +3,7 @@ package com.epam.esm.service.impl;
 import com.epam.esm.model.domain.GiftCertificate;
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.model.dto.GiftCertificateDto;
+import com.epam.esm.model.dto.GiftCertificateUpdateDto;
 import com.epam.esm.model.dto.TagDto;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.TagRepository;
@@ -27,8 +28,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertificateDto, GiftCertificate, Long>
-        implements GiftCertificateService {
+public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertificateDto, GiftCertificate, Long,
+        GiftCertificateUpdateDto> implements GiftCertificateService {
 
     private final GiftCertificateRepository giftCertificateRepository;
     private final TagRepository tagRepository;
@@ -65,19 +66,19 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
 
     @Transactional
     @Override
-    public boolean update(GiftCertificateDto dto) {
+    public boolean update(GiftCertificateUpdateDto dto) {
         GiftCertificate sourceDomain = receiveDomainWhichIsToBeUpdated(dto);
 
-        boolean areAssociationsWithTagsUpdated = updateAssociationsWithTags(sourceDomain, dto);
-
         GiftCertificate targetDomain = receiveUpdatingDomain(sourceDomain, dto);
+
+        boolean areAssociationsWithTagsUpdated = updateAssociationsWithTags(sourceDomain, dto);
 
         checkIfUpdatingIsPossibleOrThrow(sourceDomain, targetDomain, areAssociationsWithTagsUpdated);
 
         return giftCertificateRepository.update(targetDomain);
     }
 
-    private boolean updateAssociationsWithTags(GiftCertificate sourceDomain, GiftCertificateDto dto) {
+    private boolean updateAssociationsWithTags(GiftCertificate sourceDomain, GiftCertificateUpdateDto dto) {
         if (dto.getTags() != null && !dto.getTags().isEmpty()) {
             Set<Tag> updatingTags = receiveUpdatingTags(sourceDomain, dto);
 
@@ -116,7 +117,7 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
     }
 
     @Override
-    protected GiftCertificate receiveUpdatingDomain(GiftCertificate domain, GiftCertificateDto dto) {
+    protected GiftCertificate receiveUpdatingDomain(GiftCertificate domain, GiftCertificateUpdateDto dto) {
         if (dto.getPrice() != null && dto.getDuration() != null) {
             throw new IllegalGiftCertificateUpdate();
         }
@@ -125,9 +126,14 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
 
         if (dto.getPrice() != null) {
             targetGiftCertificate.setPrice(dto.getPrice());
+        } else {
+            targetGiftCertificate.setPrice(domain.getPrice());
         }
+
         if (dto.getDuration() != null) {
             targetGiftCertificate.setDuration(dto.getDuration());
+        } else {
+            targetGiftCertificate.setDuration(domain.getDuration());
         }
 
         targetGiftCertificate.setId(domain.getId());
@@ -159,7 +165,7 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
                 && sourceDomain.getDuration().equals(targetDomain.getDuration());
     }
 
-    private Set<Tag> receiveUpdatingTags(GiftCertificate sourceDomain, GiftCertificateDto dto) {
+    private Set<Tag> receiveUpdatingTags(GiftCertificate sourceDomain, GiftCertificateUpdateDto dto) {
         Set<Tag> domainTags = sourceDomain.getTags();
         Set<TagDto> newTags;
 

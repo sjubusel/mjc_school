@@ -1,6 +1,7 @@
 package com.epam.esm.web.controller;
 
 import com.epam.esm.model.dto.GiftCertificateDto;
+import com.epam.esm.model.dto.GiftCertificateUpdateDto;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import lombok.RequiredArgsConstructor;
@@ -75,7 +76,7 @@ public class GiftCertificateController {
      */
     @PatchMapping("/{id}")
     public ResponseEntity<GiftCertificateDto> update(@PathVariable("id") @Positive @Min(1) Long id,
-                                                     @RequestBody @Valid GiftCertificateDto newCertificate) {
+                                                     @RequestBody @Valid GiftCertificateUpdateDto newCertificate) {
         newCertificate.setId(id);
         giftCertificateService.update(newCertificate);
 

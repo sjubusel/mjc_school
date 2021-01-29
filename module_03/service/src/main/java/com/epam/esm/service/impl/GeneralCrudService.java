@@ -18,7 +18,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAIN extends GeneralEntity<ID>,
-        ID extends Serializable> implements CrudService<DTO, DOMAIN, ID> {
+        ID extends Serializable, UPDATE_DTO extends GeneralEntityDto<ID>> implements CrudService<DTO, DOMAIN, ID,
+        UPDATE_DTO> {
 
     protected final CrudRepository<DOMAIN, ID> crudRepository;
     protected final GeneralEntityConverter<DTO, DOMAIN, ID> converter;
@@ -69,7 +70,7 @@ public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAI
 
     @Transactional
     @Override
-    public boolean update(DTO dto) {
+    public boolean update(UPDATE_DTO dto) {
         DOMAIN sourceDomain = receiveDomainWhichIsToBeUpdated(dto);
         DOMAIN targetDomain = receiveUpdatingDomain(sourceDomain, dto);
         return crudRepository.update(targetDomain);
@@ -82,11 +83,11 @@ public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAI
 
     protected abstract JpaSpecification<DOMAIN, ID> getDataSourceSpecification(SearchCriteriaDto<DOMAIN> searchCriteria);
 
-    protected DOMAIN receiveDomainWhichIsToBeUpdated(DTO dto) {
+    protected DOMAIN receiveDomainWhichIsToBeUpdated(UPDATE_DTO dto) {
         Optional<DOMAIN> result = crudRepository.findOne(dto.getId());
         return result.orElseThrow(() -> new ResourceNotFoundException(dto.getId()));
     }
 
-    protected abstract DOMAIN receiveUpdatingDomain(DOMAIN sourceDomain, DTO dto);
+    protected abstract DOMAIN receiveUpdatingDomain(DOMAIN sourceDomain, UPDATE_DTO dto);
 
 }
