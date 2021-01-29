@@ -11,14 +11,17 @@ import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.converter.impl.DefaultTagConverter;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import com.epam.esm.service.dto.SearchCriteriaDto;
+import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertificateDto, GiftCertificate, Long>
@@ -73,7 +76,36 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
 
     @Override
     protected GiftCertificate receiveUpdatingDomain(GiftCertificate domain, GiftCertificateDto dto) {
+        if (Stream.of(dto.getPrice(), dto.getDuration(), dto.getTags()).allMatch(Objects::isNull)) {
+            throw new EmptyUpdateException();
+        }
 
-        return null; // fixme
+        if (dto.getTags() != null) {
+            // fixme
+        }
+
+//        if (dto.getPrice() != null && dto.getDuration() != null) {
+//            throw new IllegalGiftCertificateUpdate();
+//        }
+//
+//        boolean isDomainChanged;
+//        if (dto.getPrice() != null && dto.getPrice().equals(domain.getPrice())) {
+//            throw new EmptyUpdateException();
+//        } else {
+//            domain.setPrice(dto.getPrice());
+//            isDomainChanged = true;
+//        }
+//
+//        if (dto.getDuration() != null && dto.getDuration().equals(domain.getDuration())) {
+//            throw new EmptyUpdateException();
+//        } else {
+//            domain.setDuration(dto.getDuration());
+//        }
+//
+//        if (dto.getTags() == null && !isDomainChanged) {
+//            throw new EmptyUpdateException();
+//        }
+
+        return null;
     }
 }
