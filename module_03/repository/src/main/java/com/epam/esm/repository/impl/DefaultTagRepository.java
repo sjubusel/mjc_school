@@ -66,7 +66,8 @@ public class DefaultTagRepository extends GeneralCrudRepository<Tag, Long> imple
     @Override
     protected Query getUpdateQuery(Tag entity) {
         //noinspection JpaQlInspection
-        return entityManager.createQuery("UPDATE Tag tag SET tag.name=:name")
-                .setParameter("name", entity.getName());
+        return entityManager.createQuery("UPDATE Tag tag SET tag.name=:name WHERE tag.id=:id")
+                .setParameter("name", entity.getName())
+                .setParameter("id", entity.getId());
     }
 }

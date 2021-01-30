@@ -81,11 +81,13 @@ public class DefaultGiftCertificateRepository extends GeneralCrudRepository<Gift
     protected Query getUpdateQuery(GiftCertificate entity) {
         //noinspection JpaQlInspection
         return entityManager.createQuery("UPDATE GiftCertificate gs SET gs.name=:name," +
-                " gs.description=:description, gs.price=:price, gs.duration=:duration, gs.updateDate=:updateDate")
+                " gs.description=:description, gs.price=:price, gs.duration=:duration, gs.updateDate=:updateDate " +
+                "WHERE gs.id=:id")
                 .setParameter("name", entity.getName())
                 .setParameter("description", entity.getDescription())
                 .setParameter("price", entity.getPrice())
                 .setParameter("duration", entity.getDuration())
-                .setParameter("updateDate", entity.getUpdateDate());
+                .setParameter("updateDate", entity.getUpdateDate())
+                .setParameter("id", entity.getId());
     }
 }

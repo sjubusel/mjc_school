@@ -22,10 +22,10 @@ import java.util.Set;
 @SuperBuilder(setterPrefix = "set")
 @Validated
 public class GiftCertificateUpdateDto extends GeneralEntityDto<Long> {
-    @Null(message = "only price, description and tags are available for modification")
+    @Null(message = "name cannot be updated, only price, description and tags are available for modification")
     private String name;
 
-    @Null(message = "only price, description and tags are available for modification")
+    @Null(message = "description cannot be updated, only price, description and tags are available for modification")
     private String description;
 
     @DecimalMin(value = "1.0", message = "minimal value of price is 1.0+")
@@ -35,10 +35,10 @@ public class GiftCertificateUpdateDto extends GeneralEntityDto<Long> {
     @Positive(message = "duration must be positive")
     private Integer duration;
 
-    @Null(message = "only price, description and tags are available for modification")
+    @Null(message = "creation datetime cannot be updated, only price, description and tags are available for modification")
     private Instant createDate;
 
-    @Null(message = "only price, description and tags are available for modification")
+    @Null(message = "update datetime cannot be changed, only price, description and tags are available for modification")
     private Instant updateDate;
 
     private Set<@Valid TagDto> tags;
