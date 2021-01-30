@@ -22,4 +22,8 @@ public interface DefaultGiftCertificateConverter extends GeneralEntityConverter<
 
     @Override
     GiftCertificateDto convertToDto(GiftCertificate certificate);
+
+    @Mapping(target = "updateDate", expression = "java(java.time.Instant.now())")
+    GiftCertificate convertToUpdatingDomain(GiftCertificate sourceDomain);
+
 }

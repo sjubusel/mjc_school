@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
@@ -77,17 +76,4 @@ public class DefaultGiftCertificateRepository extends GeneralCrudRepository<Gift
         return criteriaQuery.select(root).where(finalPredicate);
     }
 
-    @Override
-    protected Query getUpdateQuery(GiftCertificate entity) {
-        //noinspection JpaQlInspection
-        return entityManager.createQuery("UPDATE GiftCertificate gs SET gs.name=:name," +
-                " gs.description=:description, gs.price=:price, gs.duration=:duration, gs.updateDate=:updateDate " +
-                "WHERE gs.id=:id")
-                .setParameter("name", entity.getName())
-                .setParameter("description", entity.getDescription())
-                .setParameter("price", entity.getPrice())
-                .setParameter("duration", entity.getDuration())
-                .setParameter("updateDate", entity.getUpdateDate())
-                .setParameter("id", entity.getId());
-    }
 }

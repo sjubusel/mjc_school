@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -63,11 +62,4 @@ public class DefaultTagRepository extends GeneralCrudRepository<Tag, Long> imple
         return criteriaQuery.select(root).where(nameCondition);
     }
 
-    @Override
-    protected Query getUpdateQuery(Tag entity) {
-        //noinspection JpaQlInspection
-        return entityManager.createQuery("UPDATE Tag tag SET tag.name=:name WHERE tag.id=:id")
-                .setParameter("name", entity.getName())
-                .setParameter("id", entity.getId());
-    }
 }
