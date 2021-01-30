@@ -8,7 +8,7 @@ public interface TagRepository extends CrudRepository<Tag, Long> {
 
     List<Tag> receiveTagsByGiftCertificateId(Long id);
 
-    void deleteLinkBetweenTagAndGiftCertificates(Long id);
+    void deleteLinkBetweenTagAndGiftCertificates(Tag tag);
 
     boolean exists(String uniqueConstraint);
 }

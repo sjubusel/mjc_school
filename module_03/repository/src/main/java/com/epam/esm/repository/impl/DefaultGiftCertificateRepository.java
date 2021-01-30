@@ -55,8 +55,9 @@ public class DefaultGiftCertificateRepository extends GeneralCrudRepository<Gift
     }
 
     @Override
-    public void deleteLinkBetweenGiftCertificateAndTags(Long certificateId) {
-        // fixme
+    public void deleteLinkBetweenGiftCertificateAndTags(GiftCertificate certificate) {
+        certificate.setTags(null);
+        entityManager.merge(certificate);
     }
 
     @Override

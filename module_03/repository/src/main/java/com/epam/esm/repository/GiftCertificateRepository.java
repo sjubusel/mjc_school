@@ -9,5 +9,5 @@ public interface GiftCertificateRepository extends CrudRepository<GiftCertificat
 
     void linkGiftCertificateWithTags(Long createdId, Set<Tag> updatingTags);
 
-    void deleteLinkBetweenGiftCertificateAndTags(Long certificateId);
+    void deleteLinkBetweenGiftCertificateAndTags(GiftCertificate certificate);
 }

@@ -2,7 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.model.dto.TagDto;
-import com.epam.esm.repository.CrudRepository;
+import com.epam.esm.repository.TagRepository;
 import com.epam.esm.repository.specification.JpaSpecification;
 import com.epam.esm.repository.specification.impl.TagSpecification;
 import com.epam.esm.service.TagService;
@@ -20,10 +20,13 @@ import java.util.Map;
 @Service
 public class DefaultTagService extends GeneralCrudService<TagDto, Tag, Long, TagDto> implements TagService {
 
+    private final TagRepository tagRepository;
+
     @Autowired
-    protected DefaultTagService(CrudRepository<Tag, Long> crudRepository,
+    protected DefaultTagService(TagRepository tagRepository,
                                 GeneralEntityConverter<TagDto, Tag, Long> converter) {
-        super(crudRepository, converter);
+        super(tagRepository, converter);
+        this.tagRepository = tagRepository;
     }
 
     @Override
@@ -59,6 +62,6 @@ public class DefaultTagService extends GeneralCrudService<TagDto, Tag, Long, Tag
 
     @Override
     protected void deleteAssociationsWithRelatedEntities(Tag sourceDomain) {
-        sourceDomain.getGiftCertificates().clear();
+        tagRepository.deleteLinkBetweenTagAndGiftCertificates(sourceDomain);
     }
 }

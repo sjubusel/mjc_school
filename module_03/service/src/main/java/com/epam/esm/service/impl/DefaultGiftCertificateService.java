@@ -142,7 +142,7 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
 
     @Override
     protected void deleteAssociationsWithRelatedEntities(GiftCertificate sourceDomain) {
-        sourceDomain.getTags().clear();
+        giftCertificateRepository.deleteLinkBetweenGiftCertificateAndTags(sourceDomain);
     }
 
     private void createIfNotExist(Set<Tag> tagsToLink) {

@@ -40,8 +40,10 @@ public class DefaultTagRepository extends GeneralCrudRepository<Tag, Long> imple
     }
 
     @Override
-    public void deleteLinkBetweenTagAndGiftCertificates(Long id) {
-        // fixme
+    public void deleteLinkBetweenTagAndGiftCertificates(Tag tag) {
+        tag.getGiftCertificates().forEach(giftCertificate -> giftCertificate.getTags().remove(tag));
+        tag.getGiftCertificates().clear();
+        entityManager.merge(tag);
     }
 
     @Override
