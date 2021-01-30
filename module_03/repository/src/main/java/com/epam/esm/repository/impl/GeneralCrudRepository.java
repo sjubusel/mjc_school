@@ -51,7 +51,8 @@ public abstract class GeneralCrudRepository<T extends GeneralEntity<ID>, ID exte
 
     @Override
     public boolean delete(ID id) {
-        return false;
+        entityManager.remove(findOne(id).get());
+        return true;
     }
 
     @Override

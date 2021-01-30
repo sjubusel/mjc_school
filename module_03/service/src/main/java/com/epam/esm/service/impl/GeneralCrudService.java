@@ -76,10 +76,15 @@ public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAI
         return crudRepository.update(targetDomain);
     }
 
+    @Transactional
     @Override
     public boolean delete(ID id) {
-        return false;
+        DOMAIN sourceDomain = receiveDomainWhichIsToBeUpdated(id);
+        deleteAssociationsWithRelatedEntities(sourceDomain);
+        return crudRepository.delete(id);
     }
+
+    protected abstract void deleteAssociationsWithRelatedEntities(DOMAIN sourceDomain);
 
     protected abstract JpaSpecification<DOMAIN, ID> getDataSourceSpecification(SearchCriteriaDto<DOMAIN> searchCriteria);
 

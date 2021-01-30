@@ -56,4 +56,9 @@ public class DefaultTagService extends GeneralCrudService<TagDto, Tag, Long, Tag
         uniqueConstrains.putIfAbsent("name", dto.getName());
         return uniqueConstrains;
     }
+
+    @Override
+    protected void deleteAssociationsWithRelatedEntities(Tag sourceDomain) {
+        sourceDomain.getGiftCertificates().clear();
+    }
 }
