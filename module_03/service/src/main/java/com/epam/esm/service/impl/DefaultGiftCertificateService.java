@@ -84,7 +84,9 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
 
             if (!updatingTags.isEmpty()) {
                 createIfNotExist(updatingTags);
-                giftCertificateRepository.linkGiftCertificateWithTags(sourceDomain.getId(), updatingTags);
+                Set<Tag> tags = sourceDomain.getTags();
+                tags.addAll(updatingTags);
+                giftCertificateRepository.linkGiftCertificateWithTags(sourceDomain.getId(), tags);
                 return true;
             }
         }
