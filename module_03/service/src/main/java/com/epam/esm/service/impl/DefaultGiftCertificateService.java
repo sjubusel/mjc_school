@@ -74,7 +74,7 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
             throw new IllegalGiftCertificateUpdate();
         }
 
-        GiftCertificate sourceDomain = receiveDomainWhichIsToBeUpdated(dto);
+        GiftCertificate sourceDomain = receiveDomainWhichIsToBeUpdated(dto.getId());
         boolean areAssociationsWithTagsUpdated = updateAssociationsWithTags(sourceDomain, dto);
         GiftCertificate targetDomain = receiveUpdatingDomain(sourceDomain, dto);
         checkIfUpdatingIsPossibleOrThrow(sourceDomain, targetDomain, areAssociationsWithTagsUpdated);

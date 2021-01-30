@@ -71,7 +71,7 @@ public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAI
     @Transactional
     @Override
     public boolean update(UPDATE_DTO dto) {
-        DOMAIN sourceDomain = receiveDomainWhichIsToBeUpdated(dto);
+        DOMAIN sourceDomain = receiveDomainWhichIsToBeUpdated(dto.getId());
         DOMAIN targetDomain = receiveUpdatingDomain(sourceDomain, dto);
         return crudRepository.update(targetDomain);
     }
@@ -83,9 +83,9 @@ public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAI
 
     protected abstract JpaSpecification<DOMAIN, ID> getDataSourceSpecification(SearchCriteriaDto<DOMAIN> searchCriteria);
 
-    protected DOMAIN receiveDomainWhichIsToBeUpdated(UPDATE_DTO dto) {
-        Optional<DOMAIN> result = crudRepository.findOne(dto.getId());
-        return result.orElseThrow(() -> new ResourceNotFoundException(dto.getId()));
+    protected DOMAIN receiveDomainWhichIsToBeUpdated(ID id) {
+        Optional<DOMAIN> result = crudRepository.findOne(id);
+        return result.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     protected abstract DOMAIN receiveUpdatingDomain(DOMAIN sourceDomain, UPDATE_DTO dto);
