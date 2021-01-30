@@ -5,6 +5,7 @@ import com.epam.esm.repository.CrudRepository;
 import com.epam.esm.repository.specification.JpaSpecification;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import java.io.Serializable;
 import java.util.List;
@@ -45,8 +46,7 @@ public abstract class GeneralCrudRepository<T extends GeneralEntity<ID>, ID exte
 
     @Override
     public boolean update(T entity) {
-        entityManager.merge(entity);
-        return true;
+        return getUpdateQuery(entity).executeUpdate() == 1;
     }
 
     @Override
@@ -63,4 +63,6 @@ public abstract class GeneralCrudRepository<T extends GeneralEntity<ID>, ID exte
     protected abstract CriteriaQuery<T> getCriteriaQueryReadById(ID id);
 
     protected abstract CriteriaQuery<T> getCriteriaQueryExists(Map<String, Object> uniqueConstraints);
+
+    protected abstract Query getUpdateQuery(T entity);
 }
