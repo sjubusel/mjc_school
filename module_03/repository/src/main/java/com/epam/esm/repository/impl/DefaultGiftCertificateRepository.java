@@ -52,7 +52,8 @@ public class DefaultGiftCertificateRepository extends GeneralCrudRepository<Gift
         });
 
         giftCertificate.setTags(updatingTags);
-
+        entityManager.merge(giftCertificate);
+        entityManager.detach(giftCertificate);
     }
 
     @Override
