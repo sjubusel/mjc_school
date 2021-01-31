@@ -23,8 +23,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = "tags")
-@ToString(callSuper = true, exclude = "tags")
+@EqualsAndHashCode(callSuper = true, exclude = {"tags", "orderPositions"})
+@ToString(callSuper = true, exclude = {"tags", "orderPositions"})
 @SuperBuilder(setterPrefix = "set")
 public class GiftCertificate extends GeneralEntity<Long> {
 
