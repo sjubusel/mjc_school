@@ -2,6 +2,7 @@ package com.epam.esm.repository.specification.impl;
 
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.repository.specification.JpaSpecification;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.EntityManager;
@@ -14,16 +15,12 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 @NoArgsConstructor
+@AllArgsConstructor
 public class TagSpecification implements JpaSpecification<Tag, Long> {
     private static final Integer PAGE_SIZE = 20;
 
     private String name;
     private Integer page;
-
-    public TagSpecification(String name, Integer page) {
-        this.name = name;
-        this.page = page;
-    }
 
     @Override
     public TypedQuery<Tag> toQuery(EntityManager entityManager) {
