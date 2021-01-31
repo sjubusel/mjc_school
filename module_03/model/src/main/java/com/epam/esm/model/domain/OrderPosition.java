@@ -30,4 +30,8 @@ public class OrderPosition extends GeneralEntity<Long> {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "certificate_id")
+    private GiftCertificate giftCertificate;
 }
