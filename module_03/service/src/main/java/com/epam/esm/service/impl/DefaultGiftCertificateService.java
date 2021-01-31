@@ -15,7 +15,7 @@ import com.epam.esm.service.converter.impl.DefaultTagConverter;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.EmptyUpdateException;
-import com.epam.esm.service.exception.IllegalGiftCertificateUpdate;
+import com.epam.esm.service.exception.IllegalGiftCertificateUpdateException;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,7 +71,7 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
     @Override
     public boolean update(GiftCertificateUpdateDto dto) {
         if (dto.getPrice() != null && dto.getDuration() != null) {
-            throw new IllegalGiftCertificateUpdate();
+            throw new IllegalGiftCertificateUpdateException();
         }
 
         GiftCertificate sourceDomain = receiveDomainWhichIsToBeUpdated(dto.getId());
