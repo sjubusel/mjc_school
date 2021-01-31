@@ -4,9 +4,12 @@ import com.epam.esm.model.domain.User;
 import com.epam.esm.model.dto.UserDto;
 import com.epam.esm.repository.CrudRepository;
 import com.epam.esm.repository.specification.JpaSpecification;
+import com.epam.esm.repository.specification.impl.UserSpecification;
 import com.epam.esm.service.UserService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.SearchCriteriaDto;
+import com.epam.esm.service.dto.UserSearchCriteriaDto;
+import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +36,16 @@ public class DefaultUserService extends GeneralCrudService<UserDto, User, Long, 
 
     @Override
     protected JpaSpecification<User, Long> getDataSourceSpecification(SearchCriteriaDto<User> searchCriteria) {
-        return null;
+        if (searchCriteria == null) {
+            return new UserSpecification();
+        }
+
+        if (searchCriteria.getClass() != UserSearchCriteriaDto.class) {
+            throw new IncompatibleSearchCriteriaException("Incompatible type of SearchCriteriaDto is passed");
+        }
+
+        UserSearchCriteriaDto params = (UserSearchCriteriaDto) searchCriteria;
+        return new UserSpecification(params.getPage());
     }
 
     @Override
