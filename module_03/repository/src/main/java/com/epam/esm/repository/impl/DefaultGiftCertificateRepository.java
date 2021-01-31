@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
@@ -43,7 +44,6 @@ public class DefaultGiftCertificateRepository extends GeneralCrudRepository<Gift
 
         updatingTags.forEach(tag -> {
             if (tag.getId() == null) {
-                //noinspection JpaQlInspection
                 Long tagId = entityManager.createQuery("SELECT t.id FROM Tag t WHERE t.name=:name ",
                         Long.class).setParameter("name", tag.getName()).getSingleResult();
                 tag.setId(tagId);
@@ -75,6 +75,12 @@ public class DefaultGiftCertificateRepository extends GeneralCrudRepository<Gift
                 durationCondition);
 
         return criteriaQuery.select(root).where(finalPredicate);
+    }
+
+    @Override
+    protected Query getDeleteQuery(Long idToDelete) {
+        return entityManager.createQuery("DELETE FROM GiftCertificate AS certificate WHERE certificate.id=:id")
+                .setParameter("id", idToDelete);
     }
 
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -41,9 +42,9 @@ public class DefaultTagRepository extends GeneralCrudRepository<Tag, Long> imple
 
     @Override
     public void deleteLinkBetweenTagAndGiftCertificates(Tag tag) {
-        tag.getGiftCertificates().forEach(giftCertificate -> giftCertificate.getTags().remove(tag));
-        tag.getGiftCertificates().clear();
-        entityManager.merge(tag);
+        entityManager.createNativeQuery("DELETE FROM join_certificates_tags_table WHERE tag_id=:id")
+                .setParameter("id", tag.getId())
+                .executeUpdate();
     }
 
     @Override
@@ -62,6 +63,12 @@ public class DefaultTagRepository extends GeneralCrudRepository<Tag, Long> imple
         Predicate nameCondition = criteriaBuilder.equal(root.get("name"), uniqueConstraints.get("name"));
 
         return criteriaQuery.select(root).where(nameCondition);
+    }
+
+    @Override
+    protected Query getDeleteQuery(Long idToDelete) {
+        return entityManager.createQuery("DELETE FROM Tag AS tag WHERE tag.id=:id")
+                .setParameter("id", idToDelete);
     }
 
 }
