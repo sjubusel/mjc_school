@@ -25,8 +25,8 @@ public class Order extends GeneralEntity<Long> {
     @Transient
     private BigDecimal price;
 
-    @Column(name = "purchase_date", columnDefinition = "TIMESTAMP")
-    private Instant purchaseDate;
+    @Column(name = "order_date", columnDefinition = "TIMESTAMP")
+    private Instant orderDate;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
