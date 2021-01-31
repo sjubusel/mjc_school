@@ -9,15 +9,17 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "orders")
+@ToString(callSuper = true, exclude = "orders")
 @SuperBuilder(setterPrefix = "set")
 public class User extends GeneralEntity<Long> {
 
@@ -32,4 +34,7 @@ public class User extends GeneralEntity<Long> {
 
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Order> orders;
 }
