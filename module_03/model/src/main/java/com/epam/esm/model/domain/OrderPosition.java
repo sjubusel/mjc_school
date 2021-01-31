@@ -19,8 +19,8 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = "order")
-@ToString(callSuper = true, exclude = "order")
+@EqualsAndHashCode(callSuper = true, exclude = {"order", "giftCertificate"})
+@ToString(callSuper = true, exclude = {"order", "giftCertificate"})
 @SuperBuilder(setterPrefix = "set")
 public class OrderPosition extends GeneralEntity<Long> {
 
