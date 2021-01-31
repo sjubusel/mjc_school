@@ -1,0 +1,35 @@
+package com.epam.esm.repository.impl;
+
+import com.epam.esm.model.domain.User;
+import com.epam.esm.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import java.util.Map;
+
+@Repository
+public class DefaultUserRepository extends GeneralCrudRepository<User, Long> implements UserRepository {
+
+    @Autowired
+    protected DefaultUserRepository(EntityManager entityManager) {
+        super(entityManager);
+    }
+
+    @Override
+    protected CriteriaQuery<User> getCriteriaQueryReadById(Long aLong) {
+        return null;
+    }
+
+    @Override
+    protected CriteriaQuery<User> getCriteriaQueryExists(Map<String, Object> uniqueConstraints) {
+        return null;
+    }
+
+    @Override
+    protected Query getDeleteQuery(Long aLong) {
+        return null;
+    }
+}
