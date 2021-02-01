@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.time.Instant;
 import java.util.Set;
 
 @Entity
@@ -28,4 +29,10 @@ public class Tag extends GeneralEntity<Long> {
 
     @ManyToMany(mappedBy = "tags")
     private Set<GiftCertificate> giftCertificates;
+
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
+
+    @Column(name="delete_date", columnDefinition = "TIMESTAMP")
+    private Instant deleteDate;
 }
