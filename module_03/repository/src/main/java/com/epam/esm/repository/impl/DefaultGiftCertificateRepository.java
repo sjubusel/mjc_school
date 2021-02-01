@@ -47,8 +47,11 @@ public class DefaultGiftCertificateRepository extends GeneralCrudRepository<Gift
 
         updatingTags.forEach(tag -> {
             if (tag.getId() == null) {
-                Long tagId = entityManager.createQuery("SELECT t.id FROM Tag t WHERE t.name=:name ",
-                        Long.class).setParameter("name", tag.getName()).getSingleResult();
+                Long tagId = entityManager.createQuery("SELECT t.id FROM Tag t WHERE t.name=:name " +
+                        "AND t.isDeleted=:isDeleted", Long.class)
+                        .setParameter("name", tag.getName())
+                        .setParameter("isDeleted", Boolean.FALSE)
+                        .getSingleResult();
                 tag.setId(tagId);
             }
         });
