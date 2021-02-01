@@ -1,6 +1,7 @@
 package com.epam.esm.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,6 +28,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @SuperBuilder(setterPrefix = "set")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Validated
 public class GiftCertificateDto extends GeneralEntityDto<Long> {
 
@@ -59,9 +61,10 @@ public class GiftCertificateDto extends GeneralEntityDto<Long> {
 
     private Set<@Valid TagDto> tags;
 
-    @Null
+    @Null(message = "order positions cannot be defined by users")
     private Set<OrderPositionDto> orderPositions;
 
+    @Null(message = "delete status must be null")
     private Boolean isDeleted;
 
     @Null(message = "delete date must be null")
