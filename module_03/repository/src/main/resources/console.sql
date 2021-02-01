@@ -38,25 +38,26 @@ ALTER TABLE gift_certificates_system.join_certificates_tags_table
     ADD CONSTRAINT fk__join_certificates_tags_table__certificates
         FOREIGN KEY (certificate_id) REFERENCES gift_certificates_system.certificates (id);
 
-INSERT INTO gift_certificates_system.certificates (name, description, price, duration, create_date, last_update_date)
-VALUES ('Скалодром', 'Скалодром на Партизанском', 30, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), -- 1
-       ('Одежда в подарок', 'H&M на Немиге', 300, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),    -- 2
+INSERT INTO gift_certificates_system.certificates (name, description, price, duration, create_date, last_update_date,
+                                                   is_deleted)
+VALUES ('Скалодром', 'Скалодром на Партизанском', 30, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false), -- 1
+       ('Одежда в подарок', 'H&M на Немиге', 300, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false),    -- 2
        ('Картинг', 'Картинг с самым большим треком в Республике Беларусь', 50, 5, CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP),                                                                     -- 3
+        CURRENT_TIMESTAMP, false),                                                                     -- 3
        ('Пицца за 30%', 'Скидки 30% на весь перечень продукции в сети пиццерий Pizza ', 1.5, 7, CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP),                                                                     -- 4
+        CURRENT_TIMESTAMP, false),                                                                     -- 4
        ('Мобильный телефон за старый', -- 5
         'Покупай новый флагман (мобильный телефон) за 100 рублей при сдаче более старого флагмана того же производителя',
-        200, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+        200, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false);
 
-INSERT INTO gift_certificates_system.tags (name)
-VALUES ('Развлечения'),                -- 1
-       ('Активный отдых'),             -- 2
-       ('Скидки'),                     -- 3
-       ('Продовольственные товары'),   -- 4
-       ('Непродовольственные товары'), -- 5
-       ('Техника'),                    -- 6
-       ('Мода'); -- 7
+INSERT INTO gift_certificates_system.tags (name, is_deleted)
+VALUES ('Развлечения', false),                -- 1
+       ('Активный отдых', false),             -- 2
+       ('Скидки', false),                     -- 3
+       ('Продовольственные товары', false),   -- 4
+       ('Непродовольственные товары', false), -- 5
+       ('Техника', false),                    -- 6
+       ('Мода', false); -- 7
 
 INSERT INTO gift_certificates_system.join_certificates_tags_table (tag_id, certificate_id)
 VALUES (1, 1), -- Развлечения → Скалодром
