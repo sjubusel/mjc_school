@@ -1,6 +1,5 @@
 package com.epam.esm.model.dto;
 
-import com.epam.esm.model.domain.Order;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -44,5 +43,5 @@ public class UserDto extends GeneralEntityDto<Long> {
     private String phoneNumber;
 
     @Null(message = "orders cannot be defined by users")
-    private Set<Order> orders;
+    private Set<OrderDto> orders;
 }
