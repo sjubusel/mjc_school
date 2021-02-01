@@ -32,7 +32,9 @@ public class DefaultGiftCertificateRepository extends GeneralCrudRepository<Gift
 
         Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
         root.join("tags", JoinType.LEFT);
-        criteriaQuery.where(criteriaBuilder.equal(root.get("id"), id));
+        Predicate condition = criteriaBuilder.and(criteriaBuilder.equal(root.get("id"), id),
+                criteriaBuilder.equal(root.get("isDeleted"), Boolean.FALSE));
+        criteriaQuery.where(condition);
         criteriaQuery.select(root);
 
         return criteriaQuery;
