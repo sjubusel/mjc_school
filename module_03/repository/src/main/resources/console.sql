@@ -109,3 +109,10 @@ CREATE TABLE gift_certificates_system.order_positions
     CONSTRAINT fk__order_positions__certificates
         FOREIGN KEY (certificate_id) REFERENCES gift_certificates_system.certificates (id)
 );
+
+INSERT INTO gift_certificates_system.orders (order_date, user_id)
+VALUES (CURRENT_TIMESTAMP(3), 1); -- order 1
+
+INSERT INTO gift_certificates_system.order_positions (price, order_id, certificate_id)
+VALUES (111.1, 1, 1),
+       (122.21, 1, 2);
