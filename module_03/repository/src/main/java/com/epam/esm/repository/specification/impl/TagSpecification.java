@@ -45,13 +45,16 @@ public class TagSpecification implements JpaSpecification<Tag, Long> {
     private void adjustCriteriaQuery(CriteriaBuilder criteriaBuilder, CriteriaQuery<Tag> criteriaQuery,
                                      Root<Tag> root) {
         Predicate likeCondition = null;
+        Predicate isDeletedCondition = criteriaBuilder.equal(root.get("isDeleted"), Boolean.FALSE);
+
         if (name != null) {
             likeCondition = criteriaBuilder.like(root.get("name"), "%" + name + "%");
         }
         if (likeCondition != null) {
-            criteriaQuery.select(root).where(likeCondition);
+            Predicate condition = criteriaBuilder.and(likeCondition, isDeletedCondition);
+            criteriaQuery.select(root).where(condition);
         } else {
-            criteriaQuery.select(root);
+            criteriaQuery.select(root).where(isDeletedCondition);
         }
 
         if (page == null) {
