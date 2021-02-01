@@ -20,13 +20,10 @@ import java.util.Map;
 @Service
 public class DefaultTagService extends GeneralCrudService<TagDto, Tag, Long, TagDto> implements TagService {
 
-    private final TagRepository tagRepository;
-
     @Autowired
     protected DefaultTagService(TagRepository tagRepository,
                                 GeneralEntityConverter<TagDto, Tag, Long> converter) {
         super(tagRepository, converter);
-        this.tagRepository = tagRepository;
     }
 
     @Override
@@ -58,10 +55,5 @@ public class DefaultTagService extends GeneralCrudService<TagDto, Tag, Long, Tag
         Map<String, Object> uniqueConstrains = new HashMap<>();
         uniqueConstrains.putIfAbsent("name", dto.getName());
         return uniqueConstrains;
-    }
-
-    @Override
-    protected void deleteAssociationsWithRelatedEntitiesIfNecessary(Tag sourceDomain) {
-        tagRepository.deleteLinkBetweenTagAndGiftCertificates(sourceDomain);
     }
 }

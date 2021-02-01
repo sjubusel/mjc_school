@@ -84,7 +84,8 @@ public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAI
         return crudRepository.delete(id);
     }
 
-    protected abstract void deleteAssociationsWithRelatedEntitiesIfNecessary(DOMAIN sourceDomain);
+    protected void deleteAssociationsWithRelatedEntitiesIfNecessary(DOMAIN sourceDomain) {
+    }
 
     protected abstract JpaSpecification<DOMAIN, ID> getDataSourceSpecification(SearchCriteriaDto<DOMAIN> searchCriteria);
 
