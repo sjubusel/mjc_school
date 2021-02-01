@@ -29,7 +29,9 @@ public class DefaultTagRepository extends GeneralCrudRepository<Tag, Long> imple
         CriteriaQuery<Tag> criteriaQuery = criteriaBuilder.createQuery(Tag.class);
 
         Root<Tag> root = criteriaQuery.from(Tag.class);
-        criteriaQuery.where(criteriaBuilder.equal(root.get("id"), id));
+        Predicate condition = criteriaBuilder.and(criteriaBuilder.equal(root.get("id"), id),
+                criteriaBuilder.equal(root.get("isDeleted"), Boolean.FALSE));
+        criteriaQuery.where(condition);
         criteriaQuery.select(root);
 
         return criteriaQuery;
