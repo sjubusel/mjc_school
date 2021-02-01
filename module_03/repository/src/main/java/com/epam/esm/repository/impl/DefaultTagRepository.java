@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +72,10 @@ public class DefaultTagRepository extends GeneralCrudRepository<Tag, Long> imple
 
     @Override
     protected Query getDeleteQuery(Long idToDelete) {
-        return entityManager.createQuery("DELETE FROM Tag AS tag WHERE tag.id=:id")
+        return entityManager.createQuery("UPDATE Tag AS tag SET tag.isDeleted=:isDeleted, " +
+                "tag.deleteDate=:deleteDate WHERE tag.id=:id")
+                .setParameter("isDeleted", Boolean.TRUE)
+                .setParameter("deleteDate", Instant.now())
                 .setParameter("id", idToDelete);
     }
 
