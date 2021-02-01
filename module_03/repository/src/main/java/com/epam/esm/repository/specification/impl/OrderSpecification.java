@@ -32,7 +32,7 @@ public class OrderSpecification implements JpaSpecification<Order, Long> {
         Join<Object, Object> positions = root.join("orderPositions", JoinType.INNER);
         positions.join("giftCertificate", JoinType.INNER);
 
-        criteriaQuery.select(root);
+        criteriaQuery.select(root).distinct(true);
 
         if (page == null) {
             page = 1;
