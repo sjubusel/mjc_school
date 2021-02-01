@@ -1,6 +1,5 @@
 package com.epam.esm.model.dto;
 
-import com.epam.esm.model.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,7 +23,7 @@ public class OrderDto extends GeneralEntityDto<Long> {
 
     private Instant orderDate;
 
-    private User user;
+    private UserDto user;
 
     private Set<OrderPositionDto> orderPositions;
 }
