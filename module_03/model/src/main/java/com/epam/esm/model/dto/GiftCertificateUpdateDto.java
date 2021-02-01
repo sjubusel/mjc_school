@@ -42,4 +42,10 @@ public class GiftCertificateUpdateDto extends GeneralEntityDto<Long> {
     private Instant updateDate;
 
     private Set<@Valid TagDto> tags;
+
+    @Null(message = "delete status must be null")
+    private Boolean isDeleted;
+
+    @Null(message = "delete date must be null")
+    private Instant deleteDate;
 }
