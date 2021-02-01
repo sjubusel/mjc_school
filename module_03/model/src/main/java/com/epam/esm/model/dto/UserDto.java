@@ -1,5 +1,6 @@
 package com.epam.esm.model.dto;
 
+import com.epam.esm.model.domain.Order;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +12,9 @@ import lombok.experimental.SuperBuilder;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -39,4 +42,7 @@ public class UserDto extends GeneralEntityDto<Long> {
             message = "phone number should be of the following format: " +
                     "+{country code} ({inner country code}) XXX-XX-XX")
     private String phoneNumber;
+
+    @Null(message = "orders cannot be defined by users")
+    private Set<Order> orders;
 }
