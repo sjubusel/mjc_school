@@ -21,8 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<UserDto> read(@RequestBody(required = false) @Valid
-                                                 UserSearchCriteriaDto criteriaDto) {
+    public List<UserDto> read(@RequestBody(required = false) @Valid UserSearchCriteriaDto criteriaDto) {
         return userService.query(criteriaDto);
     }
 
