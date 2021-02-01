@@ -1,7 +1,8 @@
 package com.epam.esm.web.controller;
 
-import com.epam.esm.model.dto.UserDto;
-import com.epam.esm.service.dto.UserSearchCriteriaDto;
+import com.epam.esm.model.dto.OrderDto;
+import com.epam.esm.service.OrderService;
+import com.epam.esm.service.dto.OrderSearchCriteriaDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +16,17 @@ import java.util.List;
 @RequestMapping("/orders")
 @Validated
 @RequiredArgsConstructor
-public class OrdersController {
+public class OrderController {
 
     private final OrderService orderService;
 
     @GetMapping
-    public List<UserDto> read(@RequestBody(required = false) @Valid UserSearchCriteriaDto criteriaDto) {
+    public List<OrderDto> read(@RequestBody(required = false) @Valid OrderSearchCriteriaDto criteriaDto) {
         return orderService.query(criteriaDto);
     }
 
     @GetMapping("/{id}")
-    public UserDto readOne(@PathVariable("id") @Positive @Min(1) Long id) {
+    public OrderDto readOne(@PathVariable("id") @Positive @Min(1) Long id) {
         return orderService.findOne(id);
     }
 }
