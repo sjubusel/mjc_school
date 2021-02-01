@@ -13,6 +13,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.time.Instant;
 import java.util.Map;
 import java.util.Set;
 
@@ -82,7 +83,10 @@ public class DefaultGiftCertificateRepository extends GeneralCrudRepository<Gift
 
     @Override
     protected Query getDeleteQuery(Long idToDelete) {
-        return entityManager.createQuery("DELETE FROM GiftCertificate AS certificate WHERE certificate.id=:id")
+        return entityManager.createQuery("UPDATE GiftCertificate AS gc SET gc.isDeleted=:isDeleted, " +
+                "gc.deleteDate=:deleteDate WHERE gc.id=:id")
+                .setParameter("isDeleted", Boolean.TRUE)
+                .setParameter("deleteDate", Instant.now())
                 .setParameter("id", idToDelete);
     }
 
