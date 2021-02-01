@@ -4,6 +4,7 @@ import com.epam.esm.model.domain.Order;
 import com.epam.esm.model.dto.OrderDto;
 import com.epam.esm.repository.CrudRepository;
 import com.epam.esm.repository.specification.JpaSpecification;
+import com.epam.esm.repository.specification.impl.OrderSpecification;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.OrderSearchCriteriaDto;
