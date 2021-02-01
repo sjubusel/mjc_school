@@ -80,11 +80,11 @@ public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAI
     @Override
     public boolean delete(ID id) {
         DOMAIN sourceDomain = receiveDomainWhichIsToBeUpdated(id);
-        deleteAssociationsWithRelatedEntities(sourceDomain);
+        deleteAssociationsWithRelatedEntitiesIfNecessary(sourceDomain);
         return crudRepository.delete(id);
     }
 
-    protected abstract void deleteAssociationsWithRelatedEntities(DOMAIN sourceDomain);
+    protected abstract void deleteAssociationsWithRelatedEntitiesIfNecessary(DOMAIN sourceDomain);
 
     protected abstract JpaSpecification<DOMAIN, ID> getDataSourceSpecification(SearchCriteriaDto<DOMAIN> searchCriteria);
 

@@ -141,7 +141,7 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
     }
 
     @Override
-    protected void deleteAssociationsWithRelatedEntities(GiftCertificate sourceDomain) {
+    protected void deleteAssociationsWithRelatedEntitiesIfNecessary(GiftCertificate sourceDomain) {
         giftCertificateRepository.deleteLinkBetweenGiftCertificateAndTags(sourceDomain);
     }
 

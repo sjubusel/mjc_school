@@ -30,7 +30,7 @@ public class DefaultUserService extends GeneralCrudService<UserDto, User, Long, 
     }
 
     @Override
-    protected void deleteAssociationsWithRelatedEntities(User sourceDomain) {
+    protected void deleteAssociationsWithRelatedEntitiesIfNecessary(User sourceDomain) {
         throw new RuntimeException("this method has not been implemented yet, because of task requirements");
     }
 

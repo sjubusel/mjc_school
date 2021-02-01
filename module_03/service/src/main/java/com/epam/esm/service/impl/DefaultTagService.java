@@ -61,7 +61,7 @@ public class DefaultTagService extends GeneralCrudService<TagDto, Tag, Long, Tag
     }
 
     @Override
-    protected void deleteAssociationsWithRelatedEntities(Tag sourceDomain) {
+    protected void deleteAssociationsWithRelatedEntitiesIfNecessary(Tag sourceDomain) {
         tagRepository.deleteLinkBetweenTagAndGiftCertificates(sourceDomain);
     }
 }
