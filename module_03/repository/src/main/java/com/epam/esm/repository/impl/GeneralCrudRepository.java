@@ -57,6 +57,10 @@ public abstract class GeneralCrudRepository<T extends GeneralEntity<ID>, ID exte
 
     @Override
     public boolean exists(Map<String, Object> uniqueConstraints) {
+        if (uniqueConstraints.isEmpty()) {
+            return true;
+        }
+
         List<T> resultList = entityManager.createQuery(getCriteriaQueryExists(uniqueConstraints)).getResultList();
         return !resultList.isEmpty();
     }
