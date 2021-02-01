@@ -6,7 +6,12 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Set;
@@ -17,13 +22,18 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @SuperBuilder(setterPrefix = "set")
+@Validated
 public class OrderDto extends GeneralEntityDto<Long> {
 
+    @Null(message = "order price cannot be defined by users")
     private BigDecimal price;
 
+    @Null(message = "order date cannot be defined by users")
     private Instant orderDate;
 
+    @NotNull(message = "user's id must be specified")
     private UserDto user;
 
-    private Set<OrderPositionDto> orderPositions;
+    @NotEmpty(message = "order positions must not be empty")
+    private Set<@Valid OrderPositionDto> orderPositions;
 }

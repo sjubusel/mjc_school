@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 
 @Data
@@ -19,9 +21,12 @@ import java.math.BigDecimal;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderPositionDto extends GeneralEntityDto<Long> {
 
+    @Null(message = "price of an order position cannot be specified by users")
     private BigDecimal price;
 
+    @Null(message = "connected order is excess in an order position")
     private OrderDto order;
 
+    @NotNull(message = "gift-certificate's id must be specified")
     private GiftCertificateDto giftCertificate;
 }
