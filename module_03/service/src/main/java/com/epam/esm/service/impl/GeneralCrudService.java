@@ -12,6 +12,7 @@ import com.epam.esm.service.exception.ResourceNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,6 +21,8 @@ import java.util.stream.Collectors;
 public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAIN extends GeneralEntity<ID>,
         ID extends Serializable, UPDATE_DTO extends GeneralEntityDto<ID>> implements CrudService<DTO, DOMAIN, ID,
         UPDATE_DTO> {
+
+    protected static final Map<String, Object> EMPTY_UNIQUE_CONSTRAINTS = new HashMap<>();
 
     protected final CrudRepository<DOMAIN, ID> crudRepository;
     protected final GeneralEntityConverter<DTO, DOMAIN, ID> converter;

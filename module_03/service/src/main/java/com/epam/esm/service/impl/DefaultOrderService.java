@@ -26,7 +26,7 @@ public class DefaultOrderService extends GeneralCrudService<OrderDto, Order, Lon
 
     @Override
     protected Map<String, Object> receiveUniqueConstraints(OrderDto dto) {
-        return null;
+        return EMPTY_UNIQUE_CONSTRAINTS;
     }
 
     @Override
