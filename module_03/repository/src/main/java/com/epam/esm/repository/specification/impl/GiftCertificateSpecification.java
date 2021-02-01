@@ -53,6 +53,7 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
         Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
 
         if (Stream.of(tags, namePart, descriptionPart, sortParams, page).allMatch(Objects::isNull)) {
+            criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("isDeleted"), Boolean.FALSE));
             TypedQuery<GiftCertificate> query = entityManager.createQuery(criteriaQuery);
             query.setFirstResult(0);
             query.setMaxResults(PAGE_SIZE);
