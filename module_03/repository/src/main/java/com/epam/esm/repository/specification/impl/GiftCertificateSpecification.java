@@ -124,20 +124,21 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
         }
     }
 
-    private Predicate receiveFinalPredicate(CriteriaBuilder criteriaBuilder) {
-        Predicate finalPredicate = null;
-        if (whereConditions != null && whereConditions.size() > 0) {
-            if (whereConditions.size() == 1) {
-                return whereConditions.get(0);
-            }
+    private Predicate receiveFinalPredicate(CriteriaBuilder criteriaBuilder, Root<GiftCertificate> root) {
+        createWhereConditionsIfNotExists();
+        whereConditions.add(criteriaBuilder.equal(root.get("isDeleted"), Boolean.FALSE));
 
-            finalPredicate = criteriaBuilder.and(whereConditions.get(0), whereConditions.get(1));
-            if (whereConditions.size() >= 3) {
-                for (int i = 2; i < whereConditions.size(); i++) {
-                    finalPredicate = criteriaBuilder.and(finalPredicate, whereConditions.get(i));
-                }
+        if (whereConditions.size() == 1) {
+            return whereConditions.get(0);
+        }
+
+        Predicate finalPredicate = criteriaBuilder.and(whereConditions.get(0), whereConditions.get(1));
+        if (whereConditions.size() >= 3) {
+            for (int i = 2; i < whereConditions.size(); i++) {
+                finalPredicate = criteriaBuilder.and(finalPredicate, whereConditions.get(i));
             }
         }
+
         return finalPredicate;
     }
 
@@ -148,7 +149,7 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
     private void adjustCriteriaQuery(CriteriaBuilder criteriaBuilder, CriteriaQuery<GiftCertificate> criteriaQuery,
                                      Root<GiftCertificate> root) {
         criteriaQuery.select(root);
-        Predicate finalPredicate = receiveFinalPredicate(criteriaBuilder);
+        Predicate finalPredicate = receiveFinalPredicate(criteriaBuilder, root);
         criteriaQuery.where(finalPredicate);
         if (orderConditions != null) {
             criteriaQuery.orderBy(orderConditions);
