@@ -59,7 +59,7 @@ public class GiftCertificate extends GeneralEntity<Long> {
     private Set<OrderPosition> orderPositions;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
     @Column(name="delete_date", columnDefinition = "TIMESTAMP")
     private Instant deleteDate;
