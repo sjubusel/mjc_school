@@ -28,9 +28,9 @@ public class DefaultOrderRepository extends GeneralCrudRepository<Order, Long> i
         CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
 
         Root<Order> root = criteriaQuery.from(Order.class);
-        root.join("user", JoinType.LEFT);
-        Join<Object, Object> positions = root.join("orderPositions", JoinType.LEFT);
+        Join<Object, Object> positions = root.join("orderPositions", JoinType.INNER);
         positions.join("giftCertificate", JoinType.INNER);
+        root.join("user", JoinType.INNER);
 
         criteriaQuery.where(criteriaBuilder.equal(root.get("id"), idToFind));
         criteriaQuery.select(root);

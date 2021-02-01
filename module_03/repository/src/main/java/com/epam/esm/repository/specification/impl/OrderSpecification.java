@@ -9,6 +9,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 @NoArgsConstructor
@@ -25,6 +27,11 @@ public class OrderSpecification implements JpaSpecification<Order, Long> {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
         Root<Order> root = criteriaQuery.from(Order.class);
+
+        root.join("user", JoinType.INNER);
+        Join<Object, Object> positions = root.join("orderPositions", JoinType.INNER);
+        positions.join("giftCertificate", JoinType.INNER);
+
         criteriaQuery.select(root);
 
         if (page == null) {
