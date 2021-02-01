@@ -168,7 +168,8 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
         if (domainTags != null) {
             newTags = dto.getTags().stream()
                     .filter(tagDto -> domainTags.stream()
-                            .noneMatch(tag -> tag.getName().equals(tagDto.getName())))
+                            .noneMatch(tag -> tag.getName().equals(tagDto.getName())
+                                    && tag.getIsDeleted().equals(Boolean.FALSE)))
                     .collect(Collectors.toSet());
         } else {
             newTags = dto.getTags();
