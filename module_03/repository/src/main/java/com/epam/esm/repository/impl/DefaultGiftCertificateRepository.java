@@ -73,8 +73,9 @@ public class DefaultGiftCertificateRepository extends GeneralCrudRepository<Gift
                 uniqueConstraints.get("description"));
         Predicate priceCondition = criteriaBuilder.equal(root.get("price"), uniqueConstraints.get("price"));
         Predicate durationCondition = criteriaBuilder.equal(root.get("duration"), uniqueConstraints.get("duration"));
+        Predicate existsCondition = criteriaBuilder.equal(root.get("isDeleted"), Boolean.FALSE);
         Predicate finalPredicate = criteriaBuilder.and(nameCondition, descriptionCondition, priceCondition,
-                durationCondition);
+                durationCondition, existsCondition);
 
         return criteriaQuery.select(root).where(finalPredicate);
     }
