@@ -11,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
+import java.time.Instant;
 import java.util.Set;
 
 @Data
@@ -27,6 +28,12 @@ public class TagDto extends GeneralEntityDto<Long> {
             "characters without punctuation marks")
     private String name;
 
-    @Null
+    @Null(message = "gift certificates cannot be defined by users")
     private Set<GiftCertificateDto> giftCertificates;
+
+    @Null(message = "tag status cannot be defined by users")
+    private Boolean isDeleted;
+
+    @Null(message = "delete date cannot be defined by users")
+    private Instant deleteDate;
 }
