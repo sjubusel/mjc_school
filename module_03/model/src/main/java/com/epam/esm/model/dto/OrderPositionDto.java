@@ -1,7 +1,5 @@
 package com.epam.esm.model.dto;
 
-import com.epam.esm.model.domain.GiftCertificate;
-import com.epam.esm.model.domain.Order;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,7 +21,7 @@ public class OrderPositionDto extends GeneralEntityDto<Long> {
 
     private BigDecimal price;
 
-    private Order order;
+    private OrderDto order;
 
-    private GiftCertificate giftCertificate;
+    private GiftCertificateDto giftCertificate;
 }
