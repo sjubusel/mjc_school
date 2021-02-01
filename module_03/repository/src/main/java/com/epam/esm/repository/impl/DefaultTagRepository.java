@@ -63,8 +63,10 @@ public class DefaultTagRepository extends GeneralCrudRepository<Tag, Long> imple
         Root<Tag> root = criteriaQuery.from(Tag.class);
 
         Predicate nameCondition = criteriaBuilder.equal(root.get("name"), uniqueConstraints.get("name"));
+        Predicate existsCondition = criteriaBuilder.equal(root.get("isDeleted"), Boolean.FALSE);
+        Predicate finalCondition = criteriaBuilder.and(nameCondition, existsCondition);
 
-        return criteriaQuery.select(root).where(nameCondition);
+        return criteriaQuery.select(root).where(finalCondition);
     }
 
     @Override
