@@ -7,7 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 import java.util.Map;
 
 @Repository
@@ -19,8 +23,19 @@ public class DefaultOrderRepository extends GeneralCrudRepository<Order, Long> i
     }
 
     @Override
-    protected CriteriaQuery<Order> getCriteriaQueryReadById(Long aLong) {
-        return null;
+    protected CriteriaQuery<Order> getCriteriaQueryReadById(Long idToFind) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
+
+        Root<Order> root = criteriaQuery.from(Order.class);
+        root.join("user", JoinType.LEFT);
+        Join<Object, Object> positions = root.join("orderPositions", JoinType.LEFT);
+        positions.join("giftCertificate", JoinType.INNER);
+
+        criteriaQuery.where(criteriaBuilder.equal(root.get("id"), idToFind));
+        criteriaQuery.select(root);
+
+        return criteriaQuery;
     }
 
     @Override
