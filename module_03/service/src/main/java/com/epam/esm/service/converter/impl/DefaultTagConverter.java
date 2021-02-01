@@ -6,11 +6,15 @@ import com.epam.esm.service.converter.GeneralEntityConverter;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface DefaultTagConverter extends GeneralEntityConverter<TagDto, Tag, Long> {
 
-    @Mapping(target = "giftCertificates", ignore = true)
+    @Mappings({
+            @Mapping(target = "isDeleted", source = "isDeleted", defaultExpression = "java(java.lang.Boolean.FALSE)"),
+            @Mapping(target = "giftCertificates", ignore = true)
+    })
     @Override
     Tag convertToDomain(TagDto dto);
 
