@@ -14,6 +14,7 @@ import javax.persistence.criteria.Root;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserSpecification implements JpaSpecification<User, Long> {
+
     private static final Integer PAGE_SIZE = 20;
 
     private Integer page;
