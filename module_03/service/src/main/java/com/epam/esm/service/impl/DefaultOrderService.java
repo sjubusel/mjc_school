@@ -6,7 +6,9 @@ import com.epam.esm.repository.CrudRepository;
 import com.epam.esm.repository.specification.JpaSpecification;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
+import com.epam.esm.service.dto.OrderSearchCriteriaDto;
 import com.epam.esm.service.dto.SearchCriteriaDto;
+import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,16 @@ public class DefaultOrderService extends GeneralCrudService<OrderDto, Order, Lon
 
     @Override
     protected JpaSpecification<Order, Long> getDataSourceSpecification(SearchCriteriaDto<Order> searchCriteria) {
-        return null;
+        if (searchCriteria == null) {
+            return new OrderSpecification();
+        }
+
+        if (searchCriteria.getClass() != OrderSearchCriteriaDto.class) {
+            throw new IncompatibleSearchCriteriaException("Incompatible type of SearchCriteriaDto is passed");
+        }
+
+        OrderSearchCriteriaDto params = (OrderSearchCriteriaDto) searchCriteria;
+        return new OrderSpecification(params.getPage());
     }
 
     @Override
