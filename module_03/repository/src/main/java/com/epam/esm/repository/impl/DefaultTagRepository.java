@@ -63,18 +63,6 @@ public class DefaultTagRepository extends GeneralCrudRepository<Tag, Long> imple
     }
 
     @Override
-    public List<Tag> receiveTagsByGiftCertificateId(Long id) {
-        return null; // fixme
-    }
-
-    @Override
-    public void deleteLinkBetweenTagAndGiftCertificates(Tag tag) {
-        entityManager.createNativeQuery("DELETE FROM join_certificates_tags_table WHERE tag_id=:id")
-                .setParameter("id", tag.getId())
-                .executeUpdate();
-    }
-
-    @Override
     public boolean exists(String uniqueConstraint) {
         HashMap<String, Object> uniqueConstraints = new HashMap<>();
         uniqueConstraints.putIfAbsent("name", uniqueConstraint);
