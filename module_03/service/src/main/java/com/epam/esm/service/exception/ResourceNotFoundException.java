@@ -1,13 +1,18 @@
 package com.epam.esm.service.exception;
 
+import lombok.Getter;
+
 import java.io.Serializable;
 
+@Getter
 public class ResourceNotFoundException extends ServiceException {
+    private Long resourceId;
+
     public ResourceNotFoundException() {
     }
 
     public <T extends Serializable> ResourceNotFoundException(T resourceId){
-        super(String.format("Requested resource is not found (resource's id = %s)", resourceId));
+        this.resourceId = ((Long) resourceId);
     }
 
     public ResourceNotFoundException(String message) {
