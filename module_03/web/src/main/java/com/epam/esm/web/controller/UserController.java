@@ -2,6 +2,7 @@ package com.epam.esm.web.controller;
 
 import com.epam.esm.model.dto.OrderDto;
 import com.epam.esm.model.dto.UserDto;
+import com.epam.esm.service.OrderService;
 import com.epam.esm.service.UserService;
 import com.epam.esm.service.dto.UserSearchCriteriaDto;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -20,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final OrderController orderController;
+    private final OrderService orderService;
     private final UserService userService;
 
     @GetMapping
@@ -37,6 +39,8 @@ public class UserController {
     public ResponseEntity<OrderDto> createOrder(@PathVariable("id") @Positive @Min(1) Long id,
                                                 @RequestBody @Valid OrderDto orderDto) {
         orderDto.getUser().setId(id);
-        return orderController.create(orderDto);
+        Long createdId = orderService.create(orderDto);
+        URI location = URI.create(String.format("/orders/%s", createdId));
+        return ResponseEntity.created(location).body(orderService.findOne(createdId));
     }
 }
