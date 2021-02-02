@@ -16,6 +16,8 @@ import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 /**
  * a class which performs REST's CRUD operations on a resource called "Gift-certificates"
  */
@@ -64,7 +66,12 @@ public class GiftCertificateController {
      */
     @GetMapping("/{id}")
     public GiftCertificateDto readOne(@PathVariable("id") @Positive @Min(1) Long id) {
-        return giftCertificateService.findOne(id);
+        GiftCertificateDto giftCertificate = giftCertificateService.findOne(id);
+
+        applyHateoasActionsForSeparateGiftCertificate(giftCertificate);
+        applyHateoasActionsForTagsThatArePartOfSeparateGiftCertificate(giftCertificate);
+
+        return giftCertificate;
     }
 
     /**
@@ -95,5 +102,22 @@ public class GiftCertificateController {
     public ResponseEntity<String> delete(@PathVariable("id") @Positive @Min(1) Long id) {
         giftCertificateService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    private void applyHateoasActionsForSeparateGiftCertificate(GiftCertificateDto giftCertificate) {
+        giftCertificate.add(linkTo(GiftCertificateController.class).slash(giftCertificate.getId()).withSelfRel());
+        giftCertificate.add(linkTo(GiftCertificateController.class).withRel("POST: create a new gift-certificate"));
+        giftCertificate.add(linkTo(GiftCertificateController.class).slash(giftCertificate.getId())
+                .withRel("PATCH: update a current gift-certificate"));
+        giftCertificate.add(linkTo(GiftCertificateController.class).slash(giftCertificate.getId())
+                .withRel("DELETE: delete a current gift-certificate"));
+        giftCertificate.add(linkTo(GiftCertificateController.class)
+                .withRel("GET: receive all current gift-certificate"));
+    }
+
+    private void applyHateoasActionsForTagsThatArePartOfSeparateGiftCertificate(GiftCertificateDto giftCertificate) {
+        giftCertificate.getTags().forEach(
+                tagDto -> tagDto.add(linkTo(TagController.class).slash(tagDto.getId()).withSelfRel())
+        );
     }
 }
