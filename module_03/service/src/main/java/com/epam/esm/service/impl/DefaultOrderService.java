@@ -15,6 +15,7 @@ import com.epam.esm.service.OrderService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.OrderSearchCriteriaDto;
 import com.epam.esm.service.dto.SearchCriteriaDto;
+import com.epam.esm.service.exception.IllegalRequestException;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import com.epam.esm.service.exception.InconsistentCreateDtoException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
@@ -121,5 +122,15 @@ public class DefaultOrderService extends GeneralCrudService<OrderDto, Order, Lon
                 })
                 .map(giftCertificate -> new OrderPosition(giftCertificate.getPrice(), orderToCreate, giftCertificate))
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public OrderDto findOrderByIdIfBelongsToUser(Long orderId, Long userId) {
+        User user = userRepository.findOne(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
+        Order order = crudRepository.findOne(orderId).orElseThrow(() -> new ResourceNotFoundException(userId));
+        if (!order.getUser().getId().equals(user.getId())) {
+            throw new IllegalRequestException(); // fixme
+        }
+        return converter.convertToDto(order);
     }
 }

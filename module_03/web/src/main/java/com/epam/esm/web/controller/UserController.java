@@ -51,4 +51,11 @@ public class UserController {
         criteriaDto.setUserId(id);
         return orderService.query(criteriaDto);
     }
+
+    @GetMapping("/{userId}/orders/{orderId}")
+    public OrderDto readOrder(@PathVariable("userId") @Positive @Min(1) Long userId,
+                                    @PathVariable("orderId") @Positive @Min(1) Long orderId) {
+
+        return orderService.findOrderByIdIfBelongsToUser(orderId, userId);
+    }
 }

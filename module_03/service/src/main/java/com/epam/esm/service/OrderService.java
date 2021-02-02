@@ -5,4 +5,5 @@ import com.epam.esm.model.dto.OrderDto;
 
 public interface OrderService extends CrudService<OrderDto, Order, Long, OrderDto> {
 
+    OrderDto findOrderByIdIfBelongsToUser(Long orderId, Long userId);
 }
