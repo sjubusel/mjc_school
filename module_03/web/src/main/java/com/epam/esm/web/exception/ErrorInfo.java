@@ -12,6 +12,5 @@ import lombok.NoArgsConstructor;
 public class ErrorInfo {
     private Long errorCode;
     private String errorMessage;
-    private String exceptionName;
     private String uri;
 }
