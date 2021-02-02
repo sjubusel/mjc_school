@@ -2,6 +2,7 @@ package com.epam.esm.web.exception;
 
 import com.epam.esm.service.exception.DuplicateResourceException;
 import com.epam.esm.service.exception.EmptyUpdateException;
+import com.epam.esm.service.exception.IllegalRequestException;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import com.epam.esm.service.exception.InconsistentCreateDtoException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
@@ -44,6 +45,7 @@ public class GeneralExceptionHandler {
             = "http.request.method.not.supported.exception";
     public static final String OTHER_EXCEPTIONS = "other.exceptions";
     private static final String INCONSISTENT_CREATE_DTO_EXCEPTION = "inconsistent.create.dto.exception";
+    private static final String ILLEGAL_REQUEST_EXCEPTION = "illegal.request.exception";
 
     private final MessageSource messageSource;
 
@@ -169,13 +171,23 @@ public class GeneralExceptionHandler {
 
     @ExceptionHandler(InconsistentCreateDtoException.class)
     protected ResponseEntity<Object> handleInconsistentCreateDtoException(InconsistentCreateDtoException e,
-                                                                         HttpServletRequest request,
-                                                                         Locale locale) {
+                                                                          HttpServletRequest request,
+                                                                          Locale locale) {
         String errorMessage = messageSource.getMessage(INCONSISTENT_CREATE_DTO_EXCEPTION,
                 new Object[]{e.getMessage()}, locale);
         ErrorInfo errorInfo = generateStandardErrorInfo(40070L, errorMessage, e, request.getRequestURI());
         log.error("Inconsistent create data transfer object is passed → {}; exception → {}", errorInfo, e);
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalRequestException.class)
+    protected ResponseEntity<Object> handleIllegalRequestException(IllegalRequestException e,
+                                                                   HttpServletRequest request,
+                                                                   Locale locale) {
+        String errorMessage = messageSource.getMessage(ILLEGAL_REQUEST_EXCEPTION, null, locale);
+        ErrorInfo errorInfo = generateStandardErrorInfo(40310L, errorMessage, e, request.getRequestURI());
+        log.error("Resource cannot be reached due to restrictions → {}; exception → {}", errorInfo, e);
+        return new ResponseEntity<>(errorInfo, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(Exception.class)
