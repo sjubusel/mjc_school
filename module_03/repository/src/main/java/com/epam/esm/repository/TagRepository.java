@@ -11,4 +11,6 @@ public interface TagRepository extends CrudRepository<Tag, Long> {
     void deleteLinkBetweenTagAndGiftCertificates(Tag tag);
 
     boolean exists(String uniqueConstraint);
+
+    List<Tag> receiveMostWidelyUsedTagOfUserWithMaxCostOfOrders();
 }

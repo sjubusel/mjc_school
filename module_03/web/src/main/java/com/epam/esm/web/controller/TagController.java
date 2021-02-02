@@ -93,4 +93,9 @@ public class TagController {
         tagService.delete(id);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/main_tag")
+    public List<TagDto> receiveMainTag(){
+        return tagService.receiveMostWidelyUsedTagOfUserWithMaxCostOfOrders();
+    }
 }

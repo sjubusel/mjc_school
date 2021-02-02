@@ -15,15 +15,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class DefaultTagService extends GeneralCrudService<TagDto, Tag, Long, TagDto> implements TagService {
+
+    private final TagRepository tagRepository;
 
     @Autowired
     protected DefaultTagService(TagRepository tagRepository,
                                 GeneralEntityConverter<TagDto, Tag, Long> converter) {
         super(tagRepository, converter);
+        this.tagRepository = tagRepository;
+    }
+
+    @Override
+    public List<TagDto> receiveMostWidelyUsedTagOfUserWithMaxCostOfOrders() {
+        return tagRepository.receiveMostWidelyUsedTagOfUserWithMaxCostOfOrders().stream()
+                .map(converter::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
