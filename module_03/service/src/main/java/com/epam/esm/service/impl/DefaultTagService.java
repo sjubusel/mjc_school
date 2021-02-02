@@ -56,7 +56,7 @@ public class DefaultTagService extends GeneralCrudService<TagDto, Tag, Long, Tag
     protected Tag receiveUpdatingDomain(Tag sourceDomain, TagDto dto) {
         String newName = dto.getName();
         if (newName == null || newName.equals(sourceDomain.getName())) {
-            throw new EmptyUpdateException();
+            throw new EmptyUpdateException(sourceDomain.toString());
         }
         sourceDomain.setName(newName);
         return sourceDomain;

@@ -149,7 +149,7 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
     private void checkIfUpdatingIsPossibleOrThrow(GiftCertificate sourceDomain, GiftCertificate targetDomain,
                                                   boolean areAssociationsUpdated) {
         if (areGiftCertificatesEqual(sourceDomain, targetDomain) && !areAssociationsUpdated) {
-            throw new EmptyUpdateException();
+            throw new EmptyUpdateException(sourceDomain.toString());
         }
     }
 
