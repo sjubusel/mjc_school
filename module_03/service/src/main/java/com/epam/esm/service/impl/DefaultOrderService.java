@@ -81,7 +81,7 @@ public class DefaultOrderService extends GeneralCrudService<OrderDto, Order, Lon
         }
 
         OrderSearchCriteriaDto params = (OrderSearchCriteriaDto) searchCriteria;
-        return new OrderSpecification(params.getPage());
+        return new OrderSpecification(params.getPage(), params.getUserId());
     }
 
     @Override

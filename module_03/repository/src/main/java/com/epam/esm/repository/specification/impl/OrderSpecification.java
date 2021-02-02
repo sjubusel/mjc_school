@@ -20,7 +20,7 @@ public class OrderSpecification implements JpaSpecification<Order, Long> {
     private static final Integer PAGE_SIZE = 20;
 
     private Integer page;
-
+    private Long userId;
 
     @Override
     public TypedQuery<Order> toQuery(EntityManager entityManager) {
@@ -28,11 +28,15 @@ public class OrderSpecification implements JpaSpecification<Order, Long> {
         CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
         Root<Order> root = criteriaQuery.from(Order.class);
 
-        root.join("user", JoinType.INNER);
-        Join<Object, Object> positions = root.join("orderPositions", JoinType.INNER);
-        positions.join("giftCertificate", JoinType.INNER);
+        Join<Object, Object> userJoin = root.join("user", JoinType.INNER);
+        Join<Object, Object> positionsJoin = root.join("orderPositions", JoinType.INNER);
+        positionsJoin.join("giftCertificate", JoinType.INNER);
 
-        criteriaQuery.select(root).distinct(true);
+        if (userId != null) {
+            criteriaQuery.select(root).where(criteriaBuilder.equal(userJoin.get("id"), userId)).distinct(true);
+        } else {
+            criteriaQuery.select(root).distinct(true);
+        }
 
         if (page == null) {
             page = 1;
