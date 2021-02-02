@@ -7,6 +7,7 @@ import com.epam.esm.model.domain.User;
 import com.epam.esm.model.dto.OrderDto;
 import com.epam.esm.repository.CrudRepository;
 import com.epam.esm.repository.GiftCertificateRepository;
+import com.epam.esm.repository.OrderPositionRepository;
 import com.epam.esm.repository.UserRepository;
 import com.epam.esm.repository.specification.JpaSpecification;
 import com.epam.esm.repository.specification.impl.OrderSpecification;
@@ -38,10 +39,12 @@ public class DefaultOrderService extends GeneralCrudService<OrderDto, Order, Lon
     protected DefaultOrderService(CrudRepository<Order, Long> crudRepository,
                                   GeneralEntityConverter<OrderDto, Order, Long> converter,
                                   UserRepository userRepository,
-                                  GiftCertificateRepository giftCertificateRepository) {
+                                  GiftCertificateRepository giftCertificateRepository,
+                                  OrderPositionRepository orderPositionRepository) {
         super(crudRepository, converter);
         this.userRepository = userRepository;
         this.giftCertificateRepository = giftCertificateRepository;
+        this.orderPositionRepository = orderPositionRepository;
     }
 
     @Transactional
