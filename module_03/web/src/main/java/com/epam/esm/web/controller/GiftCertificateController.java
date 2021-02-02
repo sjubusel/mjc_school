@@ -123,7 +123,7 @@ public class GiftCertificateController {
         giftCertificate.add(linkTo(GiftCertificateController.class).slash(giftCertificate.getId())
                 .withRel("DELETE: delete a current gift-certificate"));
         giftCertificate.add(linkTo(GiftCertificateController.class)
-                .withRel("GET: receive all current gift-certificate"));
+                .withRel("GET: receive all gift-certificates"));
     }
 
     private void applyHateoasActionsForTagsThatArePartOfSeparateGiftCertificate(GiftCertificateDto giftCertificate) {

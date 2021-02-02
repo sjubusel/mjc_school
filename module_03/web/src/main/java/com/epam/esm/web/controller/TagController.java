@@ -4,6 +4,8 @@ import com.epam.esm.model.dto.TagDto;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.dto.TagSearchCriteriaDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +16,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * a class which performs REST's CRUD operations on resources called "Tags"
@@ -49,8 +54,14 @@ public class TagController {
      * @return a collection of resources which correspond to search parameters
      */
     @GetMapping
-    public List<TagDto> read(@RequestBody(required = false) @Valid TagSearchCriteriaDto searchCriteriaDto) {
-        return tagService.query(searchCriteriaDto);
+    public CollectionModel<TagDto> read(@RequestBody(required = false) @Valid TagSearchCriteriaDto searchCriteriaDto) {
+        List<TagDto> tags = tagService.query(searchCriteriaDto);
+
+        tags.forEach(this::applyHateoasActionsForSeparateTag);
+        Link selfLink = linkTo(methodOn(TagController.class).read(searchCriteriaDto)).withSelfRel();
+        Link mainTagLink = linkTo(methodOn(TagController.class).receiveMainTag()).withRel("GET: receive the main tag");
+
+        return CollectionModel.of(tags, selfLink, mainTagLink);
     }
 
     /**
@@ -61,7 +72,14 @@ public class TagController {
      */
     @GetMapping("/{id}")
     public TagDto readOne(@PathVariable("id") @Positive @Min(1) Long id) {
-        return tagService.findOne(id);
+        TagDto tagDto = tagService.findOne(id);
+
+        tagDto.add(linkTo(TagController.class).slash(id).withSelfRel());
+        applyHateoasActionsForSeparateTag(tagDto);
+        tagDto.add(linkTo(TagController.class).withRel("GET: receive all tags"));
+        tagDto.add(linkTo(methodOn(TagController.class).receiveMainTag()).withRel("GET: receive the main tag"));
+
+        return tagDto;
     }
 
     /**
@@ -95,7 +113,15 @@ public class TagController {
     }
 
     @GetMapping("/main_tag")
-    public List<TagDto> receiveMainTag(){
+    public List<TagDto> receiveMainTag() {
         return tagService.receiveMostWidelyUsedTagOfUserWithMaxCostOfOrders();
+    }
+
+    private void applyHateoasActionsForSeparateTag(TagDto tagDto) {
+        tagDto.add(linkTo(TagController.class).withRel("POST: create a new tag"));
+        tagDto.add(linkTo(TagController.class).slash(tagDto.getId())
+                .withRel("PATCH: update a current tag"));
+        tagDto.add(linkTo(TagController.class).slash(tagDto.getId())
+                .withRel("DELETE: delete a current tag"));
     }
 }
