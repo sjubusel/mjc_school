@@ -1,5 +1,6 @@
 package com.epam.esm.model.domain;
 
+import com.epam.esm.model.entity_listener.GeneralEntityListener;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,13 +8,21 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Set;
 
 @Entity
 @Table(name = "orders")
+@EntityListeners(GeneralEntityListener.class)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
