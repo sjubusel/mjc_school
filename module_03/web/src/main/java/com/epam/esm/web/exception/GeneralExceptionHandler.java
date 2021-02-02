@@ -192,7 +192,7 @@ public class GeneralExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleOthers(RuntimeException e, HttpServletRequest request, Locale locale) {
-        String errorMessage = messageSource.getMessage(OTHER_EXCEPTIONS, null, locale);
+        String errorMessage = messageSource.getMessage(OTHER_EXCEPTIONS, new Object[]{e.getClass().getName()}, locale);
         ErrorInfo errorInfo = generateStandardErrorInfo(50099L, errorMessage, e, request.getRequestURI());
         log.error("An unexpected exception occurs: errorInfo → {}; exception → {}", errorInfo, e);
         return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
