@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +27,6 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true, exclude = {"user", "orderPositions"})
 @ToString(callSuper = true, exclude = {"user", "orderPositions"})
-@SuperBuilder(setterPrefix = "set")
 public class Order extends GeneralEntity<Long> {
 
     @Transient

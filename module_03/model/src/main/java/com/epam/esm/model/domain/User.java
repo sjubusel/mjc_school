@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,7 +22,6 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true, exclude = "orders")
 @ToString(callSuper = true, exclude = "orders")
-@SuperBuilder(setterPrefix = "set")
 public class User extends GeneralEntity<Long> {
 
     @Column(name = "first_name")

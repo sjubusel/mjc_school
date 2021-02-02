@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +23,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true, exclude = {"order", "giftCertificate"})
 @ToString(callSuper = true, exclude = {"order", "giftCertificate"})
-@SuperBuilder(setterPrefix = "set")
 public class OrderPosition extends GeneralEntity<Long> {
 
     @Column

@@ -110,7 +110,7 @@ public class DefaultOrderService extends GeneralCrudService<OrderDto, Order, Lon
     }
 
     private Order receiveOrderToCreate(User userToLink) {
-        return Order.builder().setOrderDate(Instant.now()).setUser(userToLink).build();
+        return new Order(null, Instant.now(), userToLink, null);
     }
 
     private Set<OrderPosition> receiveOrderPositionsIfAllGiftCertificatesExist(OrderDto dto, Order orderToCreate) {

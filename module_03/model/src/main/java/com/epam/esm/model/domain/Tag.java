@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +23,6 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true, exclude = "giftCertificates")
 @ToString(callSuper = true, exclude = "giftCertificates")
-@SuperBuilder(setterPrefix = "set")
 public class Tag extends GeneralEntity<Long> {
 
     @Column
