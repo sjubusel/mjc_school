@@ -1,9 +1,10 @@
 package com.epam.esm.web.exception;
 
+import com.epam.esm.service.exception.DuplicateResourceException;
 import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
+import com.epam.esm.service.exception.InconsistentCreateDtoException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
-import com.epam.esm.service.exception.DuplicateResourceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -42,6 +43,7 @@ public class GeneralExceptionHandler {
     public static final String HTTP_REQUEST_METHOD_NOT_SUPPORTED_EXCEPTION
             = "http.request.method.not.supported.exception";
     public static final String OTHER_EXCEPTIONS = "other.exceptions";
+    private static final String INCONSISTENT_CREATE_DTO_EXCEPTION = "inconsistent.create.dto.exception";
 
     private final MessageSource messageSource;
 
@@ -163,6 +165,17 @@ public class GeneralExceptionHandler {
         ErrorInfo errorInfo = generateStandardErrorInfo(40510L, errorMessage, e, request.getRequestURI());
         log.error("Incompatible http method is called: errorInfo → {}; exception → {}", errorInfo, e);
         return new ResponseEntity<>(errorInfo, HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+    @ExceptionHandler(InconsistentCreateDtoException.class)
+    protected ResponseEntity<Object> handleInconsistentCreateDtoException(InconsistentCreateDtoException e,
+                                                                         HttpServletRequest request,
+                                                                         Locale locale) {
+        String errorMessage = messageSource.getMessage(INCONSISTENT_CREATE_DTO_EXCEPTION,
+                new Object[]{e.getMessage()}, locale);
+        ErrorInfo errorInfo = generateStandardErrorInfo(40070L, errorMessage, e, request.getRequestURI());
+        log.error("Inconsistent create data transfer object is passed → {}; exception → {}", errorInfo, e);
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

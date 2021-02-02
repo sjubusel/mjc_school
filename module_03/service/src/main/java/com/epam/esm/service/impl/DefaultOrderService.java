@@ -93,12 +93,12 @@ public class DefaultOrderService extends GeneralCrudService<OrderDto, Order, Lon
     private void checkIfOrderConsistentOtherwiseThrow(OrderDto dto) {
         Long userId = dto.getUser().getId();
         if (userId == null) {
-            throw new InconsistentCreateDtoException(dto.getClass().getName());
+            throw new InconsistentCreateDtoException(dto.toString());
         }
 
         if (dto.getOrderPositions().stream()
                 .anyMatch(orderPositionDto -> orderPositionDto.getGiftCertificate().getId() == null)) {
-            throw new InconsistentCreateDtoException();
+            throw new InconsistentCreateDtoException(dto.toString());
         }
     }
 
