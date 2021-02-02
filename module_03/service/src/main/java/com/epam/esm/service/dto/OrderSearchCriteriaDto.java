@@ -13,7 +13,11 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 public class OrderSearchCriteriaDto implements SearchCriteriaDto<Order> {
 
-    @Min(value = 1, message = "page must be greater than 1")
+    @Min(value = 1, message = "page must be greater than or equal 1")
     @Digits(integer = 20, fraction = 0)
     private Integer page;
+
+    @Min(value = 1, message = "user's id must be greater than or equal 1")
+    @Digits(integer = 20, fraction = 0)
+    private Long userId;
 }
