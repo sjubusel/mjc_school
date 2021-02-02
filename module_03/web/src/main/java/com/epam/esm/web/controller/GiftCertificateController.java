@@ -5,6 +5,8 @@ import com.epam.esm.model.dto.GiftCertificateUpdateDto;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +19,7 @@ import java.net.URI;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * a class which performs REST's CRUD operations on a resource called "Gift-certificates"
@@ -53,9 +56,17 @@ public class GiftCertificateController {
      * @return a collection of resources which correspond to search parameters
      */
     @GetMapping
-    public List<GiftCertificateDto> read(@RequestBody(required = false) @Valid
+    public CollectionModel<GiftCertificateDto> read(@RequestBody(required = false) @Valid
                                                  GiftCertificateSearchCriteriaDto criteriaDto) {
-        return giftCertificateService.query(criteriaDto);
+        List<GiftCertificateDto> certificates = giftCertificateService.query(criteriaDto);
+
+        certificates.forEach(certificate -> {
+            applyHateoasActionsForSeparateGiftCertificate(certificate);
+            applyHateoasActionsForTagsThatArePartOfSeparateGiftCertificate(certificate);
+        });
+        Link selfLink = linkTo(methodOn(GiftCertificateController.class).read(criteriaDto)).withSelfRel();
+
+        return CollectionModel.of(certificates, selfLink);
     }
 
     /**
@@ -68,6 +79,7 @@ public class GiftCertificateController {
     public GiftCertificateDto readOne(@PathVariable("id") @Positive @Min(1) Long id) {
         GiftCertificateDto giftCertificate = giftCertificateService.findOne(id);
 
+        giftCertificate.add(linkTo(GiftCertificateController.class).slash(giftCertificate.getId()).withSelfRel());
         applyHateoasActionsForSeparateGiftCertificate(giftCertificate);
         applyHateoasActionsForTagsThatArePartOfSeparateGiftCertificate(giftCertificate);
 
@@ -105,7 +117,6 @@ public class GiftCertificateController {
     }
 
     private void applyHateoasActionsForSeparateGiftCertificate(GiftCertificateDto giftCertificate) {
-        giftCertificate.add(linkTo(GiftCertificateController.class).slash(giftCertificate.getId()).withSelfRel());
         giftCertificate.add(linkTo(GiftCertificateController.class).withRel("POST: create a new gift-certificate"));
         giftCertificate.add(linkTo(GiftCertificateController.class).slash(giftCertificate.getId())
                 .withRel("PATCH: update a current gift-certificate"));
