@@ -23,7 +23,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 @SuperBuilder(setterPrefix = "set")
 @Validated
-public class OrderDto extends GeneralEntityDto<Long> {
+public class OrderDto extends GeneralEntityDto<Long, OrderDto> {
 
     @Null(message = "order price cannot be defined by users")
     private BigDecimal price;

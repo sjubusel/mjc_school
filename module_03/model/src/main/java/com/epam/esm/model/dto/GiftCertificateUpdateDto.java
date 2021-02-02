@@ -21,7 +21,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 @SuperBuilder(setterPrefix = "set")
 @Validated
-public class GiftCertificateUpdateDto extends GeneralEntityDto<Long> {
+public class GiftCertificateUpdateDto extends GeneralEntityDto<Long, GiftCertificateUpdateDto> {
     @Null(message = "name cannot be updated, only price, description and tags are available for modification")
     private String name;
 

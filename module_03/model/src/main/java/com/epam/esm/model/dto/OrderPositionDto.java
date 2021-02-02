@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @ToString(callSuper = true)
 @SuperBuilder(setterPrefix = "set")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class OrderPositionDto extends GeneralEntityDto<Long> {
+public class OrderPositionDto extends GeneralEntityDto<Long, OrderPositionDto> {
 
     @Null(message = "price of an order position cannot be specified by users")
     private BigDecimal price;

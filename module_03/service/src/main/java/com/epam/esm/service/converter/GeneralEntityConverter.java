@@ -5,7 +5,7 @@ import com.epam.esm.model.dto.GeneralEntityDto;
 
 import java.io.Serializable;
 
-public interface GeneralEntityConverter<DTO extends GeneralEntityDto<ID>, DOMAIN extends GeneralEntity<ID>,
+public interface GeneralEntityConverter<DTO extends GeneralEntityDto<ID, DTO>, DOMAIN extends GeneralEntity<ID>,
         ID extends Serializable> {
 
     DOMAIN convertToDomain(DTO dto);

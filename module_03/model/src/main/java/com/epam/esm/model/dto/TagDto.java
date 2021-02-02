@@ -21,7 +21,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 @SuperBuilder(setterPrefix = "set")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TagDto extends GeneralEntityDto<Long> {
+public class TagDto extends GeneralEntityDto<Long, TagDto> {
 
     @NotBlank(message = "tag name must be not blank")
     @Pattern(regexp = "[\\-0-9A-Za-zА-Яа-яЁё ]{3,256}", message = "tag name must contain from 3 to 256 " +

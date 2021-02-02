@@ -22,7 +22,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 @SuperBuilder(setterPrefix = "set")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserDto extends GeneralEntityDto<Long> {
+public class UserDto extends GeneralEntityDto<Long, UserDto> {
 
     @NotBlank(message = "first name must not be blank")
     @Pattern(regexp = "[A-Za-zА-Яа-яЁё \\-]{1,256}", message = "first name should contain from 1 to 256 characters")

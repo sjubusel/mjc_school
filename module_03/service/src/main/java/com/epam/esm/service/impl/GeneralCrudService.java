@@ -18,9 +18,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID>, DOMAIN extends GeneralEntity<ID>,
-        ID extends Serializable, UPDATE_DTO extends GeneralEntityDto<ID>> implements CrudService<DTO, DOMAIN, ID,
-        UPDATE_DTO> {
+public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID, DTO>, DOMAIN extends GeneralEntity<ID>,
+        ID extends Serializable, UPDATE_DTO extends GeneralEntityDto<ID, UPDATE_DTO>>
+        implements CrudService<DTO, DOMAIN, ID, UPDATE_DTO> {
 
     protected static final Map<String, Object> EMPTY_UNIQUE_CONSTRAINTS = new HashMap<>();
 
