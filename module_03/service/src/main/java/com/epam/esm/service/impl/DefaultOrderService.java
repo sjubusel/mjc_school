@@ -93,7 +93,7 @@ public class DefaultOrderService extends GeneralCrudService<OrderDto, Order, Lon
     private void checkIfOrderConsistentOtherwiseThrow(OrderDto dto) {
         Long userId = dto.getUser().getId();
         if (userId == null) {
-            throw new InconsistentCreateDtoException(); // fixme
+            throw new InconsistentCreateDtoException(dto.getClass().getName());
         }
 
         if (dto.getOrderPositions().stream()
@@ -129,7 +129,7 @@ public class DefaultOrderService extends GeneralCrudService<OrderDto, Order, Lon
         User user = userRepository.findOne(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
         Order order = crudRepository.findOne(orderId).orElseThrow(() -> new ResourceNotFoundException(userId));
         if (!order.getUser().getId().equals(user.getId())) {
-            throw new IllegalRequestException(); // fixme
+            throw new IllegalRequestException();
         }
         return converter.convertToDto(order);
     }
