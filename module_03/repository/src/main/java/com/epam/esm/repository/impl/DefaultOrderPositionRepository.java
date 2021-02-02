@@ -15,7 +15,8 @@ public class DefaultOrderPositionRepository implements OrderPositionRepository {
     private final EntityManager entityManager;
 
     @Override
-    public void createOrderPositions(Set<OrderPosition> orderPositionsToCreate) {
+    public Set<OrderPosition> createOrderPositions(Set<OrderPosition> orderPositionsToCreate) {
         orderPositionsToCreate.forEach(entityManager::persist);
+        return orderPositionsToCreate;
     }
 }

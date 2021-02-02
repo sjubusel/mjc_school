@@ -58,7 +58,9 @@ public class DefaultOrderService extends GeneralCrudService<OrderDto, Order, Lon
         orderToCreate.setId(createdId);
 
         Set<OrderPosition> orderPositionsToCreate = receiveOrderPositionsIfAllGiftCertificatesExist(dto, orderToCreate);
-        orderPositionRepository.createOrderPositions(orderPositionsToCreate);
+        Set<OrderPosition> createdOrderPositions = orderPositionRepository.createOrderPositions(orderPositionsToCreate);
+        orderToCreate.setOrderPositions(createdOrderPositions);
+        crudRepository.update(orderToCreate);
 
         return createdId;
     }

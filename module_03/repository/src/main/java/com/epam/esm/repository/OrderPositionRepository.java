@@ -6,5 +6,5 @@ import java.util.Set;
 
 public interface OrderPositionRepository {
 
-    void createOrderPositions(Set<OrderPosition> orderPositionsToCreate);
+    Set<OrderPosition> createOrderPositions(Set<OrderPosition> orderPositionsToCreate);
 }
