@@ -61,12 +61,6 @@ public class DefaultGiftCertificateRepository extends GeneralCrudRepository<Gift
     }
 
     @Override
-    public void deleteLinkBetweenGiftCertificateAndTags(GiftCertificate certificate) {
-        certificate.setTags(null);
-        entityManager.merge(certificate);
-    }
-
-    @Override
     protected CriteriaQuery<GiftCertificate> getCriteriaQueryExists(Map<String, Object> uniqueConstraints) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
