@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR, uses = DefaultTagConverter.class)
-public interface DefaultGiftCertificateConverter extends GeneralEntityConverter<GiftCertificateDto, GiftCertificate,
+public interface GiftCertificateConverter extends GeneralEntityConverter<GiftCertificateDto, GiftCertificate,
         Long> {
 
     @Mappings({

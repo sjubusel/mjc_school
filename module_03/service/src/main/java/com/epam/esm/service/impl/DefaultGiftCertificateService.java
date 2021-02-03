@@ -10,7 +10,7 @@ import com.epam.esm.repository.TagRepository;
 import com.epam.esm.repository.specification.JpaSpecification;
 import com.epam.esm.repository.specification.impl.GiftCertificateSpecification;
 import com.epam.esm.service.GiftCertificateService;
-import com.epam.esm.service.converter.impl.DefaultGiftCertificateConverter;
+import com.epam.esm.service.converter.impl.GiftCertificateConverter;
 import com.epam.esm.service.converter.impl.DefaultTagConverter;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import com.epam.esm.service.dto.SearchCriteriaDto;
@@ -31,18 +31,18 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
         GiftCertificateUpdateDto> implements GiftCertificateService {
 
     private final GiftCertificateRepository giftCertificateRepository;
-    private final DefaultGiftCertificateConverter defaultGiftCertificateConverter;
+    private final GiftCertificateConverter giftCertificateConverter;
     private final TagRepository tagRepository;
     private final DefaultTagConverter tagConverter;
 
     @Autowired
     protected DefaultGiftCertificateService(GiftCertificateRepository giftCertificateRepository,
-                                            DefaultGiftCertificateConverter defaultGiftCertificateConverter,
+                                            GiftCertificateConverter giftCertificateConverter,
                                             TagRepository tagRepository,
                                             DefaultTagConverter tagConverter) {
-        super(giftCertificateRepository, defaultGiftCertificateConverter);
+        super(giftCertificateRepository, giftCertificateConverter);
         this.giftCertificateRepository = giftCertificateRepository;
-        this.defaultGiftCertificateConverter = defaultGiftCertificateConverter;
+        this.giftCertificateConverter = giftCertificateConverter;
         this.tagRepository = tagRepository;
         this.tagConverter = tagConverter;
     }
@@ -127,7 +127,7 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
 
     @Override
     protected GiftCertificate receiveUpdatingDomain(GiftCertificate domain, GiftCertificateUpdateDto dto) {
-        GiftCertificate targetGiftCertificate = defaultGiftCertificateConverter.convertToUpdatingDomain(domain);
+        GiftCertificate targetGiftCertificate = giftCertificateConverter.convertToUpdatingDomain(domain);
 
         if (dto.getPrice() != null) {
             targetGiftCertificate.setPrice(dto.getPrice());

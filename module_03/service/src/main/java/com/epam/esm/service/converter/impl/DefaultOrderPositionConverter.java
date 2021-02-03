@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-        uses = {DefaultGiftCertificateConverter.class})
+        uses = {GiftCertificateConverter.class})
 public interface DefaultOrderPositionConverter extends GeneralEntityConverter<OrderPositionDto, OrderPosition, Long> {
 
     @Mappings({
