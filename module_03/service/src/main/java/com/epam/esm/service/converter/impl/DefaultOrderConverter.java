@@ -18,7 +18,6 @@ import java.util.Set;
 public interface DefaultOrderConverter extends GeneralEntityConverter<OrderDto, Order, Long> {
 
     @Mappings({
-            @Mapping(target = "price", ignore = true),
             @Mapping(target = "orderDate", source = "orderDate", defaultExpression = "java(java.time.Instant.now())")
     })
     @Override

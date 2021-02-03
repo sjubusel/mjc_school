@@ -29,9 +29,6 @@ import java.util.Set;
 @ToString(callSuper = true, exclude = {"user", "orderPositions"})
 public class Order extends GeneralEntity<Long> {
 
-    @Transient
-    private BigDecimal price;
-
     @Column(columnDefinition = "TIMESTAMP")
     private Instant orderDate;
 
