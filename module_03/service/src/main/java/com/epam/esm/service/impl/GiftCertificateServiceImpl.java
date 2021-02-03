@@ -93,7 +93,7 @@ public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertifica
                 Set<Tag> sourceTags = sourceDomain.getTags();
                 sourceTags.addAll(updatingTags);
 
-                giftCertificateRepository.linkGiftCertificateWithTags(sourceDomain.getId(), updatingTags);
+                giftCertificateRepository.linkGiftCertificateWithTags(sourceDomain.getId(), sourceTags);
                 return true;
             }
         }
