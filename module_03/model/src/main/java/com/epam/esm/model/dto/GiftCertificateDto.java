@@ -59,9 +59,6 @@ public class GiftCertificateDto extends GeneralEntityDto<Long, GiftCertificateDt
 
     private Set<@Valid TagDto> tags;
 
-    @Null(message = "order positions cannot be defined by users")
-    private Set<OrderPositionDto> orderPositions;
-
     @Null(message = "delete status must be null")
     private Boolean isDeleted;
 

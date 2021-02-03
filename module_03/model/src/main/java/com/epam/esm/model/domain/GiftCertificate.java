@@ -13,7 +13,6 @@ import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -25,8 +24,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = {"tags", "orderPositions"})
-@ToString(callSuper = true, exclude = {"tags", "orderPositions"})
+@EqualsAndHashCode(callSuper = true, exclude = {"tags"})
+@ToString(callSuper = true, exclude = {"tags"})
 public class GiftCertificate extends GeneralEntity<Long> {
 
     private String name;
@@ -51,9 +50,6 @@ public class GiftCertificate extends GeneralEntity<Long> {
             joinColumns = {@JoinColumn(name = "certificate_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "id")})
     private Set<Tag> tags;
-
-    @OneToMany(mappedBy = "giftCertificate")
-    private Set<OrderPosition> orderPositions;
 
     private Boolean isDeleted;
 
