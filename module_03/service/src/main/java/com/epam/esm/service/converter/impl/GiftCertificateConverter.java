@@ -17,18 +17,15 @@ public interface GiftCertificateConverter extends GeneralEntityConverter<GiftCer
             @Mapping(target = "updateDate", source = "updateDate", defaultExpression = "java(java.time.Instant.now())"),
             @Mapping(target = "isDeleted", source = "isDeleted", defaultExpression = "java(java.lang.Boolean.FALSE)"),
             @Mapping(target = "tags", ignore = true),
-            @Mapping(target = "orderPositions", ignore = true)
     })
     @Override
     GiftCertificate convertToDomain(GiftCertificateDto dto);
 
-    @Mapping(target = "orderPositions", ignore = true)
     @Override
     GiftCertificateDto convertToDto(GiftCertificate certificate);
 
     @Mappings({
             @Mapping(target = "updateDate", expression = "java(java.time.Instant.now())"),
-            @Mapping(target = "orderPositions", ignore = true)
     })
     GiftCertificate convertToUpdatingDomain(GiftCertificate sourceDomain);
 

@@ -10,11 +10,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface UserConverter extends GeneralEntityConverter<UserDto, User, Long> {
 
-    @Mapping(target = "orders", ignore = true)
     @Override
     User convertToDomain(UserDto dto);
 
-    @Mapping(target = "orders", ignore = true)
     @Override
     UserDto convertToDto(User user);
 }
