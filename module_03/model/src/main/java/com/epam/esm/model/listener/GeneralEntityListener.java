@@ -1,4 +1,4 @@
-package com.epam.esm.model.entity_listener;
+package com.epam.esm.model.listener;
 
 import com.epam.esm.model.domain.GeneralEntity;
 import lombok.extern.slf4j.Slf4j;
