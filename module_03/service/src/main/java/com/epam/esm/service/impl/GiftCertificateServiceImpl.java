@@ -89,6 +89,10 @@ public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertifica
 
             if (!updatingTags.isEmpty()) {
                 refreshStateOfTagsIfExistOtherwiseCreate(updatingTags);
+
+                Set<Tag> sourceTags = sourceDomain.getTags();
+                sourceTags.addAll(updatingTags);
+
                 giftCertificateRepository.linkGiftCertificateWithTags(sourceDomain.getId(), updatingTags);
                 return true;
             }

@@ -44,9 +44,7 @@ public class GiftCertificateRepositoryImpl extends GeneralCrudRepository<GiftCer
     @Override
     public void linkGiftCertificateWithTags(Long createdId, Set<Tag> updatingTags) {
         GiftCertificate giftCertificate = entityManager.find(GiftCertificate.class, createdId);
-
-        Set<Tag> sourceTags = giftCertificate.getTags();
-        sourceTags.addAll(updatingTags);
+        giftCertificate.setTags(updatingTags);
     }
 
     @Override
