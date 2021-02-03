@@ -47,7 +47,7 @@ public class GiftCertificate extends GeneralEntity<Long> {
     private Instant updateDate;
 
     @ManyToMany
-    @JoinTable(name = "join_certificates_tags_table",
+    @JoinTable(name = "certificates_tags",
             joinColumns = {@JoinColumn(name = "certificate_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "id")})
     private Set<Tag> tags;
