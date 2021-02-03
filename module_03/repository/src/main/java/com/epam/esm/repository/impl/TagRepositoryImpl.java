@@ -32,7 +32,7 @@ public class TagRepositoryImpl extends GeneralCrudRepository<Tag, Long> implemen
             "             FROM users " +
             "                      JOIN orders o ON o.user_id = users.user_id " +
             "                      JOIN order_positions op ON op.order_id = o.id " +
-            "                      JOIN join_certificates_tags_table j on j.certificate_id = op.certificate_id " +
+            "                      JOIN certificates_tags j on j.certificate_id = op.certificate_id " +
             "                      JOIN tags t ON t.id = j.tag_id " +
             "             WHERE o.user_id IN (SELECT user_id " +
             "                                 FROM users " +
