@@ -11,7 +11,7 @@ import com.epam.esm.repository.specification.JpaSpecification;
 import com.epam.esm.repository.specification.impl.GiftCertificateSpecification;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.converter.impl.GiftCertificateConverter;
-import com.epam.esm.service.converter.impl.DefaultTagConverter;
+import com.epam.esm.service.converter.impl.TagConverter;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.EmptyUpdateException;
@@ -33,13 +33,13 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
     private final GiftCertificateRepository giftCertificateRepository;
     private final GiftCertificateConverter giftCertificateConverter;
     private final TagRepository tagRepository;
-    private final DefaultTagConverter tagConverter;
+    private final TagConverter tagConverter;
 
     @Autowired
     protected DefaultGiftCertificateService(GiftCertificateRepository giftCertificateRepository,
                                             GiftCertificateConverter giftCertificateConverter,
                                             TagRepository tagRepository,
-                                            DefaultTagConverter tagConverter) {
+                                            TagConverter tagConverter) {
         super(giftCertificateRepository, giftCertificateConverter);
         this.giftCertificateRepository = giftCertificateRepository;
         this.giftCertificateConverter = giftCertificateConverter;

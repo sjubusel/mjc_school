@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
-public interface DefaultTagConverter extends GeneralEntityConverter<TagDto, Tag, Long> {
+public interface TagConverter extends GeneralEntityConverter<TagDto, Tag, Long> {
 
     @Mappings({
             @Mapping(target = "isDeleted", source = "isDeleted", defaultExpression = "java(java.lang.Boolean.FALSE)"),
