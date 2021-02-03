@@ -15,10 +15,10 @@ import javax.persistence.criteria.Root;
 import java.util.Map;
 
 @Repository
-public class DefaultOrderRepository extends GeneralCrudRepository<Order, Long> implements OrderRepository {
+public class OrderRepositoryImpl extends GeneralCrudRepository<Order, Long> implements OrderRepository {
 
     @Autowired
-    protected DefaultOrderRepository(EntityManager entityManager) {
+    protected OrderRepositoryImpl(EntityManager entityManager) {
         super(entityManager);
     }
 
