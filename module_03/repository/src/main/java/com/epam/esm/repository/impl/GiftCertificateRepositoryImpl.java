@@ -18,11 +18,11 @@ import java.util.Map;
 import java.util.Set;
 
 @Repository
-public class DefaultGiftCertificateRepository extends GeneralCrudRepository<GiftCertificate, Long>
+public class GiftCertificateRepositoryImpl extends GeneralCrudRepository<GiftCertificate, Long>
         implements GiftCertificateRepository {
 
     @Autowired
-    protected DefaultGiftCertificateRepository(EntityManager entityManager) {
+    protected GiftCertificateRepositoryImpl(EntityManager entityManager) {
         super(entityManager);
     }
 
