@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
@@ -25,7 +24,6 @@ import java.math.BigDecimal;
 @ToString(callSuper = true, exclude = {"order", "giftCertificate"})
 public class OrderPosition extends GeneralEntity<Long> {
 
-    @Column
     private BigDecimal price;
 
     @ManyToOne

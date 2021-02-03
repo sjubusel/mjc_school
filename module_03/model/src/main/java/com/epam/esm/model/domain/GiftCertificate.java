@@ -29,22 +29,18 @@ import java.util.Set;
 @ToString(callSuper = true, exclude = {"tags", "orderPositions"})
 public class GiftCertificate extends GeneralEntity<Long> {
 
-    @Column
     private String name;
 
-    @Column
     private String description;
 
-    @Column
     private BigDecimal price;
 
     /**
      * a period of time when a gift certificate is available after its activation
      */
-    @Column
     private Integer duration;
 
-    @Column(name = "create_date", updatable = false, columnDefinition = "TIMESTAMP")
+    @Column(updatable = false, columnDefinition = "TIMESTAMP")
     private Instant createDate;
 
     @Column(name = "last_update_date", columnDefinition = "TIMESTAMP")
@@ -59,9 +55,8 @@ public class GiftCertificate extends GeneralEntity<Long> {
     @OneToMany(mappedBy = "giftCertificate")
     private Set<OrderPosition> orderPositions;
 
-    @Column(name = "is_deleted")
     private Boolean isDeleted;
 
-    @Column(name="delete_date", columnDefinition = "TIMESTAMP")
+    @Column(columnDefinition = "TIMESTAMP")
     private Instant deleteDate;
 }

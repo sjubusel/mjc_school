@@ -25,15 +25,13 @@ import java.util.Set;
 @ToString(callSuper = true, exclude = "giftCertificates")
 public class Tag extends GeneralEntity<Long> {
 
-    @Column
     private String name;
 
     @ManyToMany(mappedBy = "tags")
     private Set<GiftCertificate> giftCertificates;
 
-    @Column(name = "is_deleted")
     private Boolean isDeleted;
 
-    @Column(name = "delete_date", columnDefinition = "TIMESTAMP")
+    @Column(columnDefinition = "TIMESTAMP")
     private Instant deleteDate;
 }

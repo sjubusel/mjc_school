@@ -32,7 +32,7 @@ public class Order extends GeneralEntity<Long> {
     @Transient
     private BigDecimal price;
 
-    @Column(name = "order_date", columnDefinition = "TIMESTAMP")
+    @Column(columnDefinition = "TIMESTAMP")
     private Instant orderDate;
 
     @ManyToOne(optional = false)
