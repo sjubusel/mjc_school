@@ -20,13 +20,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class DefaultTagService extends GeneralCrudService<TagDto, Tag, Long, TagDto> implements TagService {
+public class TagServiceImpl extends GeneralCrudService<TagDto, Tag, Long, TagDto> implements TagService {
 
     private final TagRepository tagRepository;
 
     @Autowired
-    protected DefaultTagService(TagRepository tagRepository,
-                                GeneralEntityConverter<TagDto, Tag, Long> converter) {
+    protected TagServiceImpl(TagRepository tagRepository,
+                             GeneralEntityConverter<TagDto, Tag, Long> converter) {
         super(tagRepository, converter);
         this.tagRepository = tagRepository;
     }
