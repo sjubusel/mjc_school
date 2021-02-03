@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class DefaultTagRepository extends GeneralCrudRepository<Tag, Long> implements TagRepository {
+public class TagRepositoryImpl extends GeneralCrudRepository<Tag, Long> implements TagRepository {
 
     public static final String RECEIVE_MOST_WIDELY_USED_TAG_OF_USER_WITH_MAX_COST_OF_ORDERS
             = "WITH users AS (SELECT user_id, SUM(op.price) AS sums " +
@@ -44,7 +44,7 @@ public class DefaultTagRepository extends GeneralCrudRepository<Tag, Long> imple
             "                                                WHERE tu.user_id = tags_by_users.user_id)";
 
     @Autowired
-    protected DefaultTagRepository(EntityManager entityManager) {
+    protected TagRepositoryImpl(EntityManager entityManager) {
         super(entityManager);
     }
 
