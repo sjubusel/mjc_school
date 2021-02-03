@@ -45,19 +45,8 @@ public class GiftCertificateRepositoryImpl extends GeneralCrudRepository<GiftCer
     public void linkGiftCertificateWithTags(Long createdId, Set<Tag> updatingTags) {
         GiftCertificate giftCertificate = entityManager.find(GiftCertificate.class, createdId);
 
-        updatingTags.forEach(tag -> {
-            if (tag.getId() == null) {
-                Long tagId = entityManager.createQuery("SELECT t.id FROM Tag t WHERE t.name=:name " +
-                        "AND t.isDeleted=:isDeleted", Long.class)
-                        .setParameter("name", tag.getName())
-                        .setParameter("isDeleted", Boolean.FALSE)
-                        .getSingleResult();
-                tag.setId(tagId);
-            }
-        });
-
-        giftCertificate.setTags(updatingTags);
-        entityManager.merge(giftCertificate);
+        Set<Tag> sourceTags = giftCertificate.getTags();
+        sourceTags.addAll(updatingTags);
     }
 
     @Override

@@ -49,20 +49,6 @@ public class TagRepositoryImpl extends GeneralCrudRepository<Tag, Long> implemen
     }
 
     @Override
-    protected CriteriaQuery<Tag> getCriteriaQueryReadById(Long id) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Tag> criteriaQuery = criteriaBuilder.createQuery(Tag.class);
-
-        Root<Tag> root = criteriaQuery.from(Tag.class);
-        Predicate condition = criteriaBuilder.and(criteriaBuilder.equal(root.get("id"), id),
-                criteriaBuilder.equal(root.get("isDeleted"), Boolean.FALSE));
-        criteriaQuery.where(condition);
-        criteriaQuery.select(root);
-
-        return criteriaQuery;
-    }
-
-    @Override
     public boolean exists(String uniqueConstraint) {
         HashMap<String, Object> uniqueConstraints = new HashMap<>();
         uniqueConstraints.putIfAbsent("name", uniqueConstraint);
@@ -74,6 +60,18 @@ public class TagRepositoryImpl extends GeneralCrudRepository<Tag, Long> implemen
     public List<Tag> receiveMostWidelyUsedTagOfUserWithMaxCostOfOrders() {
         return (List<Tag>) entityManager.createNativeQuery(RECEIVE_MOST_WIDELY_USED_TAG_OF_USER_WITH_MAX_COST_OF_ORDERS,
                 Tag.class).getResultList();
+    }
+
+    @Override
+    public void refreshStateOfTagsByTheirName(List<Tag> tagsToRefresh) {
+        tagsToRefresh.forEach(tag -> {
+            Long tagId = entityManager.createQuery("SELECT t.id FROM Tag t WHERE t.name=:name " +
+                    "AND t.isDeleted=:isDeleted", Long.class)
+                    .setParameter("name", tag.getName())
+                    .setParameter("isDeleted", Boolean.FALSE)
+                    .getSingleResult();
+            tag.setId(tagId);
+        });
     }
 
     @Override
@@ -96,6 +94,20 @@ public class TagRepositoryImpl extends GeneralCrudRepository<Tag, Long> implemen
                 .setParameter("isDeleted", Boolean.TRUE)
                 .setParameter("deleteDate", Instant.now())
                 .setParameter("id", idToDelete);
+    }
+
+    @Override
+    protected CriteriaQuery<Tag> getCriteriaQueryReadById(Long id) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Tag> criteriaQuery = criteriaBuilder.createQuery(Tag.class);
+
+        Root<Tag> root = criteriaQuery.from(Tag.class);
+        Predicate condition = criteriaBuilder.and(criteriaBuilder.equal(root.get("id"), id),
+                criteriaBuilder.equal(root.get("isDeleted"), Boolean.FALSE));
+        criteriaQuery.where(condition);
+        criteriaQuery.select(root);
+
+        return criteriaQuery;
     }
 
 }

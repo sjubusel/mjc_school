@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -60,7 +61,7 @@ public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertifica
             Set<Tag> tagsToLink = dto.getTags().stream()
                     .map(tagConverter::convertToDomain)
                     .collect(Collectors.toSet());
-            createIfNotExist(tagsToLink);
+            refreshStateOfTagsIfExistOtherwiseCreate(tagsToLink);
             giftCertificateRepository.linkGiftCertificateWithTags(createdId, tagsToLink);
         }
 
@@ -87,12 +88,8 @@ public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertifica
             Set<Tag> updatingTags = receiveUpdatingTags(sourceDomain, dto);
 
             if (!updatingTags.isEmpty()) {
-                createIfNotExist(updatingTags);
-
-                Set<Tag> sourceTags = sourceDomain.getTags();
-                sourceTags.addAll(updatingTags);
-
-                giftCertificateRepository.linkGiftCertificateWithTags(sourceDomain.getId(), sourceTags);
+                refreshStateOfTagsIfExistOtherwiseCreate(updatingTags);
+                giftCertificateRepository.linkGiftCertificateWithTags(sourceDomain.getId(), updatingTags);
                 return true;
             }
         }
@@ -140,10 +137,15 @@ public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertifica
         return targetGiftCertificate;
     }
 
-    private void createIfNotExist(Set<Tag> tagsToLink) {
-        tagsToLink.stream()
-                .filter(tag -> !tagRepository.exists(tag.getName()))
-                .forEach(tagRepository::create);
+    private void refreshStateOfTagsIfExistOtherwiseCreate(Set<Tag> tagsToLink) {
+        Map<Boolean, List<Tag>> separatedTags = tagsToLink.stream()
+                .collect(Collectors.partitioningBy(tag -> tagRepository.exists(tag.getName())));
+
+        List<Tag> tagsToRefresh = separatedTags.get(Boolean.TRUE);
+        tagRepository.refreshStateOfTagsByTheirName(tagsToRefresh);
+
+        List<Tag> tagsToCreate = separatedTags.get(Boolean.FALSE);
+        tagsToCreate.forEach(tagRepository::create);
     }
 
     private void checkIfUpdatingIsPossibleOrThrow(GiftCertificate sourceDomain, GiftCertificate targetDomain,
