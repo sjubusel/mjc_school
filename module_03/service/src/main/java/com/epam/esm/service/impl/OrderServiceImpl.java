@@ -30,18 +30,18 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class DefaultOrderService extends GeneralCrudService<OrderDto, Order, Long, OrderDto> implements OrderService {
+public class OrderServiceImpl extends GeneralCrudService<OrderDto, Order, Long, OrderDto> implements OrderService {
 
     private final UserRepository userRepository;
     private final GiftCertificateRepository giftCertificateRepository;
     private final OrderPositionRepository orderPositionRepository;
 
     @Autowired
-    protected DefaultOrderService(CrudRepository<Order, Long> crudRepository,
-                                  GeneralEntityConverter<OrderDto, Order, Long> converter,
-                                  UserRepository userRepository,
-                                  GiftCertificateRepository giftCertificateRepository,
-                                  OrderPositionRepository orderPositionRepository) {
+    protected OrderServiceImpl(CrudRepository<Order, Long> crudRepository,
+                               GeneralEntityConverter<OrderDto, Order, Long> converter,
+                               UserRepository userRepository,
+                               GiftCertificateRepository giftCertificateRepository,
+                               OrderPositionRepository orderPositionRepository) {
         super(crudRepository, converter);
         this.userRepository = userRepository;
         this.giftCertificateRepository = giftCertificateRepository;
