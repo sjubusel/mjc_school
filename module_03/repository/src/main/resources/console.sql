@@ -21,20 +21,20 @@ CREATE TABLE gift_certificates_system.tags
     delete_date TIMESTAMP(3) NULL
 );
 
-CREATE TABLE gift_certificates_system.join_certificates_tags_table
+CREATE TABLE gift_certificates_system.certificates_tags
 (
     certificate_id BIGINT NOT NULL,
     tag_id         BIGINT NOT NULL
 );
 
-ALTER TABLE gift_certificates_system.join_certificates_tags_table
+ALTER TABLE gift_certificates_system.certificates_tags
     ADD CONSTRAINT pk__tag_id__certificate_id PRIMARY KEY (tag_id, certificate_id);
 
-ALTER TABLE gift_certificates_system.join_certificates_tags_table
+ALTER TABLE gift_certificates_system.certificates_tags
     ADD CONSTRAINT fk__join_certificates_tags_table__tags
         FOREIGN KEY (tag_id) REFERENCES gift_certificates_system.tags (id);
 
-ALTER TABLE gift_certificates_system.join_certificates_tags_table
+ALTER TABLE gift_certificates_system.certificates_tags
     ADD CONSTRAINT fk__join_certificates_tags_table__certificates
         FOREIGN KEY (certificate_id) REFERENCES gift_certificates_system.certificates (id);
 
@@ -59,7 +59,7 @@ VALUES ('Развлечения', false),                -- 1
        ('Техника', false),                    -- 6
        ('Мода', false); -- 7
 
-INSERT INTO gift_certificates_system.join_certificates_tags_table (tag_id, certificate_id)
+INSERT INTO gift_certificates_system.certificates_tags (tag_id, certificate_id)
 VALUES (1, 1), -- Развлечения → Скалодром
        (1, 3), -- Развлечения → Картинг
        (2, 1), -- Активный отдых → Скалодром
