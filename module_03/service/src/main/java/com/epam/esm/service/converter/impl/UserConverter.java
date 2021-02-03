@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
-public interface DefaultUserConverter extends GeneralEntityConverter<UserDto, User, Long> {
+public interface UserConverter extends GeneralEntityConverter<UserDto, User, Long> {
 
     @Mapping(target = "orders", ignore = true)
     @Override
