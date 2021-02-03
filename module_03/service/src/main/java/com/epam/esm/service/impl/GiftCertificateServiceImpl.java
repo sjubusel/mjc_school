@@ -27,7 +27,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertificateDto, GiftCertificate, Long,
+public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertificateDto, GiftCertificate, Long,
         GiftCertificateUpdateDto> implements GiftCertificateService {
 
     private final GiftCertificateRepository giftCertificateRepository;
@@ -36,10 +36,10 @@ public class DefaultGiftCertificateService extends GeneralCrudService<GiftCertif
     private final TagConverter tagConverter;
 
     @Autowired
-    protected DefaultGiftCertificateService(GiftCertificateRepository giftCertificateRepository,
-                                            GiftCertificateConverter giftCertificateConverter,
-                                            TagRepository tagRepository,
-                                            TagConverter tagConverter) {
+    protected GiftCertificateServiceImpl(GiftCertificateRepository giftCertificateRepository,
+                                         GiftCertificateConverter giftCertificateConverter,
+                                         TagRepository tagRepository,
+                                         TagConverter tagConverter) {
         super(giftCertificateRepository, giftCertificateConverter);
         this.giftCertificateRepository = giftCertificateRepository;
         this.giftCertificateConverter = giftCertificateConverter;
