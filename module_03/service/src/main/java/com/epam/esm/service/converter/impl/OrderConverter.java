@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         uses = {OrderPositionConverter.class, UserConverter.class})
-public interface DefaultOrderConverter extends GeneralEntityConverter<OrderDto, Order, Long> {
+public interface OrderConverter extends GeneralEntityConverter<OrderDto, Order, Long> {
 
     @Mappings({
             @Mapping(target = "orderDate", source = "orderDate", defaultExpression = "java(java.time.Instant.now())")
