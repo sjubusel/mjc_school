@@ -9,9 +9,7 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -19,8 +17,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = "orders")
-@ToString(callSuper = true, exclude = "orders")
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class User extends GeneralEntity<Long> {
 
     private String firstName;
@@ -30,7 +28,4 @@ public class User extends GeneralEntity<Long> {
     private String email;
 
     private String phoneNumber;
-
-    @OneToMany(mappedBy = "user")
-    private Set<Order> orders;
 }

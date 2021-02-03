@@ -10,9 +10,7 @@ import lombok.ToString;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -39,7 +37,4 @@ public class UserDto extends GeneralEntityDto<Long, UserDto> {
             message = "phone number should be of the following format: " +
                     "+{country code} ({inner country code}) XXX-XX-XX")
     private String phoneNumber;
-
-    @Null(message = "orders cannot be defined by users")
-    private Set<OrderDto> orders;
 }
