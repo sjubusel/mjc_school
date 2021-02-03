@@ -10,7 +10,7 @@ import java.util.Set;
 
 @RequiredArgsConstructor
 @Repository
-public class DefaultOrderPositionRepository implements OrderPositionRepository {
+public class OrderPositionRepositoryImpl implements OrderPositionRepository {
 
     private final EntityManager entityManager;
 
