@@ -16,11 +16,11 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
-public class DefaultUserService extends GeneralCrudService<UserDto, User, Long, UserDto> implements UserService {
+public class UserServiceImpl extends GeneralCrudService<UserDto, User, Long, UserDto> implements UserService {
 
     @Autowired
-    protected DefaultUserService(CrudRepository<User, Long> crudRepository,
-                                 GeneralEntityConverter<UserDto, User, Long> converter) {
+    protected UserServiceImpl(CrudRepository<User, Long> crudRepository,
+                              GeneralEntityConverter<UserDto, User, Long> converter) {
         super(crudRepository, converter);
     }
 
