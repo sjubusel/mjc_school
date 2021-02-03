@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-        uses = {DefaultOrderPositionConverter.class, UserConverter.class})
+        uses = {OrderPositionConverter.class, UserConverter.class})
 public interface DefaultOrderConverter extends GeneralEntityConverter<OrderDto, Order, Long> {
 
     @Mappings({
