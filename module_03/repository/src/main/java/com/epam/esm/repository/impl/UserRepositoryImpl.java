@@ -13,10 +13,10 @@ import javax.persistence.criteria.Root;
 import java.util.Map;
 
 @Repository
-public class DefaultUserRepository extends GeneralCrudRepository<User, Long> implements UserRepository {
+public class UserRepositoryImpl extends GeneralCrudRepository<User, Long> implements UserRepository {
 
     @Autowired
-    protected DefaultUserRepository(EntityManager entityManager) {
+    protected UserRepositoryImpl(EntityManager entityManager) {
         super(entityManager);
     }
 
