@@ -3,26 +3,13 @@ package com.epam.esm.model.listener;
 import com.epam.esm.model.domain.Entity;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.PostLoad;
-import javax.persistence.PostPersist;
 import javax.persistence.PostRemove;
 import javax.persistence.PostUpdate;
-import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 
 @Slf4j
 public class GeneralEntityListener {
-
-    @PrePersist
-    void prePersist(Entity<Long> entity) {
-        log.info("Attempting to add a new entity: {}", entity);
-    }
-
-    @PostPersist
-    void postPersist(Entity<Long> entity) {
-        log.info("Added an entity: {}", entity);
-    }
 
     @PreUpdate
     void preUpdate(Entity<Long> entity) {
@@ -42,11 +29,6 @@ public class GeneralEntityListener {
     @PostRemove
     void postRemove(Entity<Long> entity) {
         log.info("Deleted an entity: {}", entity);
-    }
-
-    @PostLoad
-    void postLoad(Entity<Long> entity) {
-        log.info("Entity loaded: {}", entity);
     }
 
 }
