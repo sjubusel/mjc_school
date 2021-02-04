@@ -10,7 +10,7 @@ import org.springframework.hateoas.RepresentationModel;
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class GeneralEntityDto<ID, T extends GeneralEntityDto<ID, T>> extends RepresentationModel<T> {
+public abstract class EntityDto<ID, T extends EntityDto<ID, T>> extends RepresentationModel<T> {
 
     private ID id;
 }

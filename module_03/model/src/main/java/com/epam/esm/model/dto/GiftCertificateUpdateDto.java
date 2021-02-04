@@ -19,7 +19,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Validated
-public class GiftCertificateUpdateDto extends GeneralEntityDto<Long, GiftCertificateUpdateDto> {
+public class GiftCertificateUpdateDto extends EntityDto<Long, GiftCertificateUpdateDto> {
     @Null(message = "name cannot be updated, only price, description and tags are available for modification")
     private String name;
 

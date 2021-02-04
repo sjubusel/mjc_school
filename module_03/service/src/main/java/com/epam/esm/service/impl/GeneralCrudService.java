@@ -1,7 +1,7 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.model.domain.Entity;
-import com.epam.esm.model.dto.GeneralEntityDto;
+import com.epam.esm.model.dto.EntityDto;
 import com.epam.esm.repository.CrudRepository;
 import com.epam.esm.repository.specification.JpaSpecification;
 import com.epam.esm.service.CrudService;
@@ -18,8 +18,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID, DTO>, DOMAIN extends Entity<ID>,
-        ID extends Serializable, UPDATE_DTO extends GeneralEntityDto<ID, UPDATE_DTO>>
+public abstract class GeneralCrudService<DTO extends EntityDto<ID, DTO>, DOMAIN extends Entity<ID>,
+        ID extends Serializable, UPDATE_DTO extends EntityDto<ID, UPDATE_DTO>>
         implements CrudService<DTO, DOMAIN, ID, UPDATE_DTO> {
 
     protected static final Map<String, Object> EMPTY_UNIQUE_CONSTRAINTS = new HashMap<>();

@@ -19,7 +19,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TagDto extends GeneralEntityDto<Long, TagDto> {
+public class TagDto extends EntityDto<Long, TagDto> {
 
     @NotBlank(message = "tag name must be not blank")
     @Pattern(regexp = "[\\-0-9A-Za-zА-Яа-яЁё ]{3,256}", message = "tag name must contain from 3 to 256 " +

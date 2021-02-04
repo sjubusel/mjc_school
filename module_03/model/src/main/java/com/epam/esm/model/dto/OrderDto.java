@@ -21,7 +21,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Validated
-public class OrderDto extends GeneralEntityDto<Long, OrderDto> {
+public class OrderDto extends EntityDto<Long, OrderDto> {
 
     @Null(message = "order price cannot be defined by users")
     private BigDecimal price;

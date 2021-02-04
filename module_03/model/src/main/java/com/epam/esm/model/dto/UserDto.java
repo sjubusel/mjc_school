@@ -18,7 +18,7 @@ import javax.validation.constraints.Pattern;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserDto extends GeneralEntityDto<Long, UserDto> {
+public class UserDto extends EntityDto<Long, UserDto> {
 
     @NotBlank(message = "first name must not be blank")
     @Pattern(regexp = "[A-Za-zА-Яа-яЁё \\-]{1,256}", message = "first name should contain from 1 to 256 characters")

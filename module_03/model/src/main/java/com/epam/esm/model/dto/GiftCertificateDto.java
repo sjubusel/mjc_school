@@ -28,7 +28,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Validated
-public class GiftCertificateDto extends GeneralEntityDto<Long, GiftCertificateDto> {
+public class GiftCertificateDto extends EntityDto<Long, GiftCertificateDto> {
 
     @NotBlank(message = "name must be not blank")
     @Pattern(regexp = "[\\-0-9A-Za-zА-Яа-яЁё ]{3,256}", message = "name must contain from 3 to 256 " +

@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class OrderPositionDto extends GeneralEntityDto<Long, OrderPositionDto> {
+public class OrderPositionDto extends EntityDto<Long, OrderPositionDto> {
 
     @Null(message = "price of an order position cannot be specified by users")
     private BigDecimal price;
