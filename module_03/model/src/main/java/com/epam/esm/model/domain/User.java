@@ -7,11 +7,10 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Table;
 
-@Entity
+@javax.persistence.Entity
 @Table(name = "users")
 @EntityListeners(GeneralEntityListener.class)
 @Data
@@ -19,7 +18,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class User extends GeneralEntity<Long> {
+public class User extends Entity<Long> {
 
     private String firstName;
 

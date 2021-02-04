@@ -8,14 +8,13 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.time.Instant;
 import java.util.Set;
 
-@Entity
+@javax.persistence.Entity
 @Table(name = "tags")
 @EntityListeners(GeneralEntityListener.class)
 @Data
@@ -23,7 +22,7 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true, exclude = "giftCertificates")
 @ToString(callSuper = true, exclude = "giftCertificates")
-public class Tag extends GeneralEntity<Long> {
+public class Tag extends Entity<Long> {
 
     private String name;
 

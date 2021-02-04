@@ -1,6 +1,6 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.model.domain.GeneralEntity;
+import com.epam.esm.model.domain.Entity;
 import com.epam.esm.model.dto.GeneralEntityDto;
 import com.epam.esm.repository.CrudRepository;
 import com.epam.esm.repository.specification.JpaSpecification;
@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID, DTO>, DOMAIN extends GeneralEntity<ID>,
+public abstract class GeneralCrudService<DTO extends GeneralEntityDto<ID, DTO>, DOMAIN extends Entity<ID>,
         ID extends Serializable, UPDATE_DTO extends GeneralEntityDto<ID, UPDATE_DTO>>
         implements CrudService<DTO, DOMAIN, ID, UPDATE_DTO> {
 

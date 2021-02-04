@@ -1,6 +1,6 @@
 package com.epam.esm.repository.impl;
 
-import com.epam.esm.model.domain.GeneralEntity;
+import com.epam.esm.model.domain.Entity;
 import com.epam.esm.repository.CrudRepository;
 import com.epam.esm.repository.specification.JpaSpecification;
 
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class GeneralCrudRepository<T extends GeneralEntity<ID>, ID extends Serializable>
+public abstract class GeneralCrudRepository<T extends Entity<ID>, ID extends Serializable>
         implements CrudRepository<T, ID> {
 
     protected final EntityManager entityManager;
