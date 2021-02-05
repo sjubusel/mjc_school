@@ -63,7 +63,7 @@ public class GeneralExceptionHandler {
 
         ErrorInfo errorInfo = generateStandardErrorInfo(40410L, errorMessage, request.getRequestURI());
         log.error("The requested resource is not found: errorInfo → {}; exception → {}", errorInfo, e);
-        return new ResponseEntity<>(errorInfo, HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorInfo);
     }
 
     @ExceptionHandler(DuplicateResourceException.class)
@@ -74,7 +74,7 @@ public class GeneralExceptionHandler {
                 new Object[]{e.getMessage()}, locale);
         ErrorInfo errorInfo = generateStandardErrorInfo(40010L, errorMessage, request.getRequestURI());
         log.error("An attempt to create an already existing resource: errorInfo → {}; exception → {}", errorInfo, e);
-        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorInfo);
     }
 
     @ExceptionHandler(IncompatibleSearchCriteriaException.class)
@@ -84,7 +84,7 @@ public class GeneralExceptionHandler {
         String errorMessage = messageSource.getMessage(INCOMPATIBLE_SEARCH_CRITERIA_EXCEPTION, null, locale);
         ErrorInfo errorInfo = generateStandardErrorInfo(50010L, errorMessage, request.getRequestURI());
         log.error("Incompatible search criteria is passed: errorInfo → {}; exception → {}", errorInfo, e);
-        return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorInfo);
     }
 
     @ExceptionHandler(EmptyUpdateException.class)
@@ -93,7 +93,7 @@ public class GeneralExceptionHandler {
         String errorMessage = messageSource.getMessage(EMPTY_UPDATE_EXCEPTION, new Object[]{e.getMessage()}, locale);
         ErrorInfo errorInfo = generateStandardErrorInfo(40020L, errorMessage, request.getRequestURI());
         log.error("No changes are passed to update an entity: errorInfo → {}; exception → {}", errorInfo, e);
-        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorInfo);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -114,7 +114,7 @@ public class GeneralExceptionHandler {
         ErrorInfo errorInfo = generateStandardErrorInfo(40030L, new String(errorMessageBuilder),
                 request.getRequestURI());
         log.error("Incompatible parameters are passed: errorInfo → {}; exception → {}", errorInfo, e);
-        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorInfo);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -133,7 +133,7 @@ public class GeneralExceptionHandler {
         ErrorInfo errorInfo = generateStandardErrorInfo(40040L, new String(errorMessageBuilder),
                 request.getRequestURI());
         log.error("Incompatible parameters are passed: errorInfo → {}; exception → {}", errorInfo, e);
-        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorInfo);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -144,7 +144,7 @@ public class GeneralExceptionHandler {
         String errorMessage = e.getName() + errorMessagePart + Objects.requireNonNull(e.getRequiredType()).getName();
         ErrorInfo errorInfo = generateStandardErrorInfo(40050L, errorMessage, request.getRequestURI());
         log.error("Unexpected argument of a method is called: errorInfo → {}; exception → {}", errorInfo, e);
-        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorInfo);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
@@ -155,7 +155,7 @@ public class GeneralExceptionHandler {
         String errorMessage = e.getParameterName() + errorMessagePart;
         ErrorInfo errorInfo = generateStandardErrorInfo(40060L, errorMessage, request.getRequestURI());
         log.error("A request parameter is absent: errorInfo → {}; exception → {}", errorInfo, e);
-        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorInfo);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -166,7 +166,7 @@ public class GeneralExceptionHandler {
         String errorMessage = e.getMethod() + errorMessagePart;
         ErrorInfo errorInfo = generateStandardErrorInfo(40510L, errorMessage, request.getRequestURI());
         log.error("Incompatible http method is called: errorInfo → {}; exception → {}", errorInfo, e);
-        return new ResponseEntity<>(errorInfo, HttpStatus.METHOD_NOT_ALLOWED);
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(errorInfo);
     }
 
     @ExceptionHandler(InconsistentCreateDtoException.class)
@@ -177,7 +177,7 @@ public class GeneralExceptionHandler {
                 new Object[]{e.getMessage()}, locale);
         ErrorInfo errorInfo = generateStandardErrorInfo(40070L, errorMessage, request.getRequestURI());
         log.error("Inconsistent create data transfer object is passed → {}; exception → {}", errorInfo, e);
-        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorInfo);
     }
 
     @ExceptionHandler(IllegalRequestException.class)
@@ -187,7 +187,7 @@ public class GeneralExceptionHandler {
         String errorMessage = messageSource.getMessage(ILLEGAL_REQUEST_EXCEPTION, null, locale);
         ErrorInfo errorInfo = generateStandardErrorInfo(40310L, errorMessage, request.getRequestURI());
         log.error("Resource cannot be reached due to restrictions → {}; exception → {}", errorInfo, e);
-        return new ResponseEntity<>(errorInfo, HttpStatus.FORBIDDEN);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorInfo);
     }
 
     @ExceptionHandler(Exception.class)
@@ -195,7 +195,7 @@ public class GeneralExceptionHandler {
         String errorMessage = messageSource.getMessage(OTHER_EXCEPTIONS, new Object[]{e.getClass().getName()}, locale);
         ErrorInfo errorInfo = generateStandardErrorInfo(50099L, errorMessage, request.getRequestURI());
         log.error("An unexpected exception occurs: errorInfo → {}; exception → {}", errorInfo, e);
-        return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorInfo);
     }
 
     private ErrorInfo generateStandardErrorInfo(Long errorCode, String errorMessage, String uri) {
