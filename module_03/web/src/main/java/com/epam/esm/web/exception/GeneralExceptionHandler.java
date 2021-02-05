@@ -16,8 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +26,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 @Slf4j
-@ControllerAdvice
+@RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
 public class GeneralExceptionHandler {
