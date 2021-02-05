@@ -6,6 +6,7 @@ import com.epam.esm.web.util.HateoasActionsAppender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -49,13 +50,9 @@ public class GiftCertificateHateoasActionsAppender implements HateoasActionsAppe
         return collectionModel;
     }
 
-    private void appendGenericCreateAndReadAllHateoasActions(GiftCertificateDto giftCertificate) {
-        giftCertificate.add(linkTo(GiftCertificateController.class).withRel("POST: create a new gift-certificate"));
-        giftCertificate.add(linkTo(GiftCertificateController.class).withRel("GET: receive all gift-certificates"));
-    }
-
-    private void appendGenericCreateAndReadAllHateoasActions(CollectionModel<GiftCertificateDto> collection) {
-        collection.add(linkTo(GiftCertificateController.class).withRel("POST: create a new gift-certificate"));
-        collection.add(linkTo(GiftCertificateController.class).withRel("GET: receive all gift-certificates"));
+    @SuppressWarnings("rawtypes")
+    private void appendGenericCreateAndReadAllHateoasActions(RepresentationModel model) {
+        model.add(linkTo(GiftCertificateController.class).withRel("POST: create a new gift-certificate"));
+        model.add(linkTo(GiftCertificateController.class).withRel("GET: receive all gift-certificates"));
     }
 }
