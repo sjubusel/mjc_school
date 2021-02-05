@@ -3,7 +3,6 @@ package com.epam.esm.repository.impl;
 import com.epam.esm.model.domain.GiftCertificate;
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.repository.GiftCertificateRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -21,7 +20,6 @@ import java.util.Set;
 public class GiftCertificateRepositoryImpl extends GeneralCrudRepository<GiftCertificate, Long>
         implements GiftCertificateRepository {
 
-    @Autowired
     protected GiftCertificateRepositoryImpl(EntityManager entityManager) {
         super(entityManager);
     }

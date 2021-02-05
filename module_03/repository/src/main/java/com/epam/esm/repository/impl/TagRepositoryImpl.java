@@ -2,7 +2,6 @@ package com.epam.esm.repository.impl;
 
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.repository.TagRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -43,7 +42,6 @@ public class TagRepositoryImpl extends GeneralCrudRepository<Tag, Long> implemen
             "WHERE tu.tags_number = (SELECT MAX(tags_number) FROM tags_by_users " +
             "                                                WHERE tu.user_id = tags_by_users.user_id)";
 
-    @Autowired
     protected TagRepositoryImpl(EntityManager entityManager) {
         super(entityManager);
     }

@@ -2,7 +2,6 @@ package com.epam.esm.repository.impl;
 
 import com.epam.esm.model.domain.User;
 import com.epam.esm.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -15,7 +14,6 @@ import java.util.Map;
 @Repository
 public class UserRepositoryImpl extends GeneralCrudRepository<User, Long> implements UserRepository {
 
-    @Autowired
     protected UserRepositoryImpl(EntityManager entityManager) {
         super(entityManager);
     }

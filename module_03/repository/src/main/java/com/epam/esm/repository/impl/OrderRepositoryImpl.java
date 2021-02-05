@@ -2,7 +2,6 @@ package com.epam.esm.repository.impl;
 
 import com.epam.esm.model.domain.Order;
 import com.epam.esm.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -17,7 +16,6 @@ import java.util.Map;
 @Repository
 public class OrderRepositoryImpl extends GeneralCrudRepository<Order, Long> implements OrderRepository {
 
-    @Autowired
     protected OrderRepositoryImpl(EntityManager entityManager) {
         super(entityManager);
     }
