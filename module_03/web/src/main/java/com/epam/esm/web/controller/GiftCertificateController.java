@@ -4,9 +4,9 @@ import com.epam.esm.model.dto.GiftCertificateDto;
 import com.epam.esm.model.dto.GiftCertificateUpdateDto;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
+import com.epam.esm.web.util.impl.GiftCertificateHateoasActionsAppender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -18,9 +18,6 @@ import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 /**
  * a class which performs REST's CRUD operations on a resource called "Gift-certificates"
  */
@@ -31,6 +28,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class GiftCertificateController {
 
     private final GiftCertificateService giftCertificateService;
+
+    private final GiftCertificateHateoasActionsAppender hateoasActionsAppender;
 
     /**
      * a method which realizes REST's CREATE operation
@@ -60,13 +59,7 @@ public class GiftCertificateController {
                                                  GiftCertificateSearchCriteriaDto criteriaDto) {
         List<GiftCertificateDto> certificates = giftCertificateService.query(criteriaDto);
 
-        certificates.forEach(certificate -> {
-            applyHateoasActionsForSeparateGiftCertificate(certificate);
-            applyHateoasActionsForTagsThatArePartOfSeparateGiftCertificate(certificate);
-        });
-        Link selfLink = linkTo(methodOn(GiftCertificateController.class).read(criteriaDto)).withSelfRel();
-
-        return CollectionModel.of(certificates, selfLink);
+        return hateoasActionsAppender.toHateoasCollectionOfEntities(certificates);
     }
 
     /**
@@ -79,9 +72,7 @@ public class GiftCertificateController {
     public GiftCertificateDto readOne(@PathVariable("id") @Positive @Min(1) Long id) {
         GiftCertificateDto giftCertificate = giftCertificateService.findOne(id);
 
-        giftCertificate.add(linkTo(GiftCertificateController.class).slash(giftCertificate.getId()).withSelfRel());
-        applyHateoasActionsForSeparateGiftCertificate(giftCertificate);
-        applyHateoasActionsForTagsThatArePartOfSeparateGiftCertificate(giftCertificate);
+        hateoasActionsAppender.appendAsForMainEntity(giftCertificate);
 
         return giftCertificate;
     }
@@ -116,19 +107,4 @@ public class GiftCertificateController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    private void applyHateoasActionsForSeparateGiftCertificate(GiftCertificateDto giftCertificate) {
-        giftCertificate.add(linkTo(GiftCertificateController.class).withRel("POST: create a new gift-certificate"));
-        giftCertificate.add(linkTo(GiftCertificateController.class).slash(giftCertificate.getId())
-                .withRel("PATCH: update a current gift-certificate"));
-        giftCertificate.add(linkTo(GiftCertificateController.class).slash(giftCertificate.getId())
-                .withRel("DELETE: delete a current gift-certificate"));
-        giftCertificate.add(linkTo(GiftCertificateController.class)
-                .withRel("GET: receive all gift-certificates"));
-    }
-
-    private void applyHateoasActionsForTagsThatArePartOfSeparateGiftCertificate(GiftCertificateDto giftCertificate) {
-        giftCertificate.getTags().forEach(
-                tagDto -> tagDto.add(linkTo(TagController.class).slash(tagDto.getId()).withSelfRel())
-        );
-    }
 }
