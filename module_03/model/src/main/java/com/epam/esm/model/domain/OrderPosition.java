@@ -7,13 +7,14 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
-@javax.persistence.Entity
+@Entity
 @Table(name = "order_positions")
 @EntityListeners(GeneralEntityListener.class)
 @Data
@@ -21,7 +22,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true, exclude = {"order", "giftCertificate"})
 @ToString(callSuper = true, exclude = {"order", "giftCertificate"})
-public class OrderPosition extends Entity<Long> {
+public class OrderPosition extends com.epam.esm.model.domain.Entity<Long> {
 
     private BigDecimal price;
 

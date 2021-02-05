@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.Entity;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
@@ -16,7 +17,7 @@ import javax.persistence.Table;
 import java.time.Instant;
 import java.util.Set;
 
-@javax.persistence.Entity
+@Entity
 @Table(name = "orders")
 @EntityListeners(GeneralEntityListener.class)
 @Data
@@ -24,7 +25,7 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true, exclude = {"user", "orderPositions"})
 @ToString(callSuper = true, exclude = {"user", "orderPositions"})
-public class Order extends Entity<Long> {
+public class Order extends com.epam.esm.model.domain.Entity<Long> {
 
     @Column(columnDefinition = "TIMESTAMP")
     private Instant orderDate;
