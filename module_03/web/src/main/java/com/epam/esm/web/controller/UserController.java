@@ -6,9 +6,9 @@ import com.epam.esm.service.OrderService;
 import com.epam.esm.service.UserService;
 import com.epam.esm.service.dto.OrderSearchCriteriaDto;
 import com.epam.esm.service.dto.UserSearchCriteriaDto;
+import com.epam.esm.web.util.impl.UserHateoasActionsAppender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +19,6 @@ import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @RestController
 @RequestMapping("/users")
 @Validated
@@ -30,27 +27,20 @@ public class UserController {
 
     private final OrderService orderService;
     private final UserService userService;
+    private final UserHateoasActionsAppender hateoasActionsAppender;
 
     @GetMapping
     public CollectionModel<UserDto> read(@RequestBody(required = false) @Valid UserSearchCriteriaDto criteriaDto) {
         List<UserDto> users = userService.query(criteriaDto);
 
-        users.forEach(this::applyHateoasActionsForSeparateUser);
-        Link selfLink = linkTo(methodOn(UserController.class).read(criteriaDto)).withSelfRel();
-        Link postLink = linkTo(methodOn(UserController.class).createOrder(0L, new OrderDto()))
-                .withRel("POST: create a new order for a user with id 0 (change )");
-
-        return CollectionModel.of(users, selfLink, postLink);
+        return hateoasActionsAppender.toHateoasCollectionOfEntities(users);
     }
 
     @GetMapping("/{id}")
     public UserDto readOne(@PathVariable("id") @Positive @Min(1) Long id) {
         UserDto user = userService.findOne(id);
 
-        applyHateoasActionsForSeparateUser(user);
-        user.add(linkTo(UserController.class).withRel("GET: receive all users"));
-        user.add(linkTo(methodOn(UserController.class).createOrder(id, new OrderDto()))
-                .withRel("POST: create a new order for a current user"));
+        hateoasActionsAppender.appendAsForMainEntity(user);
 
         return user;
     }
@@ -81,11 +71,4 @@ public class UserController {
         return orderService.findOrderByIdIfBelongsToUser(orderId, userId);
     }
 
-    private void applyHateoasActionsForSeparateUser(UserDto user) {
-        user.add(linkTo(UserController.class).slash(user.getId()).withSelfRel());
-        user.add(linkTo(methodOn(UserController.class).readOrders(user.getId(), new OrderSearchCriteriaDto()))
-                .withRel("GET: receive all orders for a current user"));
-        user.add(linkTo(methodOn(UserController.class).readOrder(user.getId(), 0L))
-                .withRel("GET: receive an order with a number instead of 0 if it belongs to a current user"));
-    }
 }
