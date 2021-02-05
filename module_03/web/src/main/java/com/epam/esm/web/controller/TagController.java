@@ -111,7 +111,7 @@ public class TagController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/main_tag")
+    @GetMapping("/main")
     public List<TagDto> receiveMainTag() {
         return tagService.receiveMostWidelyUsedTagOfUserWithMaxCostOfOrders();
     }
