@@ -6,7 +6,6 @@ import com.epam.esm.service.dto.TagSearchCriteriaDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -97,7 +96,7 @@ public class TagController {
 
         TagDto updatedTag = tagService.findOne(id);
 
-        return new ResponseEntity<>(updatedTag, HttpStatus.OK);
+        return ResponseEntity.ok(updatedTag);
     }
 
     /**

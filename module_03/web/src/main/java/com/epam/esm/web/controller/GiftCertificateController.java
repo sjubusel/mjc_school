@@ -101,7 +101,7 @@ public class GiftCertificateController {
 
         GiftCertificateDto updatedGiftCertificate = giftCertificateService.findOne(id);
 
-        return new ResponseEntity<>(updatedGiftCertificate, HttpStatus.OK);
+        return ResponseEntity.ok(updatedGiftCertificate);
     }
 
     /**
