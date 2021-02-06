@@ -3,6 +3,7 @@ package com.epam.esm.repository.specification.impl;
 import com.epam.esm.model.domain.User;
 import com.epam.esm.repository.specification.JpaSpecification;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.EntityManager;
@@ -13,6 +14,7 @@ import javax.persistence.criteria.Root;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class UserSpecification implements JpaSpecification<User, Long> {
 
     private static final Integer PAGE_SIZE = 20;
