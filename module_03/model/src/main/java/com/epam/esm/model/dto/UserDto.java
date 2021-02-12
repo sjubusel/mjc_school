@@ -33,7 +33,7 @@ public class UserDto extends EntityDto<Long, UserDto> {
     private String email;
 
     @NotBlank(message = "phone number must not be empty")
-    @Pattern(regexp = "[+][0-9]{1,3}[ ][(][0-9]{2,3}[)][ ][1-9][0-9]{2}[-][0-9]{2}[-][0-9]{2}",
+    @Pattern(regexp = "[+][\\d]{1,3}[ ][(][\\d]{2,3}[)][ ][1-9][\\d]{2}[-][\\d]{2}[-][\\d]{2}",
             message = "phone number should be of the following format: " +
                     "+{country code} ({inner country code}) XXX-XX-XX")
     private String phoneNumber;
