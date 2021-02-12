@@ -11,12 +11,16 @@ import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.dto.UserSearchCriteriaDto;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
 public class UserServiceImpl extends GeneralCrudService<UserDto, User, Long, UserDto> implements UserService {
+
+    @Value("${page.default-page-size}")
+    private Integer defaultPageSize;
 
     @Autowired
     protected UserServiceImpl(CrudRepository<User, Long> crudRepository,
@@ -37,7 +41,7 @@ public class UserServiceImpl extends GeneralCrudService<UserDto, User, Long, Use
     @Override
     protected JpaSpecification<User, Long> getDataSourceSpecification(SearchCriteriaDto<User> searchCriteria) {
         if (searchCriteria == null) {
-            return new UserSpecification();
+            return new UserSpecification(null, defaultPageSize);
         }
 
         if (searchCriteria.getClass() != UserSearchCriteriaDto.class) {
@@ -45,7 +49,8 @@ public class UserServiceImpl extends GeneralCrudService<UserDto, User, Long, Use
         }
 
         UserSearchCriteriaDto params = (UserSearchCriteriaDto) searchCriteria;
-        return new UserSpecification(params.getPage(), params.getPageSize());
+        Integer pageSize = params.getPageSize() == null ? defaultPageSize : params.getPageSize();
+        return new UserSpecification(params.getPage(), pageSize);
     }
 
     @Override
