@@ -18,7 +18,7 @@ import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.IllegalGiftCertificateUpdateException;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +29,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@ConfigurationProperties(prefix = "page")
 public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertificateDto, GiftCertificate, Long,
         GiftCertificateUpdateDto> implements GiftCertificateService {
 
@@ -38,6 +37,7 @@ public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertifica
     private final TagRepository tagRepository;
     private final TagConverter tagConverter;
 
+    @Value("${page.default-page-size}")
     private Integer defaultPageSize;
 
     @Autowired
@@ -108,7 +108,7 @@ public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertifica
     protected JpaSpecification<GiftCertificate, Long> getDataSourceSpecification(SearchCriteriaDto<GiftCertificate>
                                                                                          searchCriteria) {
         if (searchCriteria == null) {
-            return new GiftCertificateSpecification();
+            return new GiftCertificateSpecification(null, null, null, null, null, defaultPageSize);
         }
 
         if (searchCriteria.getClass() != GiftCertificateSearchCriteriaDto.class) {
@@ -116,8 +116,9 @@ public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertifica
         }
 
         GiftCertificateSearchCriteriaDto params = (GiftCertificateSearchCriteriaDto) searchCriteria;
+        Integer pageSize = params.getPageSize() == null ? defaultPageSize : params.getPageSize();
         return new GiftCertificateSpecification(params.getTags(), params.getNamePart(), params.getDescriptionPart(),
-                params.getSortParams(), params.getPage());
+                params.getSortParams(), params.getPage(), pageSize);
     }
 
     @Override

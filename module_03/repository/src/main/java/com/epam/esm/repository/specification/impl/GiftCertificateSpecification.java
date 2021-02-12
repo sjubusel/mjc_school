@@ -43,12 +43,13 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
     private Integer pageSize;
 
     public GiftCertificateSpecification(List<String> tags, String namePart, String descriptionPart,
-                                        List<String> sortParams, Integer page) {
+                                        List<String> sortParams, Integer page, Integer pageSize) {
         this.tags = tags;
         this.namePart = namePart;
         this.descriptionPart = descriptionPart;
         this.sortParams = sortParams;
         this.page = page;
+        this.pageSize = pageSize;
     }
 
     @Override
