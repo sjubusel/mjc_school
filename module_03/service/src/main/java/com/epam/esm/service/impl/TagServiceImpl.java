@@ -12,6 +12,7 @@ import com.epam.esm.service.dto.TagSearchCriteriaDto;
 import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -23,6 +24,9 @@ import java.util.stream.Collectors;
 public class TagServiceImpl extends GeneralCrudService<TagDto, Tag, Long, TagDto> implements TagService {
 
     private final TagRepository tagRepository;
+
+    @Value("${page.default-page-size}")
+    private Integer defaultPageSize;
 
     @Autowired
     protected TagServiceImpl(TagRepository tagRepository,
@@ -41,7 +45,7 @@ public class TagServiceImpl extends GeneralCrudService<TagDto, Tag, Long, TagDto
     @Override
     protected JpaSpecification<Tag, Long> getDataSourceSpecification(SearchCriteriaDto<Tag> searchCriteria) {
         if (searchCriteria == null) {
-            return new TagSpecification();
+            return new TagSpecification(null, defaultPageSize, null);
         }
 
         if (searchCriteria.getClass() != TagSearchCriteriaDto.class) {
@@ -49,7 +53,8 @@ public class TagServiceImpl extends GeneralCrudService<TagDto, Tag, Long, TagDto
         }
 
         TagSearchCriteriaDto params = (TagSearchCriteriaDto) searchCriteria;
-        return new TagSpecification(params.getName(), params.getPageSize(), params.getPage());
+        Integer pageSize = params.getPageSize() == null ? defaultPageSize : params.getPageSize();
+        return new TagSpecification(params.getName(), pageSize, params.getPage());
     }
 
     @Override
