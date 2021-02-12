@@ -3,6 +3,7 @@ package com.epam.esm.repository.specification.impl;
 import com.epam.esm.model.domain.GiftCertificate;
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.repository.specification.JpaSpecification;
+import com.epam.esm.repository.util.RepositoryConstant;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
@@ -27,7 +28,8 @@ import java.util.stream.Stream;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class GiftCertificateSpecification implements JpaSpecification<GiftCertificate, Long> {
-    private static final Integer PAGE_SIZE = 20;
+
+    private static final Integer PAGE_SIZE = RepositoryConstant.DEFAULT_PAGE_SIZE;
 
     private List<Predicate> whereConditions;
     private List<Order> orderConditions;

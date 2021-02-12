@@ -2,6 +2,7 @@ package com.epam.esm.repository.specification.impl;
 
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.repository.specification.JpaSpecification;
+import com.epam.esm.repository.util.RepositoryConstant;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,8 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class TagSpecification implements JpaSpecification<Tag, Long> {
-    private static final Integer PAGE_SIZE = 20;
+
+    private static final Integer PAGE_SIZE = RepositoryConstant.DEFAULT_PAGE_SIZE;
 
     private String name;
     private Integer page;
