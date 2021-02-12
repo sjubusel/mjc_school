@@ -19,6 +19,10 @@ public class OrderSearchCriteriaDto implements SearchCriteriaDto<Order> {
     @Digits(integer = 20, fraction = 0)
     private Integer page;
 
+    @Min(value = 1, message = "page size must be greater than 1")
+    @Digits(integer = 20, fraction = 0)
+    private Integer pageSize;
+
     @Min(value = 1, message = "user's id must be greater than or equal 1")
     @Digits(integer = 20, fraction = 0)
     private Long userId;
