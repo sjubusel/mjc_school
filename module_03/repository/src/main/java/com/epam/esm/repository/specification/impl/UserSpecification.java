@@ -2,7 +2,6 @@ package com.epam.esm.repository.specification.impl;
 
 import com.epam.esm.model.domain.User;
 import com.epam.esm.repository.specification.JpaSpecification;
-import com.epam.esm.repository.util.RepositoryConstant;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -17,8 +16,6 @@ import javax.persistence.criteria.Root;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class UserSpecification implements JpaSpecification<User, Long> {
-
-    private static final Integer PAGE_SIZE = RepositoryConstant.DEFAULT_PAGE_SIZE;
 
     private Integer page;
     private Integer pageSize;
@@ -35,7 +32,7 @@ public class UserSpecification implements JpaSpecification<User, Long> {
         }
 
         return entityManager.createQuery(criteriaQuery)
-                .setFirstResult(PAGE_SIZE * (page - 1))
-                .setMaxResults(PAGE_SIZE);
+                .setFirstResult(pageSize * (page - 1))
+                .setMaxResults(pageSize);
     }
 }
