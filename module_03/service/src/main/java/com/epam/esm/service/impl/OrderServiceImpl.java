@@ -20,6 +20,7 @@ import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import com.epam.esm.service.exception.InconsistentCreateDtoException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +36,9 @@ public class OrderServiceImpl extends GeneralCrudService<OrderDto, Order, Long, 
     private final UserRepository userRepository;
     private final GiftCertificateRepository giftCertificateRepository;
     private final OrderPositionRepository orderPositionRepository;
+
+    @Value("${page.default-page-size}")
+    private Integer defaultPageSize;
 
     @Autowired
     protected OrderServiceImpl(CrudRepository<Order, Long> crudRepository,
@@ -74,7 +78,7 @@ public class OrderServiceImpl extends GeneralCrudService<OrderDto, Order, Long, 
     @Override
     protected JpaSpecification<Order, Long> getDataSourceSpecification(SearchCriteriaDto<Order> searchCriteria) {
         if (searchCriteria == null) {
-            return new OrderSpecification();
+            return new OrderSpecification(null, defaultPageSize, null);
         }
 
         if (searchCriteria.getClass() != OrderSearchCriteriaDto.class) {
@@ -82,7 +86,8 @@ public class OrderServiceImpl extends GeneralCrudService<OrderDto, Order, Long, 
         }
 
         OrderSearchCriteriaDto params = (OrderSearchCriteriaDto) searchCriteria;
-        return new OrderSpecification(params.getPage(), params.getPageSize(), params.getUserId());
+        Integer pageSize = params.getPageSize() == null ? defaultPageSize : params.getPageSize();
+        return new OrderSpecification(params.getPage(), pageSize, params.getUserId());
     }
 
     @Override
