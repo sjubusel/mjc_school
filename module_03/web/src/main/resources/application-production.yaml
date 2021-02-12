@@ -28,3 +28,5 @@ management:
       exposure:
         include: "*"
       base-path: "/actuator"
+page:
+  default-page-size: 20
