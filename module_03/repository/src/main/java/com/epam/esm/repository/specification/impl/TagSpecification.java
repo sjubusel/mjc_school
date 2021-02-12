@@ -24,6 +24,7 @@ public class TagSpecification implements JpaSpecification<Tag, Long> {
     private static final Integer PAGE_SIZE = RepositoryConstant.DEFAULT_PAGE_SIZE;
 
     private String name;
+    private Integer pageSize;
     private Integer page;
 
     @Override

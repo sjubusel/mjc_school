@@ -82,7 +82,7 @@ public class OrderServiceImpl extends GeneralCrudService<OrderDto, Order, Long, 
         }
 
         OrderSearchCriteriaDto params = (OrderSearchCriteriaDto) searchCriteria;
-        return new OrderSpecification(params.getPage(), params.getUserId());
+        return new OrderSpecification(params.getPage(), params.getPageSize(), params.getUserId());
     }
 
     @Override

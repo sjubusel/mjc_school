@@ -57,7 +57,7 @@ class TagServiceImplTest {
 
         when(tagRepository.query(any(TagSpecification.class))).thenReturn(Arrays.asList(tag1, tag2));
 
-        List<TagDto> actual = tagService.query(new TagSearchCriteriaDto("test", 1));
+        List<TagDto> actual = tagService.query(new TagSearchCriteriaDto("test", 1, 20));
         assertEquals(expected, actual);
     }
 
@@ -132,9 +132,9 @@ class TagServiceImplTest {
 
     @Test
     void getDataSourceSpecification() {
-        TagSearchCriteriaDto criteria = new TagSearchCriteriaDto("test", 123486);
+        TagSearchCriteriaDto criteria = new TagSearchCriteriaDto("test", 123486, 20);
 
-        TagSpecification expected = new TagSpecification(criteria.getName(), criteria.getPage());
+        TagSpecification expected = new TagSpecification(criteria.getName(), criteria.getPage(), criteria.getPageSize());
         JpaSpecification<Tag, Long> actual = tagService.getDataSourceSpecification(criteria);
 
         assertEquals(expected, actual);

@@ -98,7 +98,7 @@ class GiftCertificateServiceImplTest {
                 .thenReturn(expectedDomainList);
 
         List<GiftCertificateDto> actual = giftCertificateService.query(new GiftCertificateSearchCriteriaDto(null,
-                "test-name", "test-description", Collections.singletonList("+name"), null));
+                "test-name", "test-description", Collections.singletonList("+name"), null, null));
         assertEquals(expected, actual);
     }
 

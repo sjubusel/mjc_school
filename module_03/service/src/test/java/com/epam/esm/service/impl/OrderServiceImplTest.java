@@ -69,7 +69,7 @@ class OrderServiceImplTest {
 
         when(orderRepository.query(any(OrderSpecification.class))).thenReturn(Collections.singletonList(result));
 
-        List<OrderDto> actual = orderService.query(new OrderSearchCriteriaDto(12, 999L));
+        List<OrderDto> actual = orderService.query(new OrderSearchCriteriaDto(12, 20, 999L));
         assertEquals(expected, actual);
     }
 
@@ -145,8 +145,9 @@ class OrderServiceImplTest {
 
     @Test
     void getDataSourceSpecification() {
-        OrderSearchCriteriaDto searchCriteria = new OrderSearchCriteriaDto(1, 1L);
-        OrderSpecification expected = new OrderSpecification(searchCriteria.getPage(), searchCriteria.getUserId());
+        OrderSearchCriteriaDto searchCriteria = new OrderSearchCriteriaDto(1, 20, 1L);
+        OrderSpecification expected = new OrderSpecification(searchCriteria.getPage(), searchCriteria.getPageSize(),
+                searchCriteria.getUserId());
 
         JpaSpecification<Order, Long> actual = orderService.getDataSourceSpecification(searchCriteria);
         assertEquals(expected, actual);

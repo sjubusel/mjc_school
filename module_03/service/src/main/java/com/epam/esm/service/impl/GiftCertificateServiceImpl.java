@@ -18,6 +18,7 @@ import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.IllegalGiftCertificateUpdateException;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@ConfigurationProperties(prefix = "page")
 public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertificateDto, GiftCertificate, Long,
         GiftCertificateUpdateDto> implements GiftCertificateService {
 
@@ -35,6 +37,8 @@ public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertifica
     private final GiftCertificateConverter giftCertificateConverter;
     private final TagRepository tagRepository;
     private final TagConverter tagConverter;
+
+    private Integer defaultPageSize;
 
     @Autowired
     protected GiftCertificateServiceImpl(GiftCertificateRepository giftCertificateRepository,

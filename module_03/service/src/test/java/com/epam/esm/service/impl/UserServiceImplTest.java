@@ -52,8 +52,8 @@ class UserServiceImplTest {
     @DisplayName("the most common path of getDataSourceSpecification() execution")
     @Test
     void getDataSourceSpecificationWithMostCommonPath() {
-        UserSearchCriteriaDto criteriaDto = new UserSearchCriteriaDto(12);
-        UserSpecification expected = new UserSpecification(criteriaDto.getPage());
+        UserSearchCriteriaDto criteriaDto = new UserSearchCriteriaDto(12, 20);
+        UserSpecification expected = new UserSpecification(criteriaDto.getPage(), criteriaDto.getPageSize());
 
         JpaSpecification<User, Long> actual = userService.getDataSourceSpecification(criteriaDto);
         assertEquals(expected, actual);
@@ -91,8 +91,8 @@ class UserServiceImplTest {
 
     @Test
     void query() {
-        UserSearchCriteriaDto criteriaDto = new UserSearchCriteriaDto(1);
-        UserSpecification specification = new UserSpecification(criteriaDto.getPage());
+        UserSearchCriteriaDto criteriaDto = new UserSearchCriteriaDto(1, 20);
+        UserSpecification specification = new UserSpecification(criteriaDto.getPage(), criteriaDto.getPageSize());
         Long id = 1L;
         User user = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44");
         user.setId(id);

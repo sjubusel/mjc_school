@@ -23,6 +23,7 @@ public class OrderSpecification implements JpaSpecification<Order, Long> {
     private static final Integer PAGE_SIZE = RepositoryConstant.DEFAULT_PAGE_SIZE;
 
     private Integer page;
+    private Integer pageSize;
     private Long userId;
 
     @Override

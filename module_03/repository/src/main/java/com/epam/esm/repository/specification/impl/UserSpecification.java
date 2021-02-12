@@ -21,6 +21,7 @@ public class UserSpecification implements JpaSpecification<User, Long> {
     private static final Integer PAGE_SIZE = RepositoryConstant.DEFAULT_PAGE_SIZE;
 
     private Integer page;
+    private Integer pageSize;
 
     @Override
     public TypedQuery<User> toQuery(EntityManager entityManager) {

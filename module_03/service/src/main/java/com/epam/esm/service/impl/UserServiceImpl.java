@@ -45,7 +45,7 @@ public class UserServiceImpl extends GeneralCrudService<UserDto, User, Long, Use
         }
 
         UserSearchCriteriaDto params = (UserSearchCriteriaDto) searchCriteria;
-        return new UserSpecification(params.getPage());
+        return new UserSpecification(params.getPage(), params.getPageSize());
     }
 
     @Override

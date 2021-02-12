@@ -49,7 +49,7 @@ public class TagServiceImpl extends GeneralCrudService<TagDto, Tag, Long, TagDto
         }
 
         TagSearchCriteriaDto params = (TagSearchCriteriaDto) searchCriteria;
-        return new TagSpecification(params.getName(), params.getPage());
+        return new TagSpecification(params.getName(), params.getPageSize(), params.getPage());
     }
 
     @Override

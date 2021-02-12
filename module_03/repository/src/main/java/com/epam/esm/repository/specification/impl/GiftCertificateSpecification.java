@@ -40,6 +40,7 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
     private String descriptionPart;
     private List<String> sortParams;
     private Integer page;
+    private Integer pageSize;
 
     public GiftCertificateSpecification(List<String> tags, String namePart, String descriptionPart,
                                         List<String> sortParams, Integer page) {
