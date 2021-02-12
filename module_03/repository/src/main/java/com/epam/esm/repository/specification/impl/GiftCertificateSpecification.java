@@ -3,7 +3,6 @@ package com.epam.esm.repository.specification.impl;
 import com.epam.esm.model.domain.GiftCertificate;
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.repository.specification.JpaSpecification;
-import com.epam.esm.repository.util.RepositoryConstant;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
@@ -28,8 +27,6 @@ import java.util.stream.Stream;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class GiftCertificateSpecification implements JpaSpecification<GiftCertificate, Long> {
-
-    private static final Integer PAGE_SIZE = RepositoryConstant.DEFAULT_PAGE_SIZE;
 
     private List<Predicate> whereConditions;
     private List<Order> orderConditions;
@@ -62,7 +59,7 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
             criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("isDeleted"), Boolean.FALSE));
             TypedQuery<GiftCertificate> query = entityManager.createQuery(criteriaQuery);
             query.setFirstResult(0);
-            query.setMaxResults(PAGE_SIZE);
+            query.setMaxResults(pageSize);
             return query;
         }
 
@@ -171,8 +168,8 @@ public class GiftCertificateSpecification implements JpaSpecification<GiftCertif
     private TypedQuery<GiftCertificate> receiveTypedQuery(EntityManager entityManager,
                                                           CriteriaQuery<GiftCertificate> criteriaQuery) {
         TypedQuery<GiftCertificate> targetQuery = entityManager.createQuery(criteriaQuery);
-        targetQuery.setFirstResult(PAGE_SIZE * (page - 1));
-        targetQuery.setMaxResults(PAGE_SIZE);
+        targetQuery.setFirstResult(pageSize * (page - 1));
+        targetQuery.setMaxResults(pageSize);
         if (jpaTagParameters != null && jpaTagParameters.size() > 0) {
             jpaTagParameters.forEach(targetQuery::setParameter);
         }
