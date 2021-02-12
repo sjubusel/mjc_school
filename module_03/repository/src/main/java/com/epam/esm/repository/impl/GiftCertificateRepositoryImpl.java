@@ -3,6 +3,7 @@ package com.epam.esm.repository.impl;
 import com.epam.esm.model.domain.GiftCertificate;
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.repository.GiftCertificateRepository;
+import com.epam.esm.repository.util.GiftCertificatePredicateBuilder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -20,8 +21,12 @@ import java.util.Set;
 public class GiftCertificateRepositoryImpl extends GeneralCrudRepository<GiftCertificate, Long>
         implements GiftCertificateRepository {
 
-    protected GiftCertificateRepositoryImpl(EntityManager entityManager) {
+    private final GiftCertificatePredicateBuilder predicateBuilder;
+
+    protected GiftCertificateRepositoryImpl(EntityManager entityManager,
+                                            GiftCertificatePredicateBuilder predicateBuilder) {
         super(entityManager);
+        this.predicateBuilder = predicateBuilder;
     }
 
     @Override
@@ -50,15 +55,7 @@ public class GiftCertificateRepositoryImpl extends GeneralCrudRepository<GiftCer
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
         Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
-
-        Predicate nameCondition = criteriaBuilder.equal(root.get("name"), uniqueConstraints.get("name"));
-        Predicate descriptionCondition = criteriaBuilder.equal(root.get("description"),
-                uniqueConstraints.get("description"));
-        Predicate priceCondition = criteriaBuilder.equal(root.get("price"), uniqueConstraints.get("price"));
-        Predicate durationCondition = criteriaBuilder.equal(root.get("duration"), uniqueConstraints.get("duration"));
-        Predicate existsCondition = criteriaBuilder.equal(root.get("isDeleted"), Boolean.FALSE);
-        Predicate finalPredicate = criteriaBuilder.and(nameCondition, descriptionCondition, priceCondition,
-                durationCondition, existsCondition);
+        Predicate finalPredicate = predicateBuilder.buildExistsPredicate(criteriaBuilder, root, uniqueConstraints);
 
         return criteriaQuery.select(root).where(finalPredicate);
     }
