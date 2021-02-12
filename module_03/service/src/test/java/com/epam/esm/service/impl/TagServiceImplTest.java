@@ -3,7 +3,6 @@ package com.epam.esm.service.impl;
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.model.dto.TagDto;
 import com.epam.esm.repository.TagRepository;
-import com.epam.esm.repository.specification.JpaSpecification;
 import com.epam.esm.repository.specification.impl.TagSpecification;
 import com.epam.esm.service.converter.impl.TagConverterImpl;
 import com.epam.esm.service.dto.TagSearchCriteriaDto;
@@ -127,16 +126,6 @@ class TagServiceImplTest {
                 .thenReturn(Collections.singletonList(expectedTag));
 
         List<TagDto> actual = tagService.receiveMostWidelyUsedTagOfUserWithMaxCostOfOrders();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void getDataSourceSpecification() {
-        TagSearchCriteriaDto criteria = new TagSearchCriteriaDto("test", 123486, 20);
-
-        TagSpecification expected = new TagSpecification(criteria.getName(), criteria.getPage(), criteria.getPageSize());
-        JpaSpecification<Tag, Long> actual = tagService.getDataSourceSpecification(criteria);
-
         assertEquals(expected, actual);
     }
 
