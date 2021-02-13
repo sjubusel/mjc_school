@@ -105,7 +105,9 @@ public class TagController {
 
     @GetMapping("/main")
     public List<TagDto> receiveMainTag() {
-        return tagService.receiveMostWidelyUsedTagOfUserWithMaxCostOfOrders();
+        List<TagDto> tagList = tagService.receiveMostWidelyUsedTagOfUserWithMaxCostOfOrders();
+        tagList.forEach(hateoasActionsAppender::appendSelfReference);
+        return tagList;
     }
 
 }
