@@ -17,7 +17,7 @@ import java.util.List;
 @Validated
 public class GiftCertificateSearchCriteriaDto implements SearchCriteriaDto<GiftCertificate> {
 
-    private List<@Pattern(regexp = "[0-9A-Za-zА-Яа-яЁё ]{1,256}", message = "tag name must contain " +
+    private List<@Pattern(regexp = "[:\\-0-9A-Za-zА-Яа-яЁё ]{1,256}", message = "tag name must contain " +
             "from 1 to 256 characters without punctuation marks") String> tags;
 
     @Pattern(regexp = "[0-9A-Za-zА-Яа-яЁё ]{1,256}", message = "certificate name must contain from 1 to 256 " +
