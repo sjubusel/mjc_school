@@ -5,6 +5,7 @@ import com.epam.esm.model.dto.UserDto;
 import com.epam.esm.service.dto.OrderSearchCriteriaDto;
 import com.epam.esm.web.controller.UserController;
 import com.epam.esm.web.util.HateoasActionsAppender;
+import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
@@ -16,7 +17,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
+@RequiredArgsConstructor
 public class UserHateoasActionsAppender implements HateoasActionsAppender<Long, UserDto> {
+
+    private final OrderHateoasActionsAppender orderHateoasActionsAppender;
 
     @Override
     public void appendSelfReference(UserDto dto) {
@@ -54,5 +58,9 @@ public class UserHateoasActionsAppender implements HateoasActionsAppender<Long, 
     @SuppressWarnings("rawtypes")
     private void appendGenericUserHateoasActions(RepresentationModel dto) {
         dto.add(linkTo(UserController.class).withRel("GET: receive all users"));
+    }
+
+    public CollectionModel<OrderDto> toHateoasCollectionOfOrders(List<OrderDto> orders) {
+        return orderHateoasActionsAppender.toHateoasCollectionOfEntities(orders);
     }
 }

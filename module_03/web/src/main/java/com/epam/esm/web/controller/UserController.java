@@ -19,6 +19,8 @@ import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 @RestController
 @RequestMapping("/users")
 @Validated
@@ -55,20 +57,23 @@ public class UserController {
     }
 
     @GetMapping("/{id}/orders")
-    public List<OrderDto> readOrders(@PathVariable("id") @Positive @Min(1) Long id,
+    public CollectionModel<OrderDto> readOrders(@PathVariable("id") @Positive @Min(1) Long id,
                                      @RequestBody(required = false) @Valid OrderSearchCriteriaDto criteriaDto) {
         if (criteriaDto == null) {
             criteriaDto = new OrderSearchCriteriaDto();
         }
         criteriaDto.setUserId(id);
-        return orderService.query(criteriaDto);
+        List<OrderDto> orders = orderService.query(criteriaDto);
+        return hateoasActionsAppender.toHateoasCollectionOfOrders(orders);
     }
 
     @GetMapping("/{userId}/orders/{orderId}")
     public OrderDto readOrder(@PathVariable("userId") @Positive @Min(1) Long userId,
                               @PathVariable("orderId") @Positive @Min(1) Long orderId) {
 
-        return orderService.findOrderByIdIfBelongsToUser(orderId, userId);
+        OrderDto order = orderService.findOrderByIdIfBelongsToUser(orderId, userId);
+        order.add(linkTo(OrderController.class).slash(order.getId()).withSelfRel());
+        return order;
     }
 
 }
