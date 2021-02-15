@@ -2,6 +2,7 @@ package com.epam.esm.web.exception;
 
 import com.epam.esm.service.exception.DuplicateResourceException;
 import com.epam.esm.service.exception.EmptyUpdateException;
+import com.epam.esm.service.exception.IllegalGiftCertificateUpdateException;
 import com.epam.esm.service.exception.IllegalRequestException;
 import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import com.epam.esm.service.exception.InconsistentCreateDtoException;
@@ -46,6 +47,7 @@ public class GeneralExceptionHandler {
     public static final String OTHER_EXCEPTIONS = "other.exceptions";
     private static final String INCONSISTENT_CREATE_DTO_EXCEPTION = "inconsistent.create.dto.exception";
     private static final String ILLEGAL_REQUEST_EXCEPTION = "illegal.request.exception";
+    private static final String ILLEGAL_GIFT_CERTIFICATE_UPDATE_EXCEPTION = "illegal.gift.certificate.update.exception";
 
     private final MessageSource messageSource;
 
@@ -188,6 +190,16 @@ public class GeneralExceptionHandler {
         ErrorInfo errorInfo = generateStandardErrorInfo(40310L, errorMessage, request.getRequestURI());
         log.error("Resource cannot be reached due to restrictions → {}; exception → {}", errorInfo, e);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorInfo);
+    }
+
+    @ExceptionHandler(IllegalGiftCertificateUpdateException.class)
+    protected ResponseEntity<Object> handleIllegalGiftCertificateUpdateException(IllegalGiftCertificateUpdateException e,
+                                                                                 HttpServletRequest request,
+                                                                                 Locale locale) {
+        String errorMessage = messageSource.getMessage(ILLEGAL_GIFT_CERTIFICATE_UPDATE_EXCEPTION, null, locale);
+        ErrorInfo errorInfo = generateStandardErrorInfo(40080L, errorMessage, request.getRequestURI());
+        log.error("Simultaneous update of 2 fields of the gift-certificate occurs → {}; exception → {}", errorInfo, e);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorInfo);
     }
 
     @ExceptionHandler(Exception.class)
