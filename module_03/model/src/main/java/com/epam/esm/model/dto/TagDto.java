@@ -22,7 +22,7 @@ import java.util.Set;
 public class TagDto extends EntityDto<Long, TagDto> {
 
     @NotBlank(message = "tag name must be not blank")
-    @Pattern(regexp = "[\\-0-9A-Za-zА-Яа-яЁё ]{3,256}", message = "tag name must contain from 3 to 256 " +
+    @Pattern(regexp = "[:\\-0-9A-Za-zА-Яа-яЁё ]{3,256}", message = "tag name must contain from 3 to 256 " +
             "characters without punctuation marks")
     private String name;
 
