@@ -31,7 +31,7 @@ public class TagHateoasActionsAppender implements HateoasActionsAppender<Long, T
     @Override
     public void appendAsForSecondaryEntity(TagDto dto) {
         appendSelfReference(dto);
-        dto.add(linkTo(TagController.class).slash(dto.getId()).withRel("PATCH: update a current tag"));
+        dto.add(linkTo(TagController.class).slash(dto.getId()).withRel("PUT: update a current tag"));
         dto.add(linkTo(TagController.class).slash(dto.getId()).withRel("DELETE: delete a current tag"));
     }
 

@@ -80,7 +80,7 @@ public class TagController {
      * @param tagDto an object with new fields of a specified resource
      * @return an object which represent Http response of UPDATE operation, which body contains a newly updated resource
      */
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<TagDto> update(@PathVariable("id") @Positive @Min(1) Long id,
                                          @RequestBody @Valid TagDto tagDto) {
         tagDto.setId(id);
