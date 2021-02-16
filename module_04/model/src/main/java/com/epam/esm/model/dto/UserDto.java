@@ -10,7 +10,9 @@ import lombok.ToString;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -48,4 +50,7 @@ public class UserDto extends EntityDto<Long, UserDto> {
             "cyrillic characters, punctuation marks and special characters '@#$%^&*()'. Length must be between " +
             "6 and 256 characters")
     private String password;
+
+    @Null(message = "user's authorities cannot be defined by a user")
+    private Set<UserAuthorityDto> authorities;
 }
