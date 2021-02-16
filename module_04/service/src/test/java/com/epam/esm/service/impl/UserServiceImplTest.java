@@ -78,7 +78,7 @@ class UserServiceImplTest {
     @Test
     void findOne() {
         Long id = 1L;
-        User user = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null);
+        User user = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null, null);
         user.setId(id);
         UserDto expected = new UserDto(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhoneNumber(),
                 user.getLogin(), user.getPassword());
@@ -95,7 +95,7 @@ class UserServiceImplTest {
         UserSearchCriteriaDto criteriaDto = new UserSearchCriteriaDto(1, 20);
         UserSpecification specification = new UserSpecification(criteriaDto.getPage(), criteriaDto.getPageSize());
         Long id = 1L;
-        User user = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null);
+        User user = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null, null);
         user.setId(id);
         UserDto expectedDto = new UserDto(user.getFirstName(), user.getLastName(), user.getEmail(),
                 user.getPhoneNumber(), user.getLogin(), user.getPassword());
@@ -128,7 +128,7 @@ class UserServiceImplTest {
         Long id = 1L;
         UserDto userDto = new UserDto("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null);
         userDto.setId(id);
-        User user = new User("Sju", "Busel", "sjubusel@email.com", "+ 380 (29) 111-78-44", "sjubusel", null);
+        User user = new User("Sju", "Busel", "sjubusel@email.com", "+ 380 (29) 111-78-44", "sjubusel", null, null);
         user.setId(id);
 
         when(userRepository.findOne(id)).thenReturn(Optional.of(user));
@@ -139,7 +139,7 @@ class UserServiceImplTest {
     @Test
     void delete() {
         Long id = 1L;
-        User user = new User("Sju", "Busel", "sjubusel@email.com", "+ 380 (29) 111-78-44", "sjubusel", null);
+        User user = new User("Sju", "Busel", "sjubusel@email.com", "+ 380 (29) 111-78-44", "sjubusel", null, null);
         user.setId(id);
 
         when(userRepository.findOne(id)).thenReturn(Optional.of(user));
@@ -150,10 +150,10 @@ class UserServiceImplTest {
     @Test
     void receiveDomainWhichIsToBeUpdated() {
         Long id = 1L;
-        User expected = new User("Sju", "Busel", "sjubusel@email.com", "+ 380 (29) 111-78-44", "sjubusel", null);
+        User expected = new User("Sju", "Busel", "sjubusel@email.com", "+ 380 (29) 111-78-44", "sjubusel", null, null);
 
         when(userRepository.findOne(id)).thenReturn(Optional
-                .of(new User("Sju", "Busel", "sjubusel@email.com", "+ 380 (29) 111-78-44", "sjubusel", null)));
+                .of(new User("Sju", "Busel", "sjubusel@email.com", "+ 380 (29) 111-78-44", "sjubusel", null, null)));
 
         User actual = userService.receiveDomainWhichIsToBeUpdated(id);
         assertEquals(expected, actual);

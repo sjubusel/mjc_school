@@ -1,6 +1,10 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.model.domain.*;
+import com.epam.esm.model.domain.GiftCertificate;
+import com.epam.esm.model.domain.Order;
+import com.epam.esm.model.domain.OrderPosition;
+import com.epam.esm.model.domain.Tag;
+import com.epam.esm.model.domain.User;
 import com.epam.esm.model.dto.*;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.OrderPositionRepository;
@@ -18,7 +22,14 @@ import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -90,7 +101,8 @@ class OrderServiceImplTest {
 
         OrderDto dto = new OrderDto(null, null, user, orderPositions);
 
-        User expectedUser = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null);
+        User expectedUser = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null,
+                null);
         expectedUser.setId(user.getId());
 
         when(userRepository.findOne(999L)).thenReturn(Optional.of(expectedUser));
@@ -164,7 +176,7 @@ class OrderServiceImplTest {
         Long orderId = 1L;
         Long userId = 999L;
 
-        User user = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null);
+        User user = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null, null);
         user.setId(999L);
         Order sourceOrder = receiveSourceOrder(orderId);
         OrderDto expected = receiveSourceOrderDto(orderId);
@@ -184,7 +196,7 @@ class OrderServiceImplTest {
         Instant orderInstant = Instant.parse("2021-02-06T00:00:00.000Z");
         Instant deleteTagInstant = Instant.parse("2020-01-16T01:01:01.000Z");
 
-        User user = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null);
+        User user = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null, null);
         user.setId(999L);
         Order order = new Order(orderInstant, user, null);
         order.setId(id);
