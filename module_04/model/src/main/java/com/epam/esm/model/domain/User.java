@@ -28,4 +28,8 @@ public class User extends com.epam.esm.model.domain.Entity<Long> {
     private String email;
 
     private String phoneNumber;
+
+    private String login;
+
+    private String password;
 }
