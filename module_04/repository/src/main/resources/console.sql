@@ -110,9 +110,22 @@ CREATE TABLE gift_certificates_system.order_positions
         FOREIGN KEY (certificate_id) REFERENCES gift_certificates_system.certificates (id)
 );
 
-INSERT INTO gift_certificates_system.orders (order_date, user_id)
-VALUES (CURRENT_TIMESTAMP(3), 1); -- order 1
+CREATE TABLE gift_certificates_system.authorities
+(
+    id      BIGINT       NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
+    role    VARCHAR(256) NOT NULL,
+    user_id BIGINT       NOT NULL,
 
-INSERT INTO gift_certificates_system.order_positions (price, order_id, certificate_id)
-VALUES (111.1, 1, 1),
-       (122.21, 1, 2);
+    CONSTRAINT fk__authorities__users
+        FOREIGN KEY (user_id) REFERENCES gift_certificates_system.users (id),
+    UNIQUE (role, user_id)
+)
+
+-- UNUSED
+-- INSERT INTO gift_certificates_system.orders (order_date, user_id)
+-- VALUES (CURRENT_TIMESTAMP(3), 1); -- order 1
+
+-- UNUSED
+-- INSERT INTO gift_certificates_system.order_positions (price, order_id, certificate_id)
+-- VALUES (111.1, 1, 1),
+--        (122.21, 1, 2);
