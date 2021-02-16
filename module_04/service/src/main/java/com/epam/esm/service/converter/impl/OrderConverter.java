@@ -3,6 +3,7 @@ package com.epam.esm.service.converter.impl;
 import com.epam.esm.model.domain.Order;
 import com.epam.esm.model.domain.OrderPosition;
 import com.epam.esm.model.dto.OrderDto;
+import com.epam.esm.service.converter.DefaultUserQualifier;
 import com.epam.esm.service.converter.GeneralEntityConverter;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -23,7 +24,10 @@ public interface OrderConverter extends GeneralEntityConverter<OrderDto, Order, 
     @Override
     Order convertToDomain(OrderDto dto);
 
-    @Mapping(target = "price", source = "orderPositions", qualifiedByName = "receiveTotalPrice")
+    @Mappings({
+            @Mapping(target = "user", source = "user", qualifiedBy = DefaultUserQualifier.class),
+            @Mapping(target = "price", source = "orderPositions", qualifiedByName = "receiveTotalPrice")
+    })
     @Override
     OrderDto convertToDto(Order order);
 
