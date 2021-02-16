@@ -90,7 +90,7 @@ class OrderServiceImplTest {
 
         OrderDto dto = new OrderDto(null, null, user, orderPositions);
 
-        User expectedUser = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44");
+        User expectedUser = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null);
         expectedUser.setId(user.getId());
 
         when(userRepository.findOne(999L)).thenReturn(Optional.of(expectedUser));
@@ -164,7 +164,7 @@ class OrderServiceImplTest {
         Long orderId = 1L;
         Long userId = 999L;
 
-        User user = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44");
+        User user = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null);
         user.setId(999L);
         Order sourceOrder = receiveSourceOrder(orderId);
         OrderDto expected = receiveSourceOrderDto(orderId);
@@ -184,7 +184,7 @@ class OrderServiceImplTest {
         Instant orderInstant = Instant.parse("2021-02-06T00:00:00.000Z");
         Instant deleteTagInstant = Instant.parse("2020-01-16T01:01:01.000Z");
 
-        User user = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44");
+        User user = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null);
         user.setId(999L);
         Order order = new Order(orderInstant, user, null);
         order.setId(id);
@@ -219,7 +219,7 @@ class OrderServiceImplTest {
         Instant orderInstant = Instant.parse("2021-02-06T00:00:00.000Z");
         Instant deleteTagInstant = Instant.parse("2020-01-16T01:01:01.000Z");
 
-        UserDto userDto = new UserDto("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44");
+        UserDto userDto = new UserDto("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null);
         userDto.setId(999L);
         OrderDto orderDto = new OrderDto(new BigDecimal("7.29"), orderInstant, userDto, null);
         orderDto.setId(id);
