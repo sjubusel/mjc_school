@@ -5,6 +5,7 @@ import com.epam.esm.model.dto.UserDto;
 import com.epam.esm.repository.UserRepository;
 import com.epam.esm.repository.specification.JpaSpecification;
 import com.epam.esm.repository.specification.impl.UserSpecification;
+import com.epam.esm.service.converter.impl.UserAuthorityConverterImpl;
 import com.epam.esm.service.converter.impl.UserConverterImpl;
 import com.epam.esm.service.dto.UserSearchCriteriaDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,12 +34,13 @@ class UserServiceImplTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        userService = new UserServiceImpl(userRepository, new UserConverterImpl());
+        userService = new UserServiceImpl(userRepository, new UserConverterImpl(new UserAuthorityConverterImpl()));
     }
 
     @Test
     void receiveUniqueConstraints() {
-        UserDto userDto = new UserDto("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null);
+        UserDto userDto = new UserDto("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null,
+                null);
 
         assertThrows(RuntimeException.class, () -> userService.receiveUniqueConstraints(userDto));
     }
@@ -70,7 +72,8 @@ class UserServiceImplTest {
 
     @Test
     void receiveUpdatingDomain() {
-        UserDto userDto = new UserDto("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null);
+        UserDto userDto = new UserDto("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null,
+                null);
 
         assertThrows(RuntimeException.class, () -> userService.receiveUpdatingDomain(new User(), userDto));
     }
@@ -81,7 +84,7 @@ class UserServiceImplTest {
         User user = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null, null);
         user.setId(id);
         UserDto expected = new UserDto(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhoneNumber(),
-                user.getLogin(), user.getPassword());
+                user.getLogin(), user.getPassword(), null);
         expected.setId(id);
 
         when(userRepository.findOne(id)).thenReturn(Optional.of(user));
@@ -98,7 +101,7 @@ class UserServiceImplTest {
         User user = new User("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null, null);
         user.setId(id);
         UserDto expectedDto = new UserDto(user.getFirstName(), user.getLastName(), user.getEmail(),
-                user.getPhoneNumber(), user.getLogin(), user.getPassword());
+                user.getPhoneNumber(), user.getLogin(), user.getPassword(), null);
         expectedDto.setId(id);
         List<UserDto> expected = Collections.singletonList(expectedDto);
 
@@ -110,7 +113,8 @@ class UserServiceImplTest {
 
     @Test
     void create() {
-        UserDto userDto = new UserDto("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null);
+        UserDto userDto = new UserDto("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null,
+                null);
 
         Map<String, Object> map = new HashMap<>();
         map.putIfAbsent("first_name", userDto.getFirstName());
@@ -126,7 +130,8 @@ class UserServiceImplTest {
     @Test
     void update() {
         Long id = 1L;
-        UserDto userDto = new UserDto("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null);
+        UserDto userDto = new UserDto("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null,
+                null);
         userDto.setId(id);
         User user = new User("Sju", "Busel", "sjubusel@email.com", "+ 380 (29) 111-78-44", "sjubusel", null, null);
         user.setId(id);

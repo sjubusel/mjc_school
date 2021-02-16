@@ -56,7 +56,8 @@ class OrderServiceImplTest {
         MockitoAnnotations.openMocks(this);
         GiftCertificateConverterImpl giftCertificateConverter = new GiftCertificateConverterImpl(new TagConverterImpl());
         OrderPositionConverterImpl orderPositionConverter = new OrderPositionConverterImpl(giftCertificateConverter);
-        OrderConverterImpl orderConverter = new OrderConverterImpl(orderPositionConverter, new UserConverterImpl());
+        OrderConverterImpl orderConverter = new OrderConverterImpl(orderPositionConverter,
+                new UserConverterImpl(new UserAuthorityConverterImpl()));
         orderService = new OrderServiceImpl(orderRepository, orderConverter, userRepository, giftCertificateRepository,
                 orderPositionRepository);
     }
@@ -231,7 +232,8 @@ class OrderServiceImplTest {
         Instant orderInstant = Instant.parse("2021-02-06T00:00:00.000Z");
         Instant deleteTagInstant = Instant.parse("2020-01-16T01:01:01.000Z");
 
-        UserDto userDto = new UserDto("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null);
+        UserDto userDto = new UserDto("Sju", "Busel", "sjubusel@test.com", "+ 380 (29) 111-78-44", "sjubusel", null,
+                null);
         userDto.setId(999L);
         OrderDto orderDto = new OrderDto(new BigDecimal("7.29"), orderInstant, userDto, null);
         orderDto.setId(id);
