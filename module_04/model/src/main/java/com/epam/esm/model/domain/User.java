@@ -9,7 +9,9 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -32,4 +34,7 @@ public class User extends com.epam.esm.model.domain.Entity<Long> {
     private String login;
 
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private Set<UserAuthority> authorities;
 }
