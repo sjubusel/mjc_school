@@ -10,6 +10,7 @@ import com.epam.esm.web.util.impl.UserHateoasActionsAppender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +33,7 @@ public class UserController {
     private final UserHateoasActionsAppender hateoasActionsAppender;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public CollectionModel<UserDto> read(@RequestBody(required = false) @Valid UserSearchCriteriaDto criteriaDto) {
         List<UserDto> users = userService.query(criteriaDto);
 
