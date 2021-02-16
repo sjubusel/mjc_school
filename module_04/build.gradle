@@ -33,6 +33,7 @@ subprojects {
         implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+        implementation 'org.springframework.boot:spring-boot-starter-security'
 
         implementation group: 'org.mapstruct', name: 'mapstruct', version: "${mapstruct_version}"
         annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: "${mapstruct_version}"
