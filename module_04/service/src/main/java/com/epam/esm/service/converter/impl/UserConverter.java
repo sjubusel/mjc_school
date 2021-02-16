@@ -13,6 +13,7 @@ public interface UserConverter extends GeneralEntityConverter<UserDto, User, Lon
     @Override
     User convertToDomain(UserDto dto);
 
+    @Mapping(target = "password", ignore = true)
     @Override
     UserDto convertToDto(User user);
 }
