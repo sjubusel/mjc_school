@@ -1,7 +1,7 @@
 server:
   port: 8888
   servlet:
-    context-path: "/module_03"
+    context-path: "/module_04"
     session:
       timeout: "20m"
 spring:
