@@ -19,8 +19,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "authorities")
+@ToString(callSuper = true, exclude = "authorities")
 public class User extends com.epam.esm.model.domain.Entity<Long> {
 
     private String firstName;
