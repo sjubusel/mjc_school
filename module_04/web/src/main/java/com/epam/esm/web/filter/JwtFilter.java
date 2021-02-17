@@ -1,7 +1,9 @@
 package com.epam.esm.web.filter;
 
+import com.epam.esm.service.security.SecurityUserDetailsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -17,16 +19,16 @@ public class JwtFilter extends GenericFilterBean {
 
     public static final String BEARER_HEADER_VALUE = "Bearer";
 
-    private final UserDetailsService userDetailsService;
+    private final SecurityUserDetailsService userDetailsService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         String headerValue = ((HttpServletRequest) request).getHeader("Authorization");
-        receiveBearerJwt(headerValue).ifPresent(jwt -> {
-            // FIXME implement me
-
-        });
+        receiveBearerJwt(headerValue).flatMap(userDetailsService::loadUserByJwt).ifPresent(userDetails ->
+                SecurityContextHolder.getContext().setAuthentication(
+                        new PreAuthenticatedAuthenticationToken(userDetails, "", userDetails.getAuthorities())
+        ));
 
         chain.doFilter(request, response);
     }

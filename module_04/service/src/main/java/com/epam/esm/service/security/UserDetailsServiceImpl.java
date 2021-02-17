@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.springframework.security.core.userdetails.User.withUsername;
@@ -40,6 +41,11 @@ public class UserDetailsServiceImpl implements SecurityUserDetailsService{
                 .credentialsExpired(false)
                 .disabled(false)
                 .build();
+    }
+
+    @Override
+    public Optional<UserDetails> loadUserByJwt(String jwt) {
+        return Optional.empty(); // FIXME implement it
     }
 
     private Collection<? extends GrantedAuthority> receiveAuthorities(UserDto user) {
