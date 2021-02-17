@@ -5,6 +5,7 @@ import com.epam.esm.web.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -53,7 +54,8 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers(HttpMethod.GET, "/**/gift_certificates").permitAll()
+                .antMatchers(HttpMethod.GET, "/**/gift_certificates/{id:[\\d]+}").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
