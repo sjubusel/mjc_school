@@ -1,10 +1,12 @@
-package com.epam.esm.service.security;
+package com.epam.esm.service.security.impl;
 
 import com.epam.esm.model.domain.User;
 import com.epam.esm.model.dto.UserAuthorityDto;
 import com.epam.esm.model.dto.UserDto;
 import com.epam.esm.repository.UserRepository;
 import com.epam.esm.service.converter.impl.UserConverter;
+import com.epam.esm.service.security.JwtService;
+import com.epam.esm.service.security.SecurityUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
