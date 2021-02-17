@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +41,7 @@ public class GiftCertificateController {
      * which body contains a newly created resource
      */
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<GiftCertificateDto> create(@RequestBody @Valid GiftCertificateDto certificate) {
         Long createdId = giftCertificateService.create(certificate);
         URI location = URI.create(String.format("/gift-certificates/%s", createdId));
@@ -85,6 +87,7 @@ public class GiftCertificateController {
      * @return an object which represent Http response of UPDATE operation, which body contains a newly updated resource
      */
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<GiftCertificateDto> update(@PathVariable("id") @Positive @Min(1) Long id,
                                                      @RequestBody @Valid GiftCertificateUpdateDto newCertificate) {
         newCertificate.setId(id);
@@ -102,6 +105,7 @@ public class GiftCertificateController {
      * @return an object which represents Http response of DELETE operation
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> delete(@PathVariable("id") @Positive @Min(1) Long id) {
         giftCertificateService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
