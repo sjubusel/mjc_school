@@ -22,6 +22,8 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: true
+  jackson:
+    default-property-inclusion: non_null
 management:
   endpoints:
     web:
@@ -30,3 +32,8 @@ management:
       base-path: "/actuator"
 page:
   default-page-size: 20
+security:
+  jwt:
+    token:
+      secret-key: "secret-key-for-jwt-authentication"
+      expiration: 900000 # jwt is valid for 15 minutes
