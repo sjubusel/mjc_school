@@ -23,7 +23,7 @@ import static org.springframework.security.core.userdetails.User.withUsername;
 
 @RequiredArgsConstructor
 @Service
-public class UserDetailsServiceImpl implements SecurityUserDetailsService{
+public class SecurityUserDetailsServiceImpl implements SecurityUserDetailsService{
 
     private final UserRepository userRepository;
     private final UserConverter userConverter;
