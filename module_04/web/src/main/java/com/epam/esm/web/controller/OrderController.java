@@ -7,6 +7,7 @@ import com.epam.esm.web.util.impl.OrderHateoasActionsAppender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +43,7 @@ public class OrderController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<OrderDto> create(@RequestBody @Valid OrderDto orderDto) {
         Long createdId = orderService.create(orderDto);
         URI location = URI.create(String.format("/orders/%s", createdId));

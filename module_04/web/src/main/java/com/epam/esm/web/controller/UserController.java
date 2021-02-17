@@ -33,7 +33,6 @@ public class UserController {
     private final UserHateoasActionsAppender hateoasActionsAppender;
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public CollectionModel<UserDto> read(@RequestBody(required = false) @Valid UserSearchCriteriaDto criteriaDto) {
         List<UserDto> users = userService.query(criteriaDto);
 
@@ -50,6 +49,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/orders")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<OrderDto> createOrder(@PathVariable("id") @Positive @Min(1) Long id,
                                                 @RequestBody @Valid OrderDto orderDto) {
         orderDto.getUser().setId(id);
