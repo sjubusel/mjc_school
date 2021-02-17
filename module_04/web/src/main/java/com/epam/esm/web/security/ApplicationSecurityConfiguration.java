@@ -1,6 +1,6 @@
 package com.epam.esm.web.security;
 
-import com.epam.esm.service.security.UserDetailsServiceImpl;
+import com.epam.esm.service.security.SecurityUserDetailsService;
 import com.epam.esm.web.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final SecurityUserDetailsService userDetailsService;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
