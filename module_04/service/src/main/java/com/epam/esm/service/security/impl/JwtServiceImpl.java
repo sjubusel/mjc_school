@@ -1,14 +1,18 @@
 package com.epam.esm.service.security.impl;
 
+import com.epam.esm.model.dto.UserDto;
 import com.epam.esm.service.security.JwtService;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,5 +55,21 @@ public class JwtServiceImpl implements JwtService {
         return roles.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String createJwt(UserDto user) {
+        Claims claims = Jwts.claims().setSubject(user.getLogin());
+        claims.put(AUTHORITIES_CLAIM, user.getAuthorities().stream()
+                .map(authority -> authority.getRole().name())
+                .collect(Collectors.toList()));
+        Date issueDate = new Date();
+        Date expirationDate = new Date(issueDate.getTime() + validityInMillis);
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(issueDate)
+                .setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
     }
 }
