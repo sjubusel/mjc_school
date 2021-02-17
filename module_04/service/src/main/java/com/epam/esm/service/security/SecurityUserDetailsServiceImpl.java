@@ -23,10 +23,11 @@ import static org.springframework.security.core.userdetails.User.withUsername;
 
 @RequiredArgsConstructor
 @Service
-public class SecurityUserDetailsServiceImpl implements SecurityUserDetailsService{
+public class SecurityUserDetailsServiceImpl implements SecurityUserDetailsService {
 
     private final UserRepository userRepository;
     private final UserConverter userConverter;
+    private final JwtService jwtService;
 
     @Transactional(readOnly = true)
     @Override
@@ -45,7 +46,18 @@ public class SecurityUserDetailsServiceImpl implements SecurityUserDetailsServic
 
     @Override
     public Optional<UserDetails> loadUserByJwt(String jwt) {
-        return Optional.empty(); // FIXME implement it
+        if (jwtService.isTokenValid(jwt)) {
+            return Optional.of(withUsername(jwtService.receiveUsername(jwt))
+                    .password("")
+                    .authorities(jwtService.receiveAuthorities(jwt))
+                    .accountExpired(false)
+                    .accountLocked(false)
+                    .credentialsExpired(false)
+                    .disabled(false)
+                    .build());
+        }
+
+        return Optional.empty();
     }
 
     private Collection<? extends GrantedAuthority> receiveAuthorities(UserDto user) {
