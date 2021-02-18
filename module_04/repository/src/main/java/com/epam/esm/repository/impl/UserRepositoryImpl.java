@@ -2,12 +2,14 @@ package com.epam.esm.repository.impl;
 
 import com.epam.esm.model.domain.User;
 import com.epam.esm.repository.UserRepository;
+import com.epam.esm.repository.util.UserPredicateBuilder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +18,11 @@ import java.util.Optional;
 @Repository
 public class UserRepositoryImpl extends GeneralCrudRepository<User, Long> implements UserRepository {
 
-    protected UserRepositoryImpl(EntityManager entityManager) {
+    private final UserPredicateBuilder predicateBuilder;
+
+    protected UserRepositoryImpl(EntityManager entityManager, UserPredicateBuilder predicateBuilder) {
         super(entityManager);
+        this.predicateBuilder = predicateBuilder;
     }
 
     @Override
@@ -42,7 +47,11 @@ public class UserRepositoryImpl extends GeneralCrudRepository<User, Long> implem
 
     @Override
     protected CriteriaQuery<User> getCriteriaQueryExists(Map<String, Object> uniqueConstraints) {
-        return null;
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+        Root<User> root = criteriaQuery.from(User.class);
+        Predicate finalPredicate = predicateBuilder.buildExistsPredicate(criteriaBuilder, root, uniqueConstraints);
+        return criteriaQuery.select(root).where(finalPredicate);
     }
 
     @Override
