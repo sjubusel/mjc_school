@@ -46,6 +46,7 @@ public class SecurityUserDetailsServiceImpl implements SecurityUserDetailsServic
                 .build();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<UserDetails> loadUserByJwt(String jwt) {
         if (jwtService.isTokenValid(jwt)) {
