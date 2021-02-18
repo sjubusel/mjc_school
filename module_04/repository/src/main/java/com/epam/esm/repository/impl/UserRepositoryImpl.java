@@ -27,7 +27,8 @@ public class UserRepositoryImpl extends GeneralCrudRepository<User, Long> implem
 
     @Override
     public Optional<User> findByUsername(String username) {
-        List<User> users = entityManager.createQuery("SELECT user FROM User AS user WHERE user.login=:login",
+        List<User> users = entityManager.createQuery("SELECT user FROM User AS user LEFT JOIN FETCH user.authorities " +
+                        "WHERE user.login=:login",
                 User.class).setParameter("login", username).getResultList();
 
         return !users.isEmpty() ? Optional.ofNullable(users.get(0)): Optional.empty();
