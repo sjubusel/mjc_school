@@ -61,8 +61,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}/orders")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public CollectionModel<OrderDto> readOrders(@PathVariable("id") @Positive @Min(1) Long id,
-                                     @RequestBody(required = false) @Valid OrderSearchCriteriaDto criteriaDto) {
+                                                @RequestBody(required = false) @Valid OrderSearchCriteriaDto criteriaDto) {
         if (criteriaDto == null) {
             criteriaDto = new OrderSearchCriteriaDto();
         }
@@ -72,6 +73,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/orders/{orderId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public OrderDto readOrder(@PathVariable("userId") @Positive @Min(1) Long userId,
                               @PathVariable("orderId") @Positive @Min(1) Long orderId) {
 
