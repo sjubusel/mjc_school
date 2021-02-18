@@ -32,6 +32,7 @@ public class OrderController {
     private final OrderHateoasActionsAppender hateoasActionsAppender;
 
     @GetMapping
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public CollectionModel<OrderDto> read(@RequestBody(required = false) @Valid OrderSearchCriteriaDto criteriaDto) {
         List<OrderDto> orders = orderService.query(criteriaDto);
 
@@ -39,6 +40,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public OrderDto readOne(@PathVariable("id") @Positive @Min(1) Long id) {
         OrderDto order = orderService.findOne(id);
 
