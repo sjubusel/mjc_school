@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -30,7 +31,11 @@ public class UserServiceImpl extends GeneralCrudService<UserDto, User, Long, Use
 
     @Override
     protected Map<String, Object> receiveUniqueConstraints(UserDto dto) {
-        throw new RuntimeException("this method has not been implemented yet, because of task requirements");
+        Map<String, Object> uniqueConstrains = new HashMap<>();
+        uniqueConstrains.put("login", dto.getLogin());
+        uniqueConstrains.put("phoneNumber", dto.getPhoneNumber());
+        uniqueConstrains.put("email", dto.getEmail());
+        return uniqueConstrains;
     }
 
     @Override
