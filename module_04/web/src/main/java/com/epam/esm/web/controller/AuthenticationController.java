@@ -1,7 +1,6 @@
 package com.epam.esm.web.controller;
 
 import com.epam.esm.model.dto.UserDto;
-import com.epam.esm.service.UserService;
 import com.epam.esm.service.security.AuthenticationService;
 import com.epam.esm.service.dto.impl.UserCredentialsDto;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import java.util.Map;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
-    private final UserService userService;
 
     @PostMapping("/singIn")
     public ResponseEntity<Map<String, String>> signIn(UserCredentialsDto credentials) {
@@ -35,15 +33,14 @@ public class AuthenticationController {
 
     @PostMapping("/singUp")
     public ResponseEntity<Map<String, Object>> signUp(UserDto user) {
-        Long createdUserId = userService.create(user);
-        UserDto createdUser = userService.findOne(createdUserId);
+        UserDto createdUser = authenticationService.singUp(user);
 
         UserCredentialsDto credentials = new UserCredentialsDto(createdUser.getLogin(), createdUser.getPassword());
         String validJwt = authenticationService.singIn(credentials);
 
         Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("token", validJwt);
         responseBody.put("created_user", createdUser);
+        responseBody.put("token", validJwt);
 
         return ResponseEntity.ok(responseBody);
     }
