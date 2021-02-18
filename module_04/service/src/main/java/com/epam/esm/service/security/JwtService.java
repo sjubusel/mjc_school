@@ -1,6 +1,5 @@
 package com.epam.esm.service.security;
 
-import com.epam.esm.model.dto.UserDto;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
@@ -13,5 +12,5 @@ public interface JwtService {
 
     Collection<? extends GrantedAuthority> receiveAuthorities(String jwt);
 
-    String createJwt(UserDto user);
+    String createJwt(String username, Collection<? extends GrantedAuthority> authorities);
 }

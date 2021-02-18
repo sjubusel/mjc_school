@@ -1,6 +1,5 @@
 package com.epam.esm.service.security.impl;
 
-import com.epam.esm.model.dto.UserDto;
 import com.epam.esm.service.security.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -58,11 +57,12 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String createJwt(UserDto user) {
-        Claims claims = Jwts.claims().setSubject(user.getLogin());
-        claims.put(AUTHORITIES_CLAIM, user.getAuthorities().stream()
-                .map(authority -> authority.getRole().name())
-                .collect(Collectors.toList()));
+    public String createJwt(String username, Collection<? extends GrantedAuthority> authorities) {
+        Claims claims = Jwts.claims().setSubject(username);
+        claims.put(AUTHORITIES_CLAIM, authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList())
+        );
         Date issueDate = new Date();
         Date expirationDate = new Date(issueDate.getTime() + validityInMillis);
         return Jwts.builder()
