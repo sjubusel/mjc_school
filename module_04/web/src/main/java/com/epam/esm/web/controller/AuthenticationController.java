@@ -1,7 +1,7 @@
 package com.epam.esm.web.controller;
 
 import com.epam.esm.model.dto.UserDto;
-import com.epam.esm.service.AuthenticationService;
+import com.epam.esm.service.security.AuthenticationService;
 import com.epam.esm.service.dto.impl.UserCredentialsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

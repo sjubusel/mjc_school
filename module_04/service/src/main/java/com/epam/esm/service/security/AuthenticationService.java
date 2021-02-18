@@ -1,4 +1,4 @@
-package com.epam.esm.service;
+package com.epam.esm.service.security;
 
 import com.epam.esm.model.dto.UserDto;
 import com.epam.esm.service.dto.impl.UserCredentialsDto;
