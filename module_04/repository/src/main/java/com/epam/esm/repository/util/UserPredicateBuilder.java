@@ -9,7 +9,7 @@ import javax.persistence.criteria.Root;
 import java.util.Map;
 
 @Component
-public class UserPredicateBuilder {
+public class UserPredicateBuilder implements PredicateBuilder<User, Long> {
 
     public Predicate buildExistsPredicate(CriteriaBuilder criteriaBuilder, Root<User> root,
                                           Map<String, Object> uniqueConstraints) {

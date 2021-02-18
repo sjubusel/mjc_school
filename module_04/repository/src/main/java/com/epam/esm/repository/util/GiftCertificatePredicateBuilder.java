@@ -9,7 +9,7 @@ import javax.persistence.criteria.Root;
 import java.util.Map;
 
 @Component
-public class GiftCertificatePredicateBuilder {
+public class GiftCertificatePredicateBuilder implements PredicateBuilder<GiftCertificate, Long> {
 
     public Predicate buildExistsPredicate(CriteriaBuilder criteriaBuilder, Root<GiftCertificate> root,
                                           Map<String, Object> uniqueConstraints) {
