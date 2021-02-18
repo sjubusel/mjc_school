@@ -1,6 +1,7 @@
-package com.epam.esm.repository.util;
+package com.epam.esm.repository.util.impl;
 
 import com.epam.esm.model.domain.GiftCertificate;
+import com.epam.esm.repository.util.PredicateBuilder;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.criteria.CriteriaBuilder;

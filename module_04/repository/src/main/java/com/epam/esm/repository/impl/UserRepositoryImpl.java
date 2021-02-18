@@ -2,7 +2,7 @@ package com.epam.esm.repository.impl;
 
 import com.epam.esm.model.domain.User;
 import com.epam.esm.repository.UserRepository;
-import com.epam.esm.repository.util.UserPredicateBuilder;
+import com.epam.esm.repository.util.impl.UserPredicateBuilder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

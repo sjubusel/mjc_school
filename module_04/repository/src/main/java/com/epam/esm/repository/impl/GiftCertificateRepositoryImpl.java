@@ -3,7 +3,7 @@ package com.epam.esm.repository.impl;
 import com.epam.esm.model.domain.GiftCertificate;
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.repository.GiftCertificateRepository;
-import com.epam.esm.repository.util.GiftCertificatePredicateBuilder;
+import com.epam.esm.repository.util.impl.GiftCertificatePredicateBuilder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
