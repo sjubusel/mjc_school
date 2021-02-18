@@ -39,6 +39,7 @@ public class TagController {
      * which body contains a newly created resource
      */
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TagDto> create(@RequestBody @Valid TagDto certificate) {
         Long createdId = tagService.create(certificate);
         URI location = URI.create(String.format("/tags/%s", createdId));
@@ -84,6 +85,7 @@ public class TagController {
      * @return an object which represent Http response of UPDATE operation, which body contains a newly updated resource
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TagDto> update(@PathVariable("id") @Positive @Min(1) Long id,
                                          @RequestBody @Valid TagDto tagDto) {
         tagDto.setId(id);
@@ -101,12 +103,14 @@ public class TagController {
      * @return an object which represent Http response of DELETE operation
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> delete(@PathVariable("id") @Positive @Min(1) Long id) {
         tagService.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/main")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<TagDto> receiveMainTag() {
         List<TagDto> tagList = tagService.receiveMostWidelyUsedTagOfUserWithMaxCostOfOrders();
         tagList.forEach(hateoasActionsAppender::appendSelfReference);
