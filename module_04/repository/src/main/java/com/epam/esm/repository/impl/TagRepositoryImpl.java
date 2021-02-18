@@ -2,6 +2,7 @@ package com.epam.esm.repository.impl;
 
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.repository.TagRepository;
+import com.epam.esm.repository.util.impl.TagPredicateBuilder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -42,8 +43,11 @@ public class TagRepositoryImpl extends GeneralCrudRepository<Tag, Long> implemen
             "WHERE tu.tags_number = (SELECT MAX(tags_number) FROM tags_by_users " +
             "                                                WHERE tu.user_id = tags_by_users.user_id)";
 
-    protected TagRepositoryImpl(EntityManager entityManager) {
+    private final TagPredicateBuilder predicateBuilder;
+
+    protected TagRepositoryImpl(EntityManager entityManager, TagPredicateBuilder predicateBuilder) {
         super(entityManager);
+        this.predicateBuilder = predicateBuilder;
     }
 
     @Override
@@ -77,11 +81,7 @@ public class TagRepositoryImpl extends GeneralCrudRepository<Tag, Long> implemen
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tag> criteriaQuery = criteriaBuilder.createQuery(Tag.class);
         Root<Tag> root = criteriaQuery.from(Tag.class);
-
-        Predicate nameCondition = criteriaBuilder.equal(root.get("name"), uniqueConstraints.get("name"));
-        Predicate existsCondition = criteriaBuilder.equal(root.get("isDeleted"), Boolean.FALSE);
-        Predicate finalCondition = criteriaBuilder.and(nameCondition, existsCondition);
-
+        Predicate finalCondition = predicateBuilder.buildExistsPredicate(criteriaBuilder, root, uniqueConstraints);
         return criteriaQuery.select(root).where(finalCondition);
     }
 
