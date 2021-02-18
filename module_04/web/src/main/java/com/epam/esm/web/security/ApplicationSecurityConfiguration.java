@@ -1,5 +1,6 @@
 package com.epam.esm.web.security;
 
+import com.epam.esm.model.other.Role;
 import com.epam.esm.service.security.SecurityUserDetailsService;
 import com.epam.esm.web.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -30,7 +32,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(new BCryptPasswordEncoder(11));
+        provider.setPasswordEncoder(passwordEncoder());
         provider.setAuthoritiesMapper(authoritiesMapper());
         return provider;
     }
@@ -39,7 +41,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
     public GrantedAuthoritiesMapper authoritiesMapper() {
         SimpleAuthorityMapper simpleAuthorityMapper = new SimpleAuthorityMapper();
         simpleAuthorityMapper.setConvertToUpperCase(true);
-        simpleAuthorityMapper.setDefaultAuthority("USER");
+        simpleAuthorityMapper.setDefaultAuthority(Role.USER.name());
         simpleAuthorityMapper.setPrefix("ROLE");
         return simpleAuthorityMapper;
     }
@@ -62,6 +64,11 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(new JwtFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(11);
     }
 
 }
