@@ -1,6 +1,7 @@
 package com.epam.esm.web.controller;
 
 import com.epam.esm.model.dto.UserDto;
+import com.epam.esm.service.UserService;
 import com.epam.esm.service.security.AuthenticationService;
 import com.epam.esm.service.dto.impl.UserCredentialsDto;
 import lombok.RequiredArgsConstructor;
@@ -20,23 +21,30 @@ import java.util.Map;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
+    private final UserService userService;
 
     @PostMapping("/singIn")
     public ResponseEntity<Map<String, String>> signIn(UserCredentialsDto credentials) {
         String validJwt = authenticationService.singIn(credentials);
+
         Map<String, String> body = new HashMap<>();
         body.put("token", validJwt);
+
         return ResponseEntity.ok(body);
     }
 
     @PostMapping("/singUp")
     public ResponseEntity<Map<String, Object>> signUp(UserDto user) {
-        Long createdUserId = authenticationService.signUp(user);
-        user.setId(createdUserId);
-        String validJwt = authenticationService.singIn(new UserCredentialsDto(user.getLogin(), user.getPassword()));
-        Map<String, Object> body = new HashMap<>();
-        body.put("token", validJwt);
-        body.put("created_user", user);
-        return ResponseEntity.ok(body);
+        Long createdUserId = userService.create(user);
+        UserDto createdUser = userService.findOne(createdUserId);
+
+        UserCredentialsDto credentials = new UserCredentialsDto(createdUser.getLogin(), createdUser.getPassword());
+        String validJwt = authenticationService.singIn(credentials);
+
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("token", validJwt);
+        responseBody.put("created_user", createdUser);
+
+        return ResponseEntity.ok(responseBody);
     }
 }
