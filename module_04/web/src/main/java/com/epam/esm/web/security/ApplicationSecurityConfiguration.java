@@ -70,6 +70,8 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/**/gift_certificates").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/gift_certificates/{id:[\\d]+}").permitAll()
+                .antMatchers("/signIn").not().authenticated()
+                .antMatchers("/signUp").not().authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
