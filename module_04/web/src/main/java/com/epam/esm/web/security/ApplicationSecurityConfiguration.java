@@ -1,6 +1,5 @@
 package com.epam.esm.web.security;
 
-import com.epam.esm.model.other.Role;
 import com.epam.esm.service.security.SecurityUserDetailsService;
 import com.epam.esm.web.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
@@ -42,8 +41,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
     public GrantedAuthoritiesMapper authoritiesMapper() {
         SimpleAuthorityMapper simpleAuthorityMapper = new SimpleAuthorityMapper();
         simpleAuthorityMapper.setConvertToUpperCase(true);
-        simpleAuthorityMapper.setDefaultAuthority(Role.USER.name());
-        simpleAuthorityMapper.setPrefix("ROLE");
+        simpleAuthorityMapper.setPrefix("ROLE_");
         return simpleAuthorityMapper;
     }
 
