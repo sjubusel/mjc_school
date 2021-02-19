@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,8 +22,8 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    @PostMapping("/singIn")
-    public ResponseEntity<Map<String, String>> signIn(UserCredentialsDto credentials) {
+    @PostMapping("/signIn")
+    public ResponseEntity<Map<String, String>> signIn(@RequestBody UserCredentialsDto credentials) {
         String validJwt = authenticationService.singIn(credentials);
 
         Map<String, String> body = new HashMap<>();
@@ -31,8 +32,8 @@ public class AuthenticationController {
         return ResponseEntity.ok(body);
     }
 
-    @PostMapping("/singUp")
-    public ResponseEntity<Map<String, Object>> signUp(UserDto user) {
+    @PostMapping("/signUp")
+    public ResponseEntity<Map<String, Object>> signUp(@RequestBody UserDto user) {
         UserDto createdUser = authenticationService.singUp(user);
 
         UserCredentialsDto credentials = new UserCredentialsDto(createdUser.getLogin(), createdUser.getPassword());
