@@ -5,6 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/*
+TODO add HATEOAS
+TODO add signUp ???
+ */
 @RestController
 public class LoginController {
 
