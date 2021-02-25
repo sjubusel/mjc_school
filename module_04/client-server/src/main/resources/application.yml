@@ -14,7 +14,7 @@ spring:
             client-id: gift-certificates-system-id
             client-secret: gift-certificates-system-secret
             client-authentication-method: post
-            authorization-grant-type: implicit
+            authorization-grant-type: authorization_code
             redirect-uri: http://localhost:80/login/oauth2/callback/gcs_implicit
             scope: read write gift_certificates_system
             client-name: Gift-certificates System (Implicit Grant)
