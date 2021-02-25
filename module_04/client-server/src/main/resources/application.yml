@@ -16,7 +16,7 @@ spring:
             client-authentication-method: post
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/callback/gcs_code"
-            scope: read write gift_certificates_system
+            scope: read, write, gift_certificates_system
             client-name: Gift-certificates System (Implicit Grant)
           gcs_ropc:
             provider: gcs_ropc
@@ -25,7 +25,7 @@ spring:
             client-authentication-method: post
             authorization-grant-type: password
             redirect-uri: "{baseUrl}/login/oauth2/callback/gcs_ropc"
-            scope: read write gift_certificates_system
+            scope: read, write, gift_certificates_system
             client-name: Gift-certificates System (Resouce Owner Password Credentials Grant)
         provider:
           gcs_implicit:
