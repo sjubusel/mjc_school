@@ -11,6 +11,8 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @EnableWebSecurity
 @Configuration
@@ -45,6 +47,15 @@ public class ClientServerSecurityConfiguration extends WebSecurityConfigurerAdap
         authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider);
 
         return authorizedClientManager;
+    }
+
+    @Bean
+    WebClient webClient(OAuth2AuthorizedClientManager authorizedClientManager) {
+        ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2Client =
+                new ServletOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager);
+        return WebClient.builder()
+                .apply(oauth2Client.oauth2Configuration())
+                .build();
     }
 
 }
