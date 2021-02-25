@@ -6,7 +6,7 @@ server:
       timeout: "20m"
 spring:
   application:
-    name: "module_03"
+    name: "module_04"
   datasource:
     url: "jdbc:mysql://localhost:3306/gift_certificates_system?logger=com.mysql.cj.log.StandardLogger&profileSQL=true"
     username: "root"
