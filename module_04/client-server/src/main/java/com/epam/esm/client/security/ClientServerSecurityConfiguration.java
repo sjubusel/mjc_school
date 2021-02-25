@@ -2,8 +2,12 @@ package com.epam.esm.client.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
+@EnableWebSecurity
 @Configuration
 public class ClientServerSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -13,6 +17,6 @@ public class ClientServerSecurityConfiguration extends WebSecurityConfigurerAdap
                 .anyRequest()
                 .authenticated()
                 .and()
-                .oauth2Login();
+                .oauth2Login(withDefaults());
     }
 }
