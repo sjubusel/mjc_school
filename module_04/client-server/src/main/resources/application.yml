@@ -1,0 +1,8 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          gift-certificates-system:
+            client-id: gift-certificates-system-id
+            client-secret: gift-certificates-system-secret
