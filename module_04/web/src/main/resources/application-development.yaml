@@ -24,6 +24,11 @@ spring:
     show-sql: true
   jackson:
     default-property-inclusion: non_null
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9999
 management:
   endpoints:
     web:
