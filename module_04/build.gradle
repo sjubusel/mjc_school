@@ -33,7 +33,11 @@ subprojects {
         implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+
         implementation 'org.springframework.boot:spring-boot-starter-security'
+        implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+        implementation group: 'org.springframework.security', name: 'spring-security-oauth2-jose',
+                version: "${spring_security_oauth2_jose_version}"
 
         implementation group: 'org.mapstruct', name: 'mapstruct', version: "${mapstruct_version}"
         annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: "${mapstruct_version}"
