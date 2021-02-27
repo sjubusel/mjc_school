@@ -17,9 +17,8 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import javax.sql.DataSource;
 import java.security.KeyPair;
 
-
-@Configuration
 @EnableAuthorizationServer
+@Configuration
 @RequiredArgsConstructor
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
@@ -47,7 +46,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .authenticationManager(authenticationManager)
                 .accessTokenConverter(accessTokenConverter())
                 .tokenStore(tokenStore());
-        super.configure(endpoints);
     }
 
     @Bean
@@ -61,4 +59,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         converter.setKeyPair(keyPair);
         return converter;
     }
+
+    // TODO ??? DefaultTokenServices
 }
