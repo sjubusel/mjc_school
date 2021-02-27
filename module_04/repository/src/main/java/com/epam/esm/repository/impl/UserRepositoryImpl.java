@@ -20,7 +20,7 @@ public class UserRepositoryImpl extends GeneralCrudRepository<User, Long> implem
 
     private final UserPredicateBuilder predicateBuilder;
 
-    protected UserRepositoryImpl(EntityManager entityManager, UserPredicateBuilder predicateBuilder) {
+    public UserRepositoryImpl(EntityManager entityManager, UserPredicateBuilder predicateBuilder) {
         super(entityManager);
         this.predicateBuilder = predicateBuilder;
     }
