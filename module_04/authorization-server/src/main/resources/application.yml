@@ -22,3 +22,9 @@ spring:
     show-sql: true
   jackson:
     default-property-inclusion: non_null
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: "/actuator"
