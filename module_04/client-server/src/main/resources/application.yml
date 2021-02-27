@@ -42,3 +42,9 @@ spring:
             user-info-authentication-method: header
             user-name-attribute: sub
             jwk-set-uri: http://localhost:9999/oauth2/authorize/certs
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: "/actuator"
