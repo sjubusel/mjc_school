@@ -11,7 +11,7 @@ spring:
         registration:
           gcs_implicit:
             provider: gcs_implicit
-            client-id: gift-certificates-system-id
+            client-id: gift-certificates-system-id-implicit
             client-secret: gift-certificates-system-secret
             client-authentication-method: post
             authorization-grant-type: authorization_code
@@ -20,7 +20,7 @@ spring:
             client-name: Gift-certificates System (Implicit Grant)
           gcs_ropc:
             provider: gcs_ropc
-            client-id: gift-certificates-system-id
+            client-id: gift-certificates-system-id-rops
             client-secret: gift-certificates-system-secret
             client-authentication-method: post
             authorization-grant-type: password
