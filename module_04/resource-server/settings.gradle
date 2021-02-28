@@ -1,0 +1,2 @@
+rootProject.name = 'module_04'
+include('model', 'web', 'service', 'repository')
