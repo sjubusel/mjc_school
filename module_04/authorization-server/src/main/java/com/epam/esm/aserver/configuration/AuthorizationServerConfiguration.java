@@ -1,6 +1,7 @@
 package com.epam.esm.aserver.configuration;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -24,11 +25,17 @@ import java.security.KeyPair;
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
     private final DataSource dataSource;
-    private final AuthenticationManager authenticationManager;
     private final KeyPair keyPair;
 
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
+
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer oauth2Server) throws Exception {
+    public void configure(AuthorizationServerSecurityConfigurer oauth2Server) {
         oauth2Server
                 .tokenKeyAccess("permitAll()")
                 .checkTokenAccess("isAuthenticated()");
@@ -42,7 +49,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     }
 
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints
                 .authenticationManager(authenticationManager)
                 .accessTokenConverter(accessTokenConverter())
