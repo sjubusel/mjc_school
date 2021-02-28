@@ -1,12 +1,12 @@
 package com.epam.esm.aserver.configuration;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerEndpointsConfiguration;
@@ -21,16 +21,16 @@ import java.security.KeyPair;
 
 @Import(AuthorizationServerEndpointsConfiguration.class)
 @Configuration
-@RequiredArgsConstructor
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
     private final DataSource dataSource;
     private final KeyPair keyPair;
+    private final AuthenticationManager authenticationManager;
 
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+    public AuthorizationServerConfiguration(DataSource dataSource, KeyPair keyPair,
+                                            @Lazy AuthenticationManager authenticationManager) {
+        this.dataSource = dataSource;
+        this.keyPair = keyPair;
         this.authenticationManager = authenticationManager;
     }
 
@@ -45,7 +45,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients
                 .jdbc(dataSource)
-                .passwordEncoder(new BCryptPasswordEncoder(11));
+                .passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -66,6 +66,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         converter.setKeyPair(keyPair);
         return converter;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(11);
     }
 
     // TODO ??? DefaultTokenServices
