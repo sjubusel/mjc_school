@@ -1,6 +1,7 @@
 buildscript {
     ext {
         main_application_version = '0.0.1-SNAPSHOT'
+        nimbus_jose_jwt_version = '9.7'
     }
 }
 
@@ -39,6 +40,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure',
             version: spring_boot_version
+    implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: nimbus_jose_jwt_version
+
 
     implementation group: 'com.epam.esm', name: 'model', version: main_application_version
     implementation group: 'com.epam.esm', name: 'repository', version: main_application_version
