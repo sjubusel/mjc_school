@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -25,12 +24,15 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     private final DataSource dataSource;
     private final KeyPair keyPair;
+    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
     public AuthorizationServerConfiguration(DataSource dataSource, KeyPair keyPair,
+                                            PasswordEncoder passwordEncoder,
                                             @Lazy AuthenticationManager authenticationManager) {
         this.dataSource = dataSource;
         this.keyPair = keyPair;
+        this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
     }
 
@@ -45,7 +47,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients
                 .jdbc(dataSource)
-                .passwordEncoder(passwordEncoder());
+                .passwordEncoder(passwordEncoder);
     }
 
     @Override
@@ -66,11 +68,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         converter.setKeyPair(keyPair);
         return converter;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(11);
     }
 
     // TODO ??? DefaultTokenServices
