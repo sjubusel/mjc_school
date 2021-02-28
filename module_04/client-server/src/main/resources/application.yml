@@ -29,19 +29,19 @@ spring:
             client-name: Gift-certificates System (Resouce Owner Password Credentials Grant)
         provider:
           gcs_implicit:
-            authorization-uri: http://localhost:9999/oauth2/authorize
-            token-uri: http://localhost:9999/oauth2/token
-            user-info-uri: http://localhost:9999/oauth2/userinfo
+            authorization-uri: http://localhost:9999/oauth/authorize
+            token-uri: http://localhost:9999/oauth/token
+            user-info-uri: http://localhost:9999/oauth/userinfo
             user-info-authentication-method: header
             user-name-attribute: sub
-            jwk-set-uri: http://localhost:9999/oauth2/authorize/certs
+            jwk-set-uri: http://localhost:9999/.well-known/jwks.json
           gcs_ropc:
-            authorization-uri: http://localhost:9999/oauth2/authorize
-            token-uri: http://localhost:9999/oauth2/token
-            user-info-uri: http://localhost:9999/oauth2/userinfo
+            authorization-uri: http://localhost:9999/oauth/authorize
+            token-uri: http://localhost:9999/oauth/token
+            user-info-uri: http://localhost:9999/oauth/userinfo
             user-info-authentication-method: header
             user-name-attribute: sub
-            jwk-set-uri: http://localhost:9999/oauth2/authorize/certs
+            jwk-set-uri: http://localhost:9999/.well-known/jwks.json
 management:
   endpoints:
     web:
