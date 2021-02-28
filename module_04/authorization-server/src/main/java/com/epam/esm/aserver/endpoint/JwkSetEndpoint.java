@@ -1,4 +1,4 @@
-package com.epam.esm.aserver.configuration;
+package com.epam.esm.aserver.endpoint;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
