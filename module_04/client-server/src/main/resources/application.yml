@@ -9,8 +9,8 @@ spring:
     oauth2:
       client:
         registration:
-          gcs_implicit:
-            provider: gcs_implicit
+          gcs_code:
+            provider: gcs_code
             client-id: gift-certificates-system-id-code
             client-secret: gift-certificates-system-secret
             client-authentication-method: post
@@ -28,7 +28,7 @@ spring:
             scope: module_04::create, module_04::read, module_04::update, module_04::delete
             client-name: Gift-certificates System (Resouce Owner Password Credentials Grant)
         provider:
-          gcs_implicit:
+          gcs_code:
             authorization-uri: http://localhost:9999/oauth/authorize
             token-uri: http://localhost:9999/oauth/token
             user-info-uri: http://localhost:9999/oauth/userinfo

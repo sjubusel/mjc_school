@@ -22,10 +22,10 @@ public class SecurityConfiguration extends AuthorizationServerSecurityConfigurat
         super.configure(http);
         http
                 .requestMatchers()
-                .mvcMatchers("/.well-known/jwks.json")
+                .mvcMatchers("/.well-known/jwks.json", "/oauth/authorize", "/login")
                 .and()
                 .authorizeRequests()
-                .mvcMatchers("/.well-known/jwks.json")
+                .mvcMatchers("/.well-known/jwks.json", "/oauth/authorize", "/login")
                 .permitAll();
     }
 
