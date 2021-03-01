@@ -25,7 +25,6 @@ public class ClientServerSecurityConfiguration extends WebSecurityConfigurerAdap
                 .authenticated()
                 .and()
                 .oauth2Login()
-                .loginPage("/login")
                 .and()
                 .oauth2Client();
     }
