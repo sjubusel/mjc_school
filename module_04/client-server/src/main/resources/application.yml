@@ -11,13 +11,13 @@ spring:
         registration:
           gcs_implicit:
             provider: gcs_implicit
-            client-id: gift-certificates-system-id-implicit
+            client-id: gift-certificates-system-id-code
             client-secret: gift-certificates-system-secret
             client-authentication-method: post
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/callback/gcs_code"
             scope: read, write, gift_certificates_system
-            client-name: Gift-certificates System (Implicit Grant)
+            client-name: Gift-certificates System (Authorization Code Grant)
           gcs_ropc:
             provider: gcs_ropc
             client-id: gift-certificates-system-id-rops
