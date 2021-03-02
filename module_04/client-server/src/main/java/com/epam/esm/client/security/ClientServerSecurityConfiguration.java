@@ -20,13 +20,23 @@ public class ClientServerSecurityConfiguration extends WebSecurityConfigurerAdap
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http
+                .authorizeRequests()
+                .antMatchers("/login/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .oauth2Login()
+                .authorizationEndpoint()
+                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+                .and()
                 .and()
                 .oauth2Client();
+    }
+
+    @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository(); // TODO ??? Success(Error)Handler
     }
 
     @Bean

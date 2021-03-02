@@ -13,18 +13,18 @@ spring:
             provider: gcs_code
             client-id: gift-certificates-system-id-code
             client-secret: gift-certificates-system-secret
-            client-authentication-method: post
+            client-authentication-method: basic
             authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/callback/gcs_code"
+            redirect-uri: "{baseUrl}/login/oauth2/code/gcs_code"
             scope: module_04::create, module_04::read, module_04::update, module_04::delete
             client-name: Gift-certificates System (Authorization Code Grant)
           gcs_ropc:
             provider: gcs_ropc
             client-id: gift-certificates-system-id-rops
             client-secret: gift-certificates-system-secret
-            client-authentication-method: post
+            client-authentication-method: basic
             authorization-grant-type: password
-            redirect-uri: "{baseUrl}/login/oauth2/callback/gcs_ropc"
+            redirect-uri: "{baseUrl}/login/oauth2/code/gcs_ropc"
             scope: module_04::create, module_04::read, module_04::update, module_04::delete
             client-name: Gift-certificates System (Resouce Owner Password Credentials Grant)
         provider:
