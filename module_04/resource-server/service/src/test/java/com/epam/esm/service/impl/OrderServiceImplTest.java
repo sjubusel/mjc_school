@@ -110,6 +110,7 @@ class OrderServiceImplTest {
         when(orderRepository.create(any(Order.class))).thenReturn(1L);
         when(giftCertificateRepository.findOne(1L)).thenReturn(Optional.of(new GiftCertificate()));
         when(giftCertificateRepository.findOne(2L)).thenReturn(Optional.of(new GiftCertificate()));
+        //noinspection unchecked
         when(orderPositionRepository.createOrderPositions(any(Set.class))).thenReturn(new HashSet<OrderPosition>());
         when(orderRepository.update(any(Order.class))).thenReturn(Boolean.TRUE);
 
