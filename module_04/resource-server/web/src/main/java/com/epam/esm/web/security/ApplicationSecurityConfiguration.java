@@ -1,12 +1,13 @@
 package com.epam.esm.web.security;
 
 import com.epam.esm.service.security.SecurityUserDetailsService;
-import com.epam.esm.web.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,8 +15,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,9 +31,10 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.JwtValidators;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 
 import java.time.Duration;
+import java.util.Collection;
 import java.util.List;
 
 @Configuration
@@ -114,8 +117,30 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new JwtFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class)
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+//                .addFilterBefore(new JwtFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class)
+                .oauth2ResourceServer()
+                .jwt()
+                .jwtAuthenticationConverter(customJwtAuthenticationConverter());
+    }
+
+    private Converter<Jwt, ? extends AbstractAuthenticationToken> customJwtAuthenticationConverter() {
+        return new JwtAuthenticationConverter(){
+            @SuppressWarnings("deprecation")
+            @Override
+            protected Collection<GrantedAuthority> extractAuthorities(Jwt jwt) {
+                Collection<GrantedAuthority> grantedAuthorities = super.extractAuthorities(jwt);
+                for (String authority : getAuthorities(jwt)) {
+                    grantedAuthorities.add(new SimpleGrantedAuthority(authority));
+                }
+                return grantedAuthorities;
+            }
+
+            @SuppressWarnings("unchecked")
+            private Collection<String> getAuthorities(Jwt jwt) {
+                Object authorities = jwt.getClaim("authorities");
+                return (Collection<String>) authorities;
+            }
+        };
     }
 
 }
