@@ -19,9 +19,9 @@ INSERT INTO oauth_client_details
  refresh_token_validity, additional_information, autoapprove)
 VALUES ('gift-certificates-system-id-code', '$2y$11$IRPR00oTOc4R6GSejOhI7utCOON.BGHX1OcRAL2/OndYxnzN42K02',
         'module_04::create,module_04::read,module_04::update,module_04::delete', 'authorization_code',
-        'http://localhost:9999/login/oauth2/callback/gcs_code', 'USER,ADMIN',
+        'http://localhost:80/login/oauth2/code/gcs_code', 'USER,ADMIN',
         36000, 36000, null, false),
        ('gift-certificates-system-id-rops', '$2y$11$IRPR00oTOc4R6GSejOhI7utCOON.BGHX1OcRAL2/OndYxnzN42K02',
         'module_04::create,module_04::read,module_04::update,module_04::delete', 'password',
-        'http://localhost:9999/login/oauth2/callback/gcs_ropc', 'USER,ADMIN',
+        'http://localhost:80/login/oauth2/code/gcs_ropc', 'USER,ADMIN',
         36000, 36000, null, false);
