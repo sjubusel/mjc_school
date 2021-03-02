@@ -9,8 +9,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR, uses = TagConverter.class)
-public interface GiftCertificateConverter extends GeneralEntityConverter<GiftCertificateDto, GiftCertificate,
-        Long> {
+public interface GiftCertificateConverter extends GeneralEntityConverter<GiftCertificateDto, GiftCertificate, Long> {
 
     @Mappings({
             @Mapping(target = "createDate", source = "createDate", defaultExpression = "java(java.time.Instant.now())"),

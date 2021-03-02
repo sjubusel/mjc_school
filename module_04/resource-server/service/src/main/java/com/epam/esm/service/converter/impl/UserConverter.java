@@ -4,7 +4,6 @@ import com.epam.esm.model.domain.User;
 import com.epam.esm.model.domain.UserAuthority;
 import com.epam.esm.model.dto.UserDto;
 import com.epam.esm.model.other.Role;
-import com.epam.esm.service.converter.DefaultUserQualifier;
 import com.epam.esm.service.converter.GeneralEntityConverter;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -24,10 +23,7 @@ public interface UserConverter extends GeneralEntityConverter<UserDto, User, Lon
     @Override
     User convertToDomain(UserDto dto);
 
-    @DefaultUserQualifier
     @Mapping(target = "password", ignore = true)
     @Override
     UserDto convertToDto(User user);
-
-    UserDto convertToSecurityDto(User user);
 }
