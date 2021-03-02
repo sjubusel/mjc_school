@@ -3,6 +3,7 @@ buildscript {
         main_application_version = '0.0.1-SNAPSHOT'
         nimbus_jose_jwt_version = '9.7'
         spring_security_oauth2_version = '2.5.0.RELEASE'
+        spring_security_oauth2_jose_version = '5.4.2'
     }
 }
 
@@ -42,6 +43,8 @@ dependencies {
             version: spring_security_oauth2_version
     implementation group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure',
             version: spring_boot_version
+    implementation group: 'org.springframework.security', name: 'spring-security-oauth2-jose',
+            version: spring_security_oauth2_jose_version
     implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: nimbus_jose_jwt_version
 
 

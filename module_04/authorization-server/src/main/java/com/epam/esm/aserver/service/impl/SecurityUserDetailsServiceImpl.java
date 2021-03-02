@@ -9,13 +9,19 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.springframework.security.core.userdetails.User.withUsername;
 
@@ -23,7 +29,11 @@ import static org.springframework.security.core.userdetails.User.withUsername;
 @RequiredArgsConstructor
 public class SecurityUserDetailsServiceImpl implements SecurityUserDetailsService {
 
+    private static final Pattern authorizationPattern = Pattern.compile("^Bearer (?<token>[a-zA-Z0-9-._~+/]+=*)$",
+            Pattern.CASE_INSENSITIVE);
+
     private final UserRepository userRepository;
+    private final JwtDecoder jwtDecoder;
 
     @Transactional(readOnly = true)
     @Override
@@ -49,6 +59,22 @@ public class SecurityUserDetailsServiceImpl implements SecurityUserDetailsServic
                 grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + authority.getRole().name()))
         );
         return grantedAuthorities;
+    }
+
+    @Override
+    public Map<String, Object> receiveUserInfoClaims(String authorizationHeader) {
+        String token = null;
+        Matcher matcher = authorizationPattern.matcher(authorizationHeader);
+        if (matcher.find()) {
+            token = matcher.group("token");
+        }
+
+        Jwt jwt = jwtDecoder.decode(token);
+        Object claim = jwt.getClaim("user_name");
+
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("sub", claim);
+        return userInfo;
     }
 }
 
