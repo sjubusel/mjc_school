@@ -85,7 +85,7 @@ public class TagController {
      * @return an object which represent Http response of UPDATE operation, which body contains a newly updated resource
      */
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_module_04::update') and hasRole('ADMIN')")
     public ResponseEntity<TagDto> update(@PathVariable("id") @Positive @Min(1) Long id,
                                          @RequestBody @Valid TagDto tagDto) {
         tagDto.setId(id);

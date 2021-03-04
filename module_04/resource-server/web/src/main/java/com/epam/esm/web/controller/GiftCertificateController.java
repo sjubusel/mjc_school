@@ -87,7 +87,7 @@ public class GiftCertificateController {
      * @return an object which represent Http response of UPDATE operation, which body contains a newly updated resource
      */
     @PatchMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_module_04::update') and hasRole('ADMIN')")
     public ResponseEntity<GiftCertificateDto> update(@PathVariable("id") @Positive @Min(1) Long id,
                                                      @RequestBody @Valid GiftCertificateUpdateDto newCertificate) {
         newCertificate.setId(id);
