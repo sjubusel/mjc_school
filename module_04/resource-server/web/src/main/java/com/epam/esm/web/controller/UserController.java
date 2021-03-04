@@ -33,7 +33,7 @@ public class UserController {
     private final UserHateoasActionsAppender hateoasActionsAppender;
 
     @GetMapping
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public CollectionModel<UserDto> read(@RequestBody(required = false) @Valid UserSearchCriteriaDto criteriaDto) {
         List<UserDto> users = userService.query(criteriaDto);
 

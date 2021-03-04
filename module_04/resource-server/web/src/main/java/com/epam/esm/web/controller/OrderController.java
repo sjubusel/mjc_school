@@ -33,7 +33,9 @@ public class OrderController {
     private final OrderHateoasActionsAppender hateoasActionsAppender;
 
     @GetMapping
-    @PreAuthorize("(hasRole('USER') and #criteriaDto.userId == authentication.principal.user_id) or hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('USER') and ((#criteriaDto != null and #criteriaDto.userId != null) " +
+            "? (#criteriaDto.userId == authentication.principal.user_id) " +
+            ": false)) or hasRole('ADMIN')")
     public CollectionModel<OrderDto> read(@RequestBody(required = false) @Valid OrderSearchCriteriaDto criteriaDto) {
         List<OrderDto> orders = orderService.query(criteriaDto);
 
