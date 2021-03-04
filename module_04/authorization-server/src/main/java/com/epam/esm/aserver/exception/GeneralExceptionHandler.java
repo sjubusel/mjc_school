@@ -8,6 +8,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -35,7 +36,6 @@ public class GeneralExceptionHandler {
             = "http.request.method.not.supported.exception";
     public static final String OTHER_EXCEPTIONS = "other.exceptions";
     private static final String AUTHENTICATION_EXCEPTION = "authentication.exception";
-    private static final String INSUFFICIENT_AUTHENTICATION_EXCEPTION = "insufficient.authentication.exception";
 
     private final MessageSource messageSource;
 
@@ -110,6 +110,16 @@ public class GeneralExceptionHandler {
         ErrorInfo errorInfo = generateStandardErrorInfo(40510L, errorMessage, request.getRequestURI());
         log.error("Incompatible http method is called: errorInfo → {}; exception → {}", errorInfo, e);
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(errorInfo);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    protected ResponseEntity<Object> handleAuthenticationException(AuthenticationException e,
+                                                                   HttpServletRequest request,
+                                                                   Locale locale) {
+        String errorMessage = messageSource.getMessage(AUTHENTICATION_EXCEPTION, null, locale);
+        ErrorInfo errorInfo = generateStandardErrorInfo(40320L, errorMessage, request.getRequestURI());
+        log.error("Access is forbidden → {}; exception → {}", errorInfo, e);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorInfo);
     }
 
     @ExceptionHandler(Exception.class)
