@@ -1,3 +1,7 @@
+plugins {
+    id 'maven'
+}
+
 configurations {
     developmentOnly
     runtimeClasspath {
@@ -18,5 +22,5 @@ bootJar {
 }
 
 jar {
-    enabled = false
+    enabled = true
 }
