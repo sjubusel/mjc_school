@@ -103,7 +103,7 @@ public class TagController {
      * @return an object which represent Http response of DELETE operation
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_module_04::delete') and hasRole('ADMIN')")
     public ResponseEntity<String> delete(@PathVariable("id") @Positive @Min(1) Long id) {
         tagService.delete(id);
         return ResponseEntity.ok().build();

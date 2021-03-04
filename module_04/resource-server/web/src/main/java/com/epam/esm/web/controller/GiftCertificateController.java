@@ -105,7 +105,7 @@ public class GiftCertificateController {
      * @return an object which represents Http response of DELETE operation
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_module_04::delete') and hasRole('ADMIN')")
     public ResponseEntity<String> delete(@PathVariable("id") @Positive @Min(1) Long id) {
         giftCertificateService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
