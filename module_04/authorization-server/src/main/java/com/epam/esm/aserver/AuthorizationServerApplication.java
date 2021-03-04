@@ -5,6 +5,7 @@ import com.epam.esm.repository.UserRepository;
 import com.epam.esm.repository.impl.UserRepositoryImpl;
 import com.epam.esm.repository.util.impl.UserPredicateBuilder;
 import com.epam.esm.service.impl.UserServiceImpl;
+import com.epam.esm.web.exception.RestAuthenticationEntryPoint;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.RSAKey;
 import org.springframework.boot.SpringApplication;
@@ -25,7 +26,7 @@ import java.security.interfaces.RSAPublicKey;
 
 @SpringBootApplication(scanBasePackages = {"com.epam.esm.aserver", "com.epam.esm.service.converter"})
 @EntityScan(basePackageClasses = {User.class})
-@Import({UserServiceImpl.class})
+@Import({UserServiceImpl.class, RestAuthenticationEntryPoint.class})
 public class AuthorizationServerApplication {
 
     public static void main(String[] args) {
