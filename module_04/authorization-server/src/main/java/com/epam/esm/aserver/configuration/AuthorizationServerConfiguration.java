@@ -1,6 +1,7 @@
 package com.epam.esm.aserver.configuration;
 
 import com.epam.esm.aserver.util.CustomTokenEnhancer;
+import com.epam.esm.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -29,14 +30,17 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     private final DataSource dataSource;
     private final KeyPair keyPair;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
 
     public AuthorizationServerConfiguration(DataSource dataSource, KeyPair keyPair,
                                             PasswordEncoder passwordEncoder,
+                                            UserRepository userRepository,
                                             @Lazy AuthenticationManager authenticationManager) {
         this.dataSource = dataSource;
         this.keyPair = keyPair;
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
     }
 
@@ -57,7 +61,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
-        enhancerChain.setTokenEnhancers(Arrays.asList(new CustomTokenEnhancer(), accessTokenConverter()));
+        enhancerChain.setTokenEnhancers(Arrays.asList(new CustomTokenEnhancer(userRepository), accessTokenConverter()));
         endpoints
                 .authenticationManager(authenticationManager)
                 .tokenStore(tokenStore())
@@ -76,5 +80,4 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         return converter;
     }
 
-    // TODO ??? DefaultTokenServices
 }
