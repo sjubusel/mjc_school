@@ -33,9 +33,10 @@ public class OrderController {
     private final OrderHateoasActionsAppender hateoasActionsAppender;
 
     @GetMapping
-    @PreAuthorize("(hasRole('USER') and ((#criteriaDto != null and #criteriaDto.userId != null) " +
+    @PreAuthorize("hasAuthority('SCOPE_module_04::read') and " +
+            "((hasRole('USER') and ((#criteriaDto != null and #criteriaDto.userId != null) " +
             "? (#criteriaDto.userId == authentication.principal.user_id) " +
-            ": false)) or hasRole('ADMIN')")
+            ": false)) or hasRole('ADMIN'))")
     public CollectionModel<OrderDto> read(@RequestBody(required = false) @Valid OrderSearchCriteriaDto criteriaDto) {
         List<OrderDto> orders = orderService.query(criteriaDto);
 
@@ -43,7 +44,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_module_04::read') and (hasRole('USER') or hasRole('ADMIN'))")
     @PostAuthorize("returnObject.user.login == authentication.principal.user_name")
     public OrderDto readOne(@PathVariable("id") @Positive @Min(1) Long id) {
         OrderDto order = orderService.findOne(id);

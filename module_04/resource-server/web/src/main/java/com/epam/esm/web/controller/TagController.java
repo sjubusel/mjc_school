@@ -54,7 +54,7 @@ public class TagController {
      * @return a collection of resources which correspond to search parameters
      */
     @GetMapping
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_module_04::read') and (hasRole('USER') or hasRole('ADMIN'))")
     public CollectionModel<TagDto> read(@RequestBody(required = false) @Valid TagSearchCriteriaDto searchCriteriaDto) {
         List<TagDto> tags = tagService.query(searchCriteriaDto);
 
@@ -68,7 +68,7 @@ public class TagController {
      * @return an object which represents a target resource
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_module_04::read') and (hasRole('USER') or hasRole('ADMIN'))")
     public TagDto readOne(@PathVariable("id") @Positive @Min(1) Long id) {
         TagDto tagDto = tagService.findOne(id);
 
@@ -110,7 +110,7 @@ public class TagController {
     }
 
     @GetMapping("/main")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_module_04::read') and hasRole('ADMIN')")
     public List<TagDto> receiveMainTag() {
         List<TagDto> tagList = tagService.receiveMostWidelyUsedTagOfUserWithMaxCostOfOrders();
         tagList.forEach(hateoasActionsAppender::appendSelfReference);
