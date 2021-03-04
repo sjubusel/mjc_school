@@ -41,7 +41,7 @@ public class GiftCertificateController {
      * which body contains a newly created resource
      */
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_module_04::create') and hasRole('ADMIN')")
     public ResponseEntity<GiftCertificateDto> create(@RequestBody @Valid GiftCertificateDto certificate) {
         Long createdId = giftCertificateService.create(certificate);
         URI location = URI.create(String.format("/gift-certificates/%s", createdId));

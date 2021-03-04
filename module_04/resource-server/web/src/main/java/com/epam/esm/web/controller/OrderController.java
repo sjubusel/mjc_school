@@ -55,7 +55,8 @@ public class OrderController {
     }
 
     @PostMapping
-    @PreAuthorize("(hasRole('USER') and #orderDto.user.id == authentication.principal.user_id) or hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_module_04::create') " +
+            "and ((hasRole('USER') and #orderDto.user.id == authentication.principal.user_id) or hasRole('ADMIN'))")
     public ResponseEntity<OrderDto> create(@RequestBody @Valid OrderDto orderDto) {
         Long createdId = orderService.create(orderDto);
         URI location = URI.create(String.format("/orders/%s", createdId));

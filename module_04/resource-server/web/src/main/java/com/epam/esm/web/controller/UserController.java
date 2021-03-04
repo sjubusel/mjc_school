@@ -52,7 +52,8 @@ public class UserController {
     }
 
     @PostMapping("/{id}/orders")
-    @PreAuthorize("(hasRole('USER') and #id == authentication.principal.user_id) or hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_module_04::create') " +
+            "and ((hasRole('USER') and #id == authentication.principal.user_id) or hasRole('ADMIN'))")
     public ResponseEntity<OrderDto> createOrder(@PathVariable("id") @Positive @Min(1) Long id,
                                                 @RequestBody @Valid OrderDto orderDto) {
         orderDto.getUser().setId(id);
