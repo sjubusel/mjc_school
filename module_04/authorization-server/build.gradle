@@ -50,6 +50,7 @@ dependencies {
 
     implementation group: 'com.epam.esm', name: 'model', version: main_application_version
     implementation group: 'com.epam.esm', name: 'repository', version: main_application_version
+    implementation group: 'com.epam.esm', name: 'service', version: main_application_version
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'mysql:mysql-connector-java'
