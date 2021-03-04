@@ -14,6 +14,8 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -48,6 +50,8 @@ public class GeneralExceptionHandler {
     private static final String INCONSISTENT_CREATE_DTO_EXCEPTION = "inconsistent.create.dto.exception";
     private static final String ILLEGAL_REQUEST_EXCEPTION = "illegal.request.exception";
     private static final String ILLEGAL_GIFT_CERTIFICATE_UPDATE_EXCEPTION = "illegal.gift.certificate.update.exception";
+    private static final String AUTHENTICATION_EXCEPTION = "authentication.exception";
+    private static final String INSUFFICIENT_AUTHENTICATION_EXCEPTION = "insufficient.authentication.exception";
 
     private final MessageSource messageSource;
 
@@ -200,6 +204,26 @@ public class GeneralExceptionHandler {
         ErrorInfo errorInfo = generateStandardErrorInfo(40080L, errorMessage, request.getRequestURI());
         log.error("Simultaneous update of 2 fields of the gift-certificate occurs → {}; exception → {}", errorInfo, e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorInfo);
+    }
+
+    @ExceptionHandler(InsufficientAuthenticationException.class)
+    protected ResponseEntity<Object> handleAuthenticationException(InsufficientAuthenticationException e,
+                                                                   HttpServletRequest request,
+                                                                   Locale locale) {
+        String errorMessage = messageSource.getMessage(INSUFFICIENT_AUTHENTICATION_EXCEPTION, null, locale);
+        ErrorInfo errorInfo = generateStandardErrorInfo(40110L, errorMessage, request.getRequestURI());
+        log.error("Authenticate, please, in order to obtain access → {}; exception → {}", errorInfo, e);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorInfo);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    protected ResponseEntity<Object> handleAuthenticationException(AuthenticationException e,
+                                                                   HttpServletRequest request,
+                                                                   Locale locale) {
+        String errorMessage = messageSource.getMessage(AUTHENTICATION_EXCEPTION, null, locale);
+        ErrorInfo errorInfo = generateStandardErrorInfo(40320L, errorMessage, request.getRequestURI());
+        log.error("Access is forbidden → {}; exception → {}", errorInfo, e);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorInfo);
     }
 
     @ExceptionHandler(Exception.class)

@@ -22,7 +22,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
      *
      * @param resolver used in order to override default Spring Security exception handling mechanism
      */
-    public RestAuthenticationEntryPoint(@Qualifier("errorAttributes") HandlerExceptionResolver resolver) {
+    public RestAuthenticationEntryPoint(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
         this.resolver = resolver;
     }
 
