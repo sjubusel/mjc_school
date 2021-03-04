@@ -7,6 +7,7 @@ import com.epam.esm.web.util.impl.OrderHateoasActionsAppender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,7 @@ public class OrderController {
     private final OrderHateoasActionsAppender hateoasActionsAppender;
 
     @GetMapping
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('USER') and #criteriaDto.userId == authentication.principal.user_id) or hasRole('ADMIN')")
     public CollectionModel<OrderDto> read(@RequestBody(required = false) @Valid OrderSearchCriteriaDto criteriaDto) {
         List<OrderDto> orders = orderService.query(criteriaDto);
 
@@ -41,6 +42,7 @@ public class OrderController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PostAuthorize("returnObject.user.login == authentication.principal.user_name")
     public OrderDto readOne(@PathVariable("id") @Positive @Min(1) Long id) {
         OrderDto order = orderService.findOne(id);
 
@@ -50,7 +52,7 @@ public class OrderController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("(hasRole('USER') and #orderDto.user.id == authentication.principal.user_id) or hasRole('ADMIN')")
     public ResponseEntity<OrderDto> create(@RequestBody @Valid OrderDto orderDto) {
         Long createdId = orderService.create(orderDto);
         URI location = URI.create(String.format("/orders/%s", createdId));
