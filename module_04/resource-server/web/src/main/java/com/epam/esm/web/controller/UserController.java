@@ -42,7 +42,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_module_04::read') " +
-            "and ((hasRole('USER') and #id == authentication.principal.user_id) or hasRole('ADMIN'))")
+            "and ((hasRole('USER') and #id == authentication.principal.claims['user_id']) or hasRole('ADMIN'))")
     public UserDto readOne(@PathVariable("id") @Positive @Min(1) Long id) {
         UserDto user = userService.findOne(id);
 
@@ -53,7 +53,7 @@ public class UserController {
 
     @PostMapping("/{id}/orders")
     @PreAuthorize("hasAuthority('SCOPE_module_04::create') " +
-            "and ((hasRole('USER') and #id == authentication.principal.user_id) or hasRole('ADMIN'))")
+            "and ((hasRole('USER') and #id == authentication.principal.claims['user_id']) or hasRole('ADMIN'))")
     public ResponseEntity<OrderDto> createOrder(@PathVariable("id") @Positive @Min(1) Long id,
                                                 @RequestBody @Valid OrderDto orderDto) {
         orderDto.getUser().setId(id);
@@ -64,7 +64,7 @@ public class UserController {
 
     @GetMapping("/{id}/orders")
     @PreAuthorize("hasAuthority('SCOPE_module_04::read') " +
-            "and ((hasRole('USER') and #id == authentication.principal.user_id) or hasRole('ADMIN'))")
+            "and ((hasRole('USER') and #id == authentication.principal.claims['user_id']) or hasRole('ADMIN'))")
     public CollectionModel<OrderDto> readOrders(@PathVariable("id") @Positive @Min(1) Long id,
                                                 @RequestBody(required = false) @Valid OrderSearchCriteriaDto criteriaDto) {
         if (criteriaDto == null) {
@@ -77,7 +77,7 @@ public class UserController {
 
     @GetMapping("/{userId}/orders/{orderId}")
     @PreAuthorize("hasAuthority('SCOPE_module_04::read')" +
-            "and ((hasRole('USER') and #userId == authentication.principal.user_id) or hasRole('ADMIN'))")
+            "and ((hasRole('USER') and #userId == authentication.principal.claims['user_id']) or hasRole('ADMIN'))")
     public OrderDto readOrder(@PathVariable("userId") @Positive @Min(1) Long userId,
                               @PathVariable("orderId") @Positive @Min(1) Long orderId) {
 

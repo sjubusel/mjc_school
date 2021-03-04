@@ -35,7 +35,7 @@ public class OrderController {
     @GetMapping
     @PreAuthorize("hasAuthority('SCOPE_module_04::read') and " +
             "((hasRole('USER') and ((#criteriaDto != null and #criteriaDto.userId != null) " +
-            "? (#criteriaDto.userId == authentication.principal.user_id) " +
+            "? (#criteriaDto.userId == authentication.principal.claims['user_id']) " +
             ": false)) or hasRole('ADMIN'))")
     public CollectionModel<OrderDto> read(@RequestBody(required = false) @Valid OrderSearchCriteriaDto criteriaDto) {
         List<OrderDto> orders = orderService.query(criteriaDto);
@@ -56,7 +56,8 @@ public class OrderController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('SCOPE_module_04::create') " +
-            "and ((hasRole('USER') and #orderDto.user.id == authentication.principal.user_id) or hasRole('ADMIN'))")
+            "and ((hasRole('USER') and #orderDto.user.id == authentication.principal.claims['user_id']) " +
+            "or hasRole('ADMIN'))")
     public ResponseEntity<OrderDto> create(@RequestBody @Valid OrderDto orderDto) {
         Long createdId = orderService.create(orderDto);
         URI location = URI.create(String.format("/orders/%s", createdId));
