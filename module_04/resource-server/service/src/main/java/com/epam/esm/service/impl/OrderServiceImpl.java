@@ -16,9 +16,7 @@ import com.epam.esm.service.exception.IllegalRequestException;
 import com.epam.esm.service.exception.InconsistentCreateDtoException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,9 +33,6 @@ public class OrderServiceImpl extends GeneralCrudService<OrderDto, Order, Long, 
     private final UserRepository userRepository;
     private final GiftCertificateRepository giftCertificateRepository;
     private final OrderPositionRepository orderPositionRepository;
-
-    @Value("${page.default-page-size}")
-    private Integer defaultPageSize;
 
     @Autowired
     protected OrderServiceImpl(GeneralCrudRepository<Order, Long> crudRepository,
@@ -87,11 +82,6 @@ public class OrderServiceImpl extends GeneralCrudService<OrderDto, Order, Long, 
 //        OrderSearchCriteriaDto params = (OrderSearchCriteriaDto) searchCriteria;
 //        Integer pageSize = params.getPageSize() == null ? defaultPageSize : params.getPageSize();
 //        return new OrderSpecification(params.getPage(), pageSize, params.getUserId());
-        return null;
-    }
-
-    @Override
-    protected Pageable assemblePageable(SearchCriteriaDto<Order> searchCriteria) {
         return null;
     }
 

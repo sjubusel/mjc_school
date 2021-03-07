@@ -8,9 +8,7 @@ import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.EmptyUpdateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +19,6 @@ import java.util.stream.Collectors;
 public class TagServiceImpl extends GeneralCrudService<TagDto, Tag, Long, TagDto> implements TagService {
 
     private final TagRepository tagRepository;
-
-    @Value("${page.default-page-size}")
-    private Integer defaultPageSize;
 
     @Autowired
     protected TagServiceImpl(TagRepository tagRepository,
@@ -52,11 +47,6 @@ public class TagServiceImpl extends GeneralCrudService<TagDto, Tag, Long, TagDto
 //        TagSearchCriteriaDto params = (TagSearchCriteriaDto) searchCriteria;
 //        Integer pageSize = params.getPageSize() == null ? defaultPageSize : params.getPageSize();
 //        return new TagSpecification(params.getName(), pageSize, params.getPage());
-        return null;
-    }
-
-    @Override
-    protected Pageable assemblePageable(SearchCriteriaDto<Tag> searchCriteria) {
         return null;
     }
 

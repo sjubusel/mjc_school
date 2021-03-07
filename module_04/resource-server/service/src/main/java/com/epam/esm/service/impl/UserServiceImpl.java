@@ -7,17 +7,12 @@ import com.epam.esm.service.UserService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl extends GeneralCrudService<UserDto, User, Long, UserDto> implements UserService {
-
-    @Value("${page.default-page-size}")
-    private Integer defaultPageSize;
 
     @Autowired
     protected UserServiceImpl(GeneralCrudRepository<User, Long> crudRepository,
@@ -53,11 +48,6 @@ public class UserServiceImpl extends GeneralCrudService<UserDto, User, Long, Use
 //        UserSearchCriteriaDto params = (UserSearchCriteriaDto) searchCriteria;
 //        Integer pageSize = params.getPageSize() == null ? defaultPageSize : params.getPageSize();
 //        return new UserSpecification(params.getPage(), pageSize);
-        return null;
-    }
-
-    @Override
-    protected Pageable assemblePageable(SearchCriteriaDto<User> searchCriteria) {
         return null;
     }
 
