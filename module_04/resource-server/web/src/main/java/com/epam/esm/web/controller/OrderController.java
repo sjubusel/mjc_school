@@ -5,6 +5,7 @@ import com.epam.esm.service.OrderService;
 import com.epam.esm.service.dto.OrderSearchCriteriaDto;
 import com.epam.esm.web.util.impl.OrderHateoasActionsAppender;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -21,7 +22,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
@@ -38,7 +38,7 @@ public class OrderController {
             "? (#criteriaDto.userId == authentication.principal.claims['user_id']) " +
             ": false)) or hasRole('ADMIN'))")
     public CollectionModel<OrderDto> read(@RequestBody(required = false) @Valid OrderSearchCriteriaDto criteriaDto) {
-        List<OrderDto> orders = orderService.query(criteriaDto);
+        Page<OrderDto> orders = orderService.query(criteriaDto);
 
         return hateoasActionsAppender.toHateoasCollectionOfEntities(orders);
     }

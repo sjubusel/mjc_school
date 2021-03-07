@@ -8,6 +8,7 @@ import com.epam.esm.service.dto.OrderSearchCriteriaDto;
 import com.epam.esm.service.dto.UserSearchCriteriaDto;
 import com.epam.esm.web.util.impl.UserHateoasActionsAppender;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,7 +19,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.net.URI;
-import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -35,7 +35,7 @@ public class UserController {
     @GetMapping
     @PreAuthorize("hasAuthority('SCOPE_module_04::read') and hasRole('ADMIN')")
     public CollectionModel<UserDto> read(@RequestBody(required = false) @Valid UserSearchCriteriaDto criteriaDto) {
-        List<UserDto> users = userService.query(criteriaDto);
+        Page<UserDto> users = userService.query(criteriaDto);
 
         return hateoasActionsAppender.toHateoasCollectionOfEntities(users);
     }
@@ -71,7 +71,7 @@ public class UserController {
             criteriaDto = new OrderSearchCriteriaDto();
         }
         criteriaDto.setUserId(id);
-        List<OrderDto> orders = orderService.query(criteriaDto);
+        Page<OrderDto> orders = orderService.query(criteriaDto);
         return hateoasActionsAppender.toHateoasCollectionOfOrders(orders);
     }
 

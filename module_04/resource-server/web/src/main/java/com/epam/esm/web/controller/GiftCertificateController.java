@@ -6,6 +6,7 @@ import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import com.epam.esm.web.util.impl.GiftCertificateHateoasActionsAppender;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.net.URI;
-import java.util.List;
 
 /**
  * a class which performs REST's CRUD operations on a resource called "Gift-certificates"
@@ -59,7 +59,7 @@ public class GiftCertificateController {
     @GetMapping
     public CollectionModel<GiftCertificateDto> read(@RequestBody(required = false) @Valid
                                                  GiftCertificateSearchCriteriaDto criteriaDto) {
-        List<GiftCertificateDto> certificates = giftCertificateService.query(criteriaDto);
+        Page<GiftCertificateDto> certificates = giftCertificateService.query(criteriaDto);
 
         return hateoasActionsAppender.toHateoasCollectionOfEntities(certificates);
     }

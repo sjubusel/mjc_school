@@ -5,6 +5,7 @@ import com.epam.esm.service.TagService;
 import com.epam.esm.service.dto.TagSearchCriteriaDto;
 import com.epam.esm.web.util.impl.TagHateoasActionsAppender;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -56,7 +57,7 @@ public class TagController {
     @GetMapping
     @PreAuthorize("hasAuthority('SCOPE_module_04::read') and (hasRole('USER') or hasRole('ADMIN'))")
     public CollectionModel<TagDto> read(@RequestBody(required = false) @Valid TagSearchCriteriaDto searchCriteriaDto) {
-        List<TagDto> tags = tagService.query(searchCriteriaDto);
+        Page<TagDto> tags = tagService.query(searchCriteriaDto);
 
         return hateoasActionsAppender.toHateoasCollectionOfEntities(tags);
     }
