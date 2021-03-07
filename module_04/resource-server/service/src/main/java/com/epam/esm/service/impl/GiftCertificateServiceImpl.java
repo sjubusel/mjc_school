@@ -16,6 +16,7 @@ import com.epam.esm.service.exception.IllegalGiftCertificateUpdateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -125,7 +126,17 @@ public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertifica
 
     @Override
     protected Pageable assemblePageable(SearchCriteriaDto<GiftCertificate> searchCriteria) {
-        return null;
+        if (searchCriteria == null) {
+            return PageRequest.of(0, defaultPageSize);
+        }
+
+        Integer page = searchCriteria.getPage();
+        Integer pageSize = searchCriteria.getPageSize();
+
+        int actualPage = (page != null) ? (page - 1) : 0;
+        int actualPageSize = (pageSize != null) ? pageSize : defaultPageSize;
+
+        return PageRequest.of(actualPage, actualPageSize);
     }
 
     @Override
