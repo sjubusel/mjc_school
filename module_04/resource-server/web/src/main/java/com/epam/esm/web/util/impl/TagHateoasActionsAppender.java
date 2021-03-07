@@ -3,12 +3,11 @@ package com.epam.esm.web.util.impl;
 import com.epam.esm.model.dto.TagDto;
 import com.epam.esm.web.controller.TagController;
 import com.epam.esm.web.util.HateoasActionsAppender;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -36,7 +35,7 @@ public class TagHateoasActionsAppender implements HateoasActionsAppender<Long, T
     }
 
     @Override
-    public CollectionModel<TagDto> toHateoasCollectionOfEntities(List<TagDto> tags) {
+    public CollectionModel<TagDto> toHateoasCollectionOfEntities(Page<TagDto> tags) {
         tags.forEach(this::appendAsForSecondaryEntity);
         Link selfLink = linkTo(TagController.class).withSelfRel();
         CollectionModel<TagDto> collectionModel = CollectionModel.of(tags, selfLink);

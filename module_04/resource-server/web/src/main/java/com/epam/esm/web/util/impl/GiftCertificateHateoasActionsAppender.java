@@ -4,12 +4,11 @@ import com.epam.esm.model.dto.GiftCertificateDto;
 import com.epam.esm.web.controller.GiftCertificateController;
 import com.epam.esm.web.util.HateoasActionsAppender;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -42,7 +41,7 @@ public class GiftCertificateHateoasActionsAppender implements HateoasActionsAppe
     }
 
     @Override
-    public CollectionModel<GiftCertificateDto> toHateoasCollectionOfEntities(List<GiftCertificateDto> certificates) {
+    public CollectionModel<GiftCertificateDto> toHateoasCollectionOfEntities(Page<GiftCertificateDto> certificates) {
         certificates.forEach(this::appendAsForSecondaryEntity);
         Link selfLink = linkTo(GiftCertificateController.class).withSelfRel();
         CollectionModel<GiftCertificateDto> collectionModel = CollectionModel.of(certificates, selfLink);
