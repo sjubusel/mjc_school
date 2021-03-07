@@ -14,5 +14,6 @@ public interface HateoasActionsAppender<ID extends Serializable, T extends Entit
 
     void appendAsForSecondaryEntity(T dto);
 
+    // TODO ??? PagedModel
     CollectionModel<T> toHateoasCollectionOfEntities(Page<T> dtoList);
 }
