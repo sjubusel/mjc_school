@@ -2,32 +2,29 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.model.domain.Entity;
 import com.epam.esm.model.dto.EntityDto;
-import com.epam.esm.repository.CrudRepository;
-import com.epam.esm.repository.specification.JpaSpecification;
+import com.epam.esm.repository_new.GeneralCrudRepository;
 import com.epam.esm.service.CrudService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.DuplicateResourceException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public abstract class GeneralCrudService<DTO extends EntityDto<ID, DTO>, DOMAIN extends Entity<ID>,
         ID extends Serializable, UPDATE_DTO extends EntityDto<ID, UPDATE_DTO>>
         implements CrudService<DTO, DOMAIN, ID, UPDATE_DTO> {
 
-    protected static final Map<String, Object> EMPTY_UNIQUE_CONSTRAINTS = new HashMap<>();
-
-    protected final CrudRepository<DOMAIN, ID> crudRepository;
+    protected final GeneralCrudRepository<DOMAIN, ID> crudRepository;
     protected final GeneralEntityConverter<DTO, DOMAIN, ID> converter;
 
-    protected GeneralCrudService(CrudRepository<DOMAIN, ID> crudRepository,
+    protected GeneralCrudService(GeneralCrudRepository<DOMAIN, ID> crudRepository,
                                  GeneralEntityConverter<DTO, DOMAIN, ID> converter) {
         this.crudRepository = crudRepository;
         this.converter = converter;
@@ -42,21 +39,20 @@ public abstract class GeneralCrudService<DTO extends EntityDto<ID, DTO>, DOMAIN 
     @Transactional(readOnly = true)
     @Override
     public DTO findOne(ID id) {
-        Optional<DOMAIN> entity = crudRepository.findOne(id);
+        Optional<DOMAIN> entity = crudRepository.findById(id);
         DOMAIN domain = entity.orElseThrow(() -> new ResourceNotFoundException(id));
         return converter.convertToDto(domain);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<DTO> query(SearchCriteriaDto<DOMAIN> searchCriteria) {
-        List<DOMAIN> domains = (List<DOMAIN>) crudRepository.query(getDataSourceSpecification(searchCriteria));
+    public Page<DTO> query(SearchCriteriaDto<DOMAIN> searchCriteria) {
+        Page<DOMAIN> domains = crudRepository.findAll(assembleJpaSpecification(searchCriteria),
+                assemblePageable(searchCriteria));
         if (domains.isEmpty()) {
             throw new ResourceNotFoundException("Requested resources are not found");
         }
-        return domains.stream()
-                .map(converter::convertToDto)
-                .collect(Collectors.toList());
+        return domains.map(converter::convertToDto);
     }
 
     @Transactional
@@ -66,17 +62,15 @@ public abstract class GeneralCrudService<DTO extends EntityDto<ID, DTO>, DOMAIN 
             throw new DuplicateResourceException(dto.toString());
         }
         DOMAIN entity = converter.convertToDomain(dto);
-        return crudRepository.create(entity);
+        return crudRepository.save(entity).getId();
     }
-
-    protected abstract Map<String, Object> receiveUniqueConstraints(DTO dto);
 
     @Transactional
     @Override
-    public boolean update(UPDATE_DTO dto) {
+    public DTO update(UPDATE_DTO dto) {
         DOMAIN sourceDomain = receiveDomainWhichIsToBeUpdated(dto.getId());
         DOMAIN targetDomain = receiveUpdatingDomain(sourceDomain, dto);
-        return crudRepository.update(targetDomain);
+        return converter.convertToDto(crudRepository.save(targetDomain));
     }
 
     @Transactional
@@ -84,16 +78,20 @@ public abstract class GeneralCrudService<DTO extends EntityDto<ID, DTO>, DOMAIN 
     public boolean delete(ID id) {
         DOMAIN sourceDomain = receiveDomainWhichIsToBeUpdated(id);
         deleteAssociationsWithRelatedEntitiesIfNecessary(sourceDomain);
-        return crudRepository.delete(id);
+        return crudRepository.deleteInSoftMode(id);
     }
 
     protected void deleteAssociationsWithRelatedEntitiesIfNecessary(DOMAIN sourceDomain) {
     }
 
-    protected abstract JpaSpecification<DOMAIN, ID> getDataSourceSpecification(SearchCriteriaDto<DOMAIN> searchCriteria);
+    protected abstract Specification<DOMAIN> assembleJpaSpecification(SearchCriteriaDto<DOMAIN> searchCriteria);
+
+    protected abstract Pageable assemblePageable(SearchCriteriaDto<DOMAIN> searchCriteria);
+
+    protected abstract Example<DOMAIN> receiveUniqueConstraints(DTO dto);
 
     protected DOMAIN receiveDomainWhichIsToBeUpdated(ID id) {
-        Optional<DOMAIN> result = crudRepository.findOne(id);
+        Optional<DOMAIN> result = crudRepository.findById(id);
         return result.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
