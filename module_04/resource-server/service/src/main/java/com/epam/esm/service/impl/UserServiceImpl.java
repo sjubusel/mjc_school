@@ -8,6 +8,7 @@ import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +23,10 @@ public class UserServiceImpl extends GeneralCrudService<UserDto, User, Long, Use
 
     @Override
     protected Example<User> receiveUniqueConstraints(UserDto dto) {
-//        Map<String, Object> uniqueConstrains = new HashMap<>();
-//        uniqueConstrains.put("login", dto.getLogin());
-//        uniqueConstrains.put("phoneNumber", dto.getPhoneNumber());
-//        uniqueConstrains.put("email", dto.getEmail());
-//        return uniqueConstrains;
-        return null;
+        User probe = converter.convertToDomain(dto);
+        ExampleMatcher orConditionMatcher = ExampleMatcher.matchingAny()
+                .withIgnorePaths("firstName", "lastName", "password");
+        return Example.of(probe, orConditionMatcher);
     }
 
     @Override
