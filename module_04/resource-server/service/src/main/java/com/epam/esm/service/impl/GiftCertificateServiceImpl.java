@@ -15,6 +15,7 @@ import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.IllegalGiftCertificateUpdateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -120,13 +121,10 @@ public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertifica
 
     @Override
     protected Example<GiftCertificate> receiveUniqueConstraints(GiftCertificateDto dto) {
-//        Map<String, Object> uniqueConstrains = new HashMap<>();
-//        uniqueConstrains.putIfAbsent("name", dto.getName());
-//        uniqueConstrains.putIfAbsent("description", dto.getDescription());
-//        uniqueConstrains.putIfAbsent("price", dto.getPrice());
-//        uniqueConstrains.putIfAbsent("duration", dto.getDuration());
-//        return uniqueConstrains;
-        return null;
+        GiftCertificate probe = converter.convertToDomain(dto);
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnorePaths("createDate", "updateDate", "tags", "deleteDate");
+        return Example.of(probe, matcher);
     }
 
     @Override
