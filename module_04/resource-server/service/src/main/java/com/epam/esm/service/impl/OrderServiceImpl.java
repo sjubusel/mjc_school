@@ -5,27 +5,26 @@ import com.epam.esm.model.domain.Order;
 import com.epam.esm.model.domain.OrderPosition;
 import com.epam.esm.model.domain.User;
 import com.epam.esm.model.dto.OrderDto;
-import com.epam.esm.repository.CrudRepository;
-import com.epam.esm.repository.GiftCertificateRepository;
-import com.epam.esm.repository.OrderPositionRepository;
-import com.epam.esm.repository.UserRepository;
-import com.epam.esm.repository.specification.JpaSpecification;
-import com.epam.esm.repository.specification.impl.OrderSpecification;
+import com.epam.esm.repository_new.impl.GiftCertificateRepository;
+import com.epam.esm.repository_new.impl.OrderPositionRepository;
+import com.epam.esm.repository_new.impl.UserRepository;
+import com.epam.esm.repository_new.GeneralCrudRepository;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
-import com.epam.esm.service.dto.OrderSearchCriteriaDto;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.IllegalRequestException;
-import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import com.epam.esm.service.exception.InconsistentCreateDtoException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,7 +40,7 @@ public class OrderServiceImpl extends GeneralCrudService<OrderDto, Order, Long, 
     private Integer defaultPageSize;
 
     @Autowired
-    protected OrderServiceImpl(CrudRepository<Order, Long> crudRepository,
+    protected OrderServiceImpl(GeneralCrudRepository<Order, Long> crudRepository,
                                GeneralEntityConverter<OrderDto, Order, Long> converter,
                                UserRepository userRepository,
                                GiftCertificateRepository giftCertificateRepository,
@@ -59,40 +58,46 @@ public class OrderServiceImpl extends GeneralCrudService<OrderDto, Order, Long, 
 
         User userToLink = receiveUserIfExistsOtherwiseThrow(dto);
         Order orderToCreate = receiveOrderToCreate(userToLink);
-        Long createdId = crudRepository.create(orderToCreate);
-        orderToCreate.setId(createdId);
+        orderToCreate = crudRepository.save(orderToCreate);
 
         Set<OrderPosition> orderPositionsToCreate = receiveOrderPositionsIfAllGiftCertificatesExist(dto, orderToCreate);
-        Set<OrderPosition> createdOrderPositions = orderPositionRepository.createOrderPositions(orderPositionsToCreate);
+        Set<OrderPosition> createdOrderPositions = new HashSet<>(orderPositionRepository
+                .saveAll(orderPositionsToCreate));
         orderToCreate.setOrderPositions(createdOrderPositions);
-        crudRepository.update(orderToCreate);
+        crudRepository.save(orderToCreate);
 
-        return createdId;
+        return orderToCreate.getId();
     }
 
     @Override
-    protected Map<String, Object> receiveUniqueConstraints(OrderDto dto) {
-        return EMPTY_UNIQUE_CONSTRAINTS;
+    protected Example<Order> receiveUniqueConstraints(OrderDto dto) {
+        return Example.of(new Order());
     }
 
     @Override
-    protected JpaSpecification<Order, Long> getDataSourceSpecification(SearchCriteriaDto<Order> searchCriteria) {
-        if (searchCriteria == null) {
-            return new OrderSpecification(null, defaultPageSize, null);
-        }
+    protected Specification<Order> assembleJpaSpecification(SearchCriteriaDto<Order> searchCriteria) {
+//        if (searchCriteria == null) {
+//            return new OrderSpecification(null, defaultPageSize, null);
+//        }
+//
+//        if (searchCriteria.getClass() != OrderSearchCriteriaDto.class) {
+//            throw new IncompatibleSearchCriteriaException("Incompatible type of SearchCriteriaDto is passed");
+//        }
+//
+//        OrderSearchCriteriaDto params = (OrderSearchCriteriaDto) searchCriteria;
+//        Integer pageSize = params.getPageSize() == null ? defaultPageSize : params.getPageSize();
+//        return new OrderSpecification(params.getPage(), pageSize, params.getUserId());
+        return null;
+    }
 
-        if (searchCriteria.getClass() != OrderSearchCriteriaDto.class) {
-            throw new IncompatibleSearchCriteriaException("Incompatible type of SearchCriteriaDto is passed");
-        }
-
-        OrderSearchCriteriaDto params = (OrderSearchCriteriaDto) searchCriteria;
-        Integer pageSize = params.getPageSize() == null ? defaultPageSize : params.getPageSize();
-        return new OrderSpecification(params.getPage(), pageSize, params.getUserId());
+    @Override
+    protected Pageable assemblePageable(SearchCriteriaDto<Order> searchCriteria) {
+        return null;
     }
 
     @Override
     protected Order receiveUpdatingDomain(Order sourceDomain, OrderDto dto) {
-        return null;
+        throw new RuntimeException("this method has not been implemented yet, because of task requirements");
     }
 
     private void checkIfOrderConsistentOtherwiseThrow(OrderDto dto) {
@@ -108,10 +113,8 @@ public class OrderServiceImpl extends GeneralCrudService<OrderDto, Order, Long, 
     }
 
     private User receiveUserIfExistsOtherwiseThrow(OrderDto dto) {
-        User userToLink;
-        Optional<User> user = userRepository.findOne(dto.getUser().getId());
-        userToLink = user.orElseThrow(() -> new ResourceNotFoundException(dto.getUser().getId())); // fixme
-        return userToLink;
+        Optional<User> user = userRepository.findById(dto.getUser().getId());
+        return user.orElseThrow(() -> new ResourceNotFoundException(dto.getUser().getId()));
     }
 
     private Order receiveOrderToCreate(User userToLink) {
@@ -122,7 +125,7 @@ public class OrderServiceImpl extends GeneralCrudService<OrderDto, Order, Long, 
         return dto.getOrderPositions().stream()
                 .map(orderPosition -> {
                     Long certificateId = orderPosition.getGiftCertificate().getId();
-                    Optional<GiftCertificate> certificate = giftCertificateRepository.findOne(certificateId);
+                    Optional<GiftCertificate> certificate = giftCertificateRepository.findById(certificateId);
                     return certificate.orElseThrow(() -> new ResourceNotFoundException(certificateId));
                 })
                 .map(giftCertificate -> new OrderPosition(giftCertificate.getPrice(), orderToCreate, giftCertificate))
@@ -131,8 +134,8 @@ public class OrderServiceImpl extends GeneralCrudService<OrderDto, Order, Long, 
 
     @Override
     public OrderDto findOrderByIdIfBelongsToUser(Long orderId, Long userId) {
-        User user = userRepository.findOne(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
-        Order order = crudRepository.findOne(orderId).orElseThrow(() -> new ResourceNotFoundException(userId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
+        Order order = crudRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException(userId));
         if (!order.getUser().getId().equals(user.getId())) {
             throw new IllegalRequestException();
         }
