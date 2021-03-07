@@ -9,6 +9,7 @@ import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.EmptyUpdateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -62,9 +63,10 @@ public class TagServiceImpl extends GeneralCrudService<TagDto, Tag, Long, TagDto
 
     @Override
     protected Example<Tag> receiveUniqueConstraints(TagDto dto) {
-//        Map<String, Object> uniqueConstrains = new HashMap<>();
-//        uniqueConstrains.putIfAbsent("name", dto.getName());
-//        return uniqueConstrains;
-        return null;
+        Tag probe = converter.convertToDomain(dto);
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnorePaths("giftCertificates")
+                .withIgnoreNullValues();
+        return Example.of(probe, matcher);
     }
 }
