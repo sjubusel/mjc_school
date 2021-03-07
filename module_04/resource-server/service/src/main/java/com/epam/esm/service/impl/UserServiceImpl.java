@@ -2,20 +2,16 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.model.domain.User;
 import com.epam.esm.model.dto.UserDto;
-import com.epam.esm.repository.CrudRepository;
-import com.epam.esm.repository.specification.JpaSpecification;
-import com.epam.esm.repository.specification.impl.UserSpecification;
+import com.epam.esm.repository_new.GeneralCrudRepository;
 import com.epam.esm.service.UserService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.SearchCriteriaDto;
-import com.epam.esm.service.dto.UserSearchCriteriaDto;
-import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class UserServiceImpl extends GeneralCrudService<UserDto, User, Long, UserDto> implements UserService {
@@ -24,18 +20,19 @@ public class UserServiceImpl extends GeneralCrudService<UserDto, User, Long, Use
     private Integer defaultPageSize;
 
     @Autowired
-    protected UserServiceImpl(CrudRepository<User, Long> crudRepository,
+    protected UserServiceImpl(GeneralCrudRepository<User, Long> crudRepository,
                               GeneralEntityConverter<UserDto, User, Long> converter) {
         super(crudRepository, converter);
     }
 
     @Override
-    protected Map<String, Object> receiveUniqueConstraints(UserDto dto) {
-        Map<String, Object> uniqueConstrains = new HashMap<>();
-        uniqueConstrains.put("login", dto.getLogin());
-        uniqueConstrains.put("phoneNumber", dto.getPhoneNumber());
-        uniqueConstrains.put("email", dto.getEmail());
-        return uniqueConstrains;
+    protected Example<User> receiveUniqueConstraints(UserDto dto) {
+//        Map<String, Object> uniqueConstrains = new HashMap<>();
+//        uniqueConstrains.put("login", dto.getLogin());
+//        uniqueConstrains.put("phoneNumber", dto.getPhoneNumber());
+//        uniqueConstrains.put("email", dto.getEmail());
+//        return uniqueConstrains;
+        return null;
     }
 
     @Override
@@ -44,18 +41,24 @@ public class UserServiceImpl extends GeneralCrudService<UserDto, User, Long, Use
     }
 
     @Override
-    protected JpaSpecification<User, Long> getDataSourceSpecification(SearchCriteriaDto<User> searchCriteria) {
-        if (searchCriteria == null) {
-            return new UserSpecification(null, defaultPageSize);
-        }
+    protected Specification<User> assembleJpaSpecification(SearchCriteriaDto<User> searchCriteria) {
+//        if (searchCriteria == null) {
+//            return new UserSpecification(null, defaultPageSize);
+//        }
+//
+//        if (searchCriteria.getClass() != UserSearchCriteriaDto.class) {
+//            throw new IncompatibleSearchCriteriaException("Incompatible type of SearchCriteriaDto is passed");
+//        }
+//
+//        UserSearchCriteriaDto params = (UserSearchCriteriaDto) searchCriteria;
+//        Integer pageSize = params.getPageSize() == null ? defaultPageSize : params.getPageSize();
+//        return new UserSpecification(params.getPage(), pageSize);
+        return null;
+    }
 
-        if (searchCriteria.getClass() != UserSearchCriteriaDto.class) {
-            throw new IncompatibleSearchCriteriaException("Incompatible type of SearchCriteriaDto is passed");
-        }
-
-        UserSearchCriteriaDto params = (UserSearchCriteriaDto) searchCriteria;
-        Integer pageSize = params.getPageSize() == null ? defaultPageSize : params.getPageSize();
-        return new UserSpecification(params.getPage(), pageSize);
+    @Override
+    protected Pageable assemblePageable(SearchCriteriaDto<User> searchCriteria) {
+        return null;
     }
 
     @Override
