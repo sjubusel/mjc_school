@@ -8,8 +8,10 @@ import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.DuplicateResourceException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,9 @@ public abstract class GeneralCrudService<DTO extends EntityDto<ID, DTO>, DOMAIN 
 
     protected final GeneralCrudRepository<DOMAIN, ID> crudRepository;
     protected final GeneralEntityConverter<DTO, DOMAIN, ID> converter;
+
+    @Value("${page.default-page-size}")
+    private Integer defaultPageSize;
 
     protected GeneralCrudService(GeneralCrudRepository<DOMAIN, ID> crudRepository,
                                  GeneralEntityConverter<DTO, DOMAIN, ID> converter) {
@@ -86,7 +91,19 @@ public abstract class GeneralCrudService<DTO extends EntityDto<ID, DTO>, DOMAIN 
 
     protected abstract Specification<DOMAIN> assembleJpaSpecification(SearchCriteriaDto<DOMAIN> searchCriteria);
 
-    protected abstract Pageable assemblePageable(SearchCriteriaDto<DOMAIN> searchCriteria);
+    protected Pageable assemblePageable(SearchCriteriaDto<DOMAIN> searchCriteria){
+        if (searchCriteria == null) {
+            return PageRequest.of(0, defaultPageSize);
+        }
+
+        Integer page = searchCriteria.getPage();
+        Integer pageSize = searchCriteria.getPageSize();
+
+        int actualPage = (page != null) ? (page - 1) : 0;
+        int actualPageSize = (pageSize != null) ? pageSize : defaultPageSize;
+
+        return PageRequest.of(actualPage, actualPageSize);
+    }
 
     protected abstract Example<DOMAIN> receiveUniqueConstraints(DTO dto);
 

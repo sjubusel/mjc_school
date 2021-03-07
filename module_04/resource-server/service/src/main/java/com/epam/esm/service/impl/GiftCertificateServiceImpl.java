@@ -36,9 +36,6 @@ public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertifica
     private final TagRepository tagRepository;
     private final TagConverter tagConverter;
 
-    @Value("${page.default-page-size}")
-    private Integer defaultPageSize;
-
     @Autowired
     protected GiftCertificateServiceImpl(GiftCertificateRepository giftCertificateRepository,
                                          GiftCertificateConverter giftCertificateConverter,
@@ -122,21 +119,6 @@ public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertifica
 //        return new GiftCertificateSpecification(params.getTags(), params.getNamePart(), params.getDescriptionPart(),
 //                params.getSortParams(), params.getPage(), pageSize);
         return null;
-    }
-
-    @Override
-    protected Pageable assemblePageable(SearchCriteriaDto<GiftCertificate> searchCriteria) {
-        if (searchCriteria == null) {
-            return PageRequest.of(0, defaultPageSize);
-        }
-
-        Integer page = searchCriteria.getPage();
-        Integer pageSize = searchCriteria.getPageSize();
-
-        int actualPage = (page != null) ? (page - 1) : 0;
-        int actualPageSize = (pageSize != null) ? pageSize : defaultPageSize;
-
-        return PageRequest.of(actualPage, actualPageSize);
     }
 
     @Override
