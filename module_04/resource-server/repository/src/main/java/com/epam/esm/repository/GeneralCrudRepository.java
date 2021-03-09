@@ -1,4 +1,4 @@
-package com.epam.esm.repository_new;
+package com.epam.esm.repository;
 
 import com.epam.esm.model.domain.Entity;
 import org.springframework.data.jpa.repository.JpaRepository;

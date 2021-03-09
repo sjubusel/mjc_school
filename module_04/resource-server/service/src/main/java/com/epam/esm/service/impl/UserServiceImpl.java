@@ -2,8 +2,8 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.model.domain.User;
 import com.epam.esm.model.dto.UserDto;
-import com.epam.esm.repository_new.GeneralCrudRepository;
-import com.epam.esm.repository_new.specification.UserSpecification;
+import com.epam.esm.repository.GeneralCrudRepository;
+import com.epam.esm.repository.specification.UserSpecification;
 import com.epam.esm.service.UserService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.SearchCriteriaDto;

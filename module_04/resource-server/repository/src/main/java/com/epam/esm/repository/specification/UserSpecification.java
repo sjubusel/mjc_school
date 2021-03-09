@@ -1,4 +1,4 @@
-package com.epam.esm.repository_new.specification;
+package com.epam.esm.repository.specification;
 
 import com.epam.esm.model.domain.User;
 import org.springframework.data.jpa.domain.Specification;

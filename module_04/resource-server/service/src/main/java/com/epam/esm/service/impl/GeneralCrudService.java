@@ -2,7 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.model.domain.Entity;
 import com.epam.esm.model.dto.EntityDto;
-import com.epam.esm.repository_new.GeneralCrudRepository;
+import com.epam.esm.repository.GeneralCrudRepository;
 import com.epam.esm.service.CrudService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.SearchCriteriaDto;

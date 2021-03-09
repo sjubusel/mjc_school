@@ -2,8 +2,8 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.model.dto.TagDto;
-import com.epam.esm.repository_new.impl.TagRepository;
-import com.epam.esm.repository_new.specification.TagSpecification;
+import com.epam.esm.repository.impl.TagRepository;
+import com.epam.esm.repository.specification.TagSpecification;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.SearchCriteriaDto;

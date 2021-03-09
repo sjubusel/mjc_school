@@ -1,7 +1,7 @@
-package com.epam.esm.repository_new.impl;
+package com.epam.esm.repository.impl;
 
 import com.epam.esm.model.domain.GiftCertificate;
-import com.epam.esm.repository_new.GeneralCrudRepository;
+import com.epam.esm.repository.GeneralCrudRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
