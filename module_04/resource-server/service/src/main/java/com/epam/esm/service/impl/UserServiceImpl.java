@@ -1,8 +1,11 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.model.domain.User;
+import com.epam.esm.model.domain.UserAuthority;
 import com.epam.esm.model.dto.UserDto;
+import com.epam.esm.model.other.Role;
 import com.epam.esm.repository.GeneralCrudRepository;
+import com.epam.esm.repository.impl.UserAuthorityRepository;
 import com.epam.esm.repository.specification.UserSpecification;
 import com.epam.esm.service.UserService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
@@ -18,10 +21,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl extends GeneralCrudService<UserDto, User, Long, UserDto> implements UserService {
 
+    private final UserAuthorityRepository userAuthorityRepository;
+
     @Autowired
     protected UserServiceImpl(GeneralCrudRepository<User, Long> crudRepository,
-                              GeneralEntityConverter<UserDto, User, Long> converter) {
+                              GeneralEntityConverter<UserDto, User, Long> converter,
+                              UserAuthorityRepository userAuthorityRepository) {
         super(crudRepository, converter);
+        this.userAuthorityRepository = userAuthorityRepository;
+    }
+
+    @Override
+    public Long create(UserDto dto) {
+        Long createdId = super.create(dto);
+        User user = receiveDomainWhichIsToBeUpdated(createdId);
+
+        UserAuthority defaultUserAuthority = new UserAuthority(Role.USER, user);
+        userAuthorityRepository.save(defaultUserAuthority);
+
+        return createdId;
     }
 
     @Override
