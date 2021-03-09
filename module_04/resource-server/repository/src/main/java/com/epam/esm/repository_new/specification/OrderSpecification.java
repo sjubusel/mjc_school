@@ -1,17 +1,33 @@
 package com.epam.esm.repository_new.specification;
 
 import com.epam.esm.model.domain.Order;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class OrderSpecification implements Specification<Order> {
+
+    private Long userId;
 
     @Override
     public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        return null;
+
+        Join<Object, Object> userJoin = root.join("user", JoinType.INNER);
+        Join<Object, Object> positionsJoin = root.join("orderPositions", JoinType.INNER);
+        positionsJoin.join("giftCertificate", JoinType.INNER);
+
+        Predicate predicate = null;
+        if (userId != null) {
+            predicate = criteriaBuilder.equal(userJoin.get("id"), userId);
+        }
+        query.distinct(true);
+
+        return predicate;
     }
 }

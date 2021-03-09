@@ -9,10 +9,13 @@ import com.epam.esm.repository_new.impl.GiftCertificateRepository;
 import com.epam.esm.repository_new.impl.OrderPositionRepository;
 import com.epam.esm.repository_new.impl.UserRepository;
 import com.epam.esm.repository_new.GeneralCrudRepository;
+import com.epam.esm.repository_new.specification.OrderSpecification;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
+import com.epam.esm.service.dto.OrderSearchCriteriaDto;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.IllegalRequestException;
+import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import com.epam.esm.service.exception.InconsistentCreateDtoException;
 import com.epam.esm.service.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,18 +74,16 @@ public class OrderServiceImpl extends GeneralCrudService<OrderDto, Order, Long, 
 
     @Override
     protected Specification<Order> assembleJpaSpecification(SearchCriteriaDto<Order> searchCriteria) {
-//        if (searchCriteria == null) {
-//            return new OrderSpecification(null, defaultPageSize, null);
-//        }
-//
-//        if (searchCriteria.getClass() != OrderSearchCriteriaDto.class) {
-//            throw new IncompatibleSearchCriteriaException("Incompatible type of SearchCriteriaDto is passed");
-//        }
-//
-//        OrderSearchCriteriaDto params = (OrderSearchCriteriaDto) searchCriteria;
-//        Integer pageSize = params.getPageSize() == null ? defaultPageSize : params.getPageSize();
-//        return new OrderSpecification(params.getPage(), pageSize, params.getUserId());
-        return null;
+        if (searchCriteria == null) {
+            return new OrderSpecification();
+        }
+
+        if (searchCriteria.getClass() != OrderSearchCriteriaDto.class) {
+            throw new IncompatibleSearchCriteriaException("Incompatible type of SearchCriteriaDto is passed");
+        }
+
+        OrderSearchCriteriaDto params = (OrderSearchCriteriaDto) searchCriteria;
+        return new OrderSpecification(params.getUserId());
     }
 
     @Override
