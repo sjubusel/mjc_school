@@ -3,6 +3,7 @@ package com.epam.esm.repository.specification;
 import com.epam.esm.model.domain.GiftCertificate;
 import com.epam.esm.model.domain.Tag;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -24,6 +25,7 @@ import java.util.stream.Stream;
 
 @NoArgsConstructor
 @EqualsAndHashCode
+@Getter
 public class GiftCertificateSpecification implements Specification<GiftCertificate> {
 
     private List<Predicate> whereConditions;
