@@ -17,17 +17,15 @@ public class OrderSpecification implements Specification<Order> {
 
     @Override
     public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+        if (userId == null) {
+            return null;
+        }
 
         Join<Object, Object> userJoin = root.join("user", JoinType.INNER);
         Join<Object, Object> positionsJoin = root.join("orderPositions", JoinType.INNER);
         positionsJoin.join("giftCertificate", JoinType.INNER);
-
-        Predicate predicate = null;
-        if (userId != null) {
-            predicate = criteriaBuilder.equal(userJoin.get("id"), userId);
-        }
         query.distinct(true);
 
-        return predicate;
+        return criteriaBuilder.equal(userJoin.get("id"), userId);
     }
 }
