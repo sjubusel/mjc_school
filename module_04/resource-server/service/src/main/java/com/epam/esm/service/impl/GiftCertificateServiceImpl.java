@@ -7,12 +7,15 @@ import com.epam.esm.model.dto.GiftCertificateUpdateDto;
 import com.epam.esm.model.dto.TagDto;
 import com.epam.esm.repository_new.impl.GiftCertificateRepository;
 import com.epam.esm.repository_new.impl.TagRepository;
+import com.epam.esm.repository_new.specification.GiftCertificateSpecification;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.converter.impl.GiftCertificateConverter;
 import com.epam.esm.service.converter.impl.TagConverter;
+import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.exception.EmptyUpdateException;
 import com.epam.esm.service.exception.IllegalGiftCertificateUpdateException;
+import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -104,19 +107,17 @@ public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertifica
     @Override
     protected Specification<GiftCertificate> assembleJpaSpecification(SearchCriteriaDto<GiftCertificate>
                                                                               searchCriteria) {
-//        if (searchCriteria == null) {
-//            return new GiftCertificateSpecification(null, null, null, null, null, defaultPageSize);
-//        }
-//
-//        if (searchCriteria.getClass() != GiftCertificateSearchCriteriaDto.class) {
-//            throw new IncompatibleSearchCriteriaException("Incompatible type of SearchCriteriaDto is passed");
-//        }
-//
-//        GiftCertificateSearchCriteriaDto params = (GiftCertificateSearchCriteriaDto) searchCriteria;
-//        Integer pageSize = params.getPageSize() == null ? defaultPageSize : params.getPageSize();
-//        return new GiftCertificateSpecification(params.getTags(), params.getNamePart(), params.getDescriptionPart(),
-//                params.getSortParams(), params.getPage(), pageSize);
-        return null;
+        if (searchCriteria == null) {
+            return new GiftCertificateSpecification();
+        }
+
+        if (searchCriteria.getClass() != GiftCertificateSearchCriteriaDto.class) {
+            throw new IncompatibleSearchCriteriaException("Incompatible type of SearchCriteriaDto is passed");
+        }
+
+        GiftCertificateSearchCriteriaDto params = (GiftCertificateSearchCriteriaDto) searchCriteria;
+        return new GiftCertificateSpecification(params.getTags(), params.getNamePart(), params.getDescriptionPart(),
+                params.getSortParams());
     }
 
     @Override
