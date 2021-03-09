@@ -1,5 +1,6 @@
 package com.epam.esm.aserver.configuration;
 
+import com.epam.esm.aserver.exception.RestAuthenticationEntryPoint;
 import com.epam.esm.aserver.service.SecurityUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,12 +18,16 @@ public class SecurityConfiguration extends AuthorizationServerSecurityConfigurat
 
     private final SecurityUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final RestAuthenticationEntryPoint authenticationEntryPoint;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http
                 .csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .and()
                 .requestMatchers()
                 .mvcMatchers("/.well-known/jwks.json", "/oauth/authorize", "/login", "/signUp")
                 .and()

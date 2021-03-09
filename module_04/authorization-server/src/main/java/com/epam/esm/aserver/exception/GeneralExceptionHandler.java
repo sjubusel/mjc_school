@@ -8,6 +8,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -110,6 +113,12 @@ public class GeneralExceptionHandler {
         ErrorInfo errorInfo = generateStandardErrorInfo(40510L, errorMessage, request.getRequestURI());
         log.error("Incompatible http method is called: errorInfo → {}; exception → {}", errorInfo, e);
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(errorInfo);
+    }
+
+    @ExceptionHandler(InsufficientAuthenticationException.class)
+    protected void handleAuthenticationException(HttpServletResponse response) throws IOException {
+        response.addHeader("WWW-Authenticate", "Basic realm=\"oauth2/client\"");
+        response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
     }
 
     @ExceptionHandler(AuthenticationException.class)
