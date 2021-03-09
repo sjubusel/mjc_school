@@ -54,7 +54,8 @@ public class GiftCertificateRepositoryAspect {
                 return pageable.isUnpaged();
             }
 
-            private void applyBindingParametersIfExist(GiftCertificateSpecification certificateSpecification, TypedQuery<GiftCertificate> query) {
+            private void applyBindingParametersIfExist(GiftCertificateSpecification certificateSpecification,
+                                                       TypedQuery<GiftCertificate> query) {
                 List<String> tags = certificateSpecification.getTags();
                 if (tags != null && tags.size() > 0) {
                     for (int i = 0; i < tags.size(); i++) {
