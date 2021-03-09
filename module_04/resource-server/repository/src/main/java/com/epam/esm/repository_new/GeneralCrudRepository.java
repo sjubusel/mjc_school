@@ -14,6 +14,6 @@ public interface GeneralCrudRepository<T extends Entity<ID>, ID extends Serializ
         JpaSpecificationExecutor<T> {
 
     @Modifying
-    @Query("UPDATE #{entityName} AS e SET e.isDeleted=true, e.deleteDate=CURRENT_TIMESTAMP WHERE e.id=?1")
+    @Query("UPDATE #{#entityName} AS e SET e.isDeleted=true, e.deleteDate=CURRENT_TIMESTAMP WHERE e.id=?1")
     boolean deleteInSoftMode(ID id);
 }
