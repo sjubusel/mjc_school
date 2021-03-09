@@ -28,7 +28,7 @@ public class UserServiceImpl extends GeneralCrudService<UserDto, User, Long, Use
     protected Example<User> receiveUniqueConstraints(UserDto dto) {
         User probe = converter.convertToDomain(dto);
         ExampleMatcher orConditionMatcher = ExampleMatcher.matchingAny()
-                .withIgnorePaths("firstName", "lastName", "password");
+                .withIgnorePaths("firstName", "lastName", "password", "authorities", "id");
         return Example.of(probe, orConditionMatcher);
     }
 
