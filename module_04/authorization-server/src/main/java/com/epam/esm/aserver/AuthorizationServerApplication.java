@@ -1,9 +1,6 @@
 package com.epam.esm.aserver;
 
 import com.epam.esm.model.domain.User;
-import com.epam.esm.repository.UserRepository;
-import com.epam.esm.repository.impl.UserRepositoryImpl;
-import com.epam.esm.repository.util.impl.UserPredicateBuilder;
 import com.epam.esm.service.impl.UserServiceImpl;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -12,12 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 
-import javax.persistence.EntityManager;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -25,6 +22,7 @@ import java.security.interfaces.RSAPublicKey;
 
 @SpringBootApplication(scanBasePackages = {"com.epam.esm.aserver", "com.epam.esm.service.converter"})
 @EntityScan(basePackageClasses = {User.class})
+@EnableJpaRepositories(basePackages = {"com.epam.esm.repository"})
 @Import({UserServiceImpl.class})
 public class AuthorizationServerApplication {
 
@@ -51,10 +49,5 @@ public class AuthorizationServerApplication {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(11);
-    }
-
-    @Bean
-    public UserRepository userRepositoryBean(EntityManager entityManager) {
-        return new UserRepositoryImpl(entityManager, new UserPredicateBuilder());
     }
 }

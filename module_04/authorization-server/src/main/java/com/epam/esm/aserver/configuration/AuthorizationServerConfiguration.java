@@ -1,7 +1,7 @@
 package com.epam.esm.aserver.configuration;
 
 import com.epam.esm.aserver.util.CustomTokenEnhancer;
-import com.epam.esm.repository.UserRepository;
+import com.epam.esm.repository.impl.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

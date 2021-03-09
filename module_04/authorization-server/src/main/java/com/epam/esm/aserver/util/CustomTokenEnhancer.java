@@ -1,7 +1,7 @@
 package com.epam.esm.aserver.util;
 
 import com.epam.esm.model.domain.User;
-import com.epam.esm.repository.UserRepository;
+import com.epam.esm.repository.impl.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
@@ -22,7 +22,7 @@ public class CustomTokenEnhancer implements TokenEnhancer {
 
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
-        User user = userRepository.findByUsername(authentication.getName()).orElseThrow(() ->
+        User user = userRepository.findByLogin(authentication.getName()).orElseThrow(() ->
                 new UsernameNotFoundException(authentication.getName()));
         DefaultOAuth2AccessToken enhanced = new DefaultOAuth2AccessToken(accessToken);
         Map<String, Object> extraInfo = new HashMap<>();

@@ -1,5 +1,6 @@
 package com.epam.esm.aserver.exception;
 
+import com.epam.esm.service.exception.DuplicateResourceException;
 import com.epam.esm.web.exception.ErrorInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class GeneralExceptionHandler {
 
+    public static final String DUPLICATE_RESOURCE_EXCEPTION = "duplicate.resource.exception";
     public static final String CONSTRAINT_VIOLATION_EXCEPTION = "constraint.violation.exception";
     public static final String METHOD_ARGUMENT_NOT_VALID_EXCEPTION = "method.argument.not.valid.exception";
     public static final String METHOD_ARGUMENT_TYPE_MISMATCH_EXCEPTION = "method.argument.type.mismatch.exception";
@@ -41,6 +43,17 @@ public class GeneralExceptionHandler {
     private static final String AUTHENTICATION_EXCEPTION = "authentication.exception";
 
     private final MessageSource messageSource;
+
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<ErrorInfo> handleDuplicateResourceException(DuplicateResourceException e,
+                                                                      HttpServletRequest request,
+                                                                      Locale locale) {
+        String errorMessage = messageSource.getMessage(DUPLICATE_RESOURCE_EXCEPTION,
+                new Object[]{e.getMessage()}, locale);
+        ErrorInfo errorInfo = generateStandardErrorInfo(40010L, errorMessage, request.getRequestURI());
+        log.error("An attempt to create an already existing resource: errorInfo → {}; exception → {}", errorInfo, e);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorInfo);
+    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e,

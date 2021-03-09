@@ -3,7 +3,7 @@ package com.epam.esm.aserver.service.impl;
 import com.epam.esm.aserver.service.SecurityUserDetailsService;
 import com.epam.esm.model.domain.User;
 import com.epam.esm.model.domain.UserAuthority;
-import com.epam.esm.repository.UserRepository;
+import com.epam.esm.repository.impl.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -38,7 +38,7 @@ public class SecurityUserDetailsServiceImpl implements SecurityUserDetailsServic
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+        User user = userRepository.findByLogin(username).orElseThrow(() -> new UsernameNotFoundException(username));
         return withUsername(user.getLogin())
                 .password(user.getPassword())
                 .authorities(receiveAuthorities(user))
