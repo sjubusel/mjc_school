@@ -21,6 +21,8 @@ import java.util.List;
 /**
  * OAP is applied because Criteria API doesn't provide possibility to set named parameters before creation of TypedQuery
  * (see line 43)
+ *
+ * More information on "https://github.com/spring-projects/spring-data-jpa/issues/1231"
  */
 @Aspect
 @Component
