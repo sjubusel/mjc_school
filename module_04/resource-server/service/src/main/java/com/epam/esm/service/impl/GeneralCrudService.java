@@ -83,7 +83,8 @@ public abstract class GeneralCrudService<DTO extends EntityDto<ID, DTO>, DOMAIN 
     public boolean delete(ID id) {
         DOMAIN sourceDomain = receiveDomainWhichIsToBeUpdated(id);
         deleteAssociationsWithRelatedEntitiesIfNecessary(sourceDomain);
-        return crudRepository.deleteInSoftMode(id);
+        crudRepository.deleteById(id);
+        return true;
     }
 
     protected void deleteAssociationsWithRelatedEntitiesIfNecessary(DOMAIN sourceDomain) {
@@ -91,7 +92,7 @@ public abstract class GeneralCrudService<DTO extends EntityDto<ID, DTO>, DOMAIN 
 
     protected abstract Specification<DOMAIN> assembleJpaSpecification(SearchCriteriaDto<DOMAIN> searchCriteria);
 
-    protected Pageable assemblePageable(SearchCriteriaDto<DOMAIN> searchCriteria){
+    protected Pageable assemblePageable(SearchCriteriaDto<DOMAIN> searchCriteria) {
         if (searchCriteria == null) {
             return PageRequest.of(0, defaultPageSize);
         }
