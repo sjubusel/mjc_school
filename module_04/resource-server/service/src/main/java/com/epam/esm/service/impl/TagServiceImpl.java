@@ -3,10 +3,13 @@ package com.epam.esm.service.impl;
 import com.epam.esm.model.domain.Tag;
 import com.epam.esm.model.dto.TagDto;
 import com.epam.esm.repository_new.impl.TagRepository;
+import com.epam.esm.repository_new.specification.TagSpecification;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.converter.GeneralEntityConverter;
 import com.epam.esm.service.dto.SearchCriteriaDto;
+import com.epam.esm.service.dto.TagSearchCriteriaDto;
 import com.epam.esm.service.exception.EmptyUpdateException;
+import com.epam.esm.service.exception.IncompatibleSearchCriteriaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -37,18 +40,14 @@ public class TagServiceImpl extends GeneralCrudService<TagDto, Tag, Long, TagDto
 
     @Override
     protected Specification<Tag> assembleJpaSpecification(SearchCriteriaDto<Tag> searchCriteria) {
-//        if (searchCriteria == null) {
-//            return new TagSpecification(null, defaultPageSize, null);
-//        }
-//
-//        if (searchCriteria.getClass() != TagSearchCriteriaDto.class) {
-//            throw new IncompatibleSearchCriteriaException("Incompatible type of SearchCriteriaDto is passed");
-//        }
-//
-//        TagSearchCriteriaDto params = (TagSearchCriteriaDto) searchCriteria;
-//        Integer pageSize = params.getPageSize() == null ? defaultPageSize : params.getPageSize();
-//        return new TagSpecification(params.getName(), pageSize, params.getPage());
-        return null;
+        if (searchCriteria == null) {
+            return new TagSpecification();
+        }
+        if (searchCriteria.getClass() != TagSearchCriteriaDto.class) {
+            throw new IncompatibleSearchCriteriaException("Incompatible type of SearchCriteriaDto is passed");
+        }
+        TagSearchCriteriaDto params = (TagSearchCriteriaDto) searchCriteria;
+        return new TagSpecification(params.getName());
     }
 
     @Override
