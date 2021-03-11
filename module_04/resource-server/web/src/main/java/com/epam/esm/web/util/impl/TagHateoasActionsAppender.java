@@ -3,9 +3,12 @@ package com.epam.esm.web.util.impl;
 import com.epam.esm.model.dto.TagDto;
 import com.epam.esm.web.controller.TagController;
 import com.epam.esm.web.util.HateoasActionsAppender;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Link;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +16,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
+@RequiredArgsConstructor
 public class TagHateoasActionsAppender implements HateoasActionsAppender<Long, TagDto> {
+
+    private final PagedResourcesAssembler<TagDto> pagedResourcesAssembler;
 
     @Override
     public void appendSelfReference(TagDto tagDto) {
@@ -35,10 +41,9 @@ public class TagHateoasActionsAppender implements HateoasActionsAppender<Long, T
     }
 
     @Override
-    public CollectionModel<TagDto> toHateoasCollectionOfEntities(Page<TagDto> tags) {
+    public CollectionModel<EntityModel<TagDto>> toHateoasCollectionOfEntities(Page<TagDto> tags) {
         tags.forEach(this::appendAsForSecondaryEntity);
-        Link selfLink = linkTo(TagController.class).withSelfRel();
-        CollectionModel<TagDto> collectionModel = CollectionModel.of(tags, selfLink);
+        PagedModel<EntityModel<TagDto>> collectionModel = pagedResourcesAssembler.toModel(tags);
         appendGenericCreateAndReadAllHateoasActions(collectionModel);
         appendReferenceForMainTag(collectionModel);
         return collectionModel;

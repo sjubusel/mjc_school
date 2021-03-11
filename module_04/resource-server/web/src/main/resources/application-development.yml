@@ -5,6 +5,10 @@ server:
     session:
       timeout: "20m"
 spring:
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
   application:
     name: "module_04"
   datasource:

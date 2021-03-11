@@ -8,6 +8,7 @@ import com.epam.esm.web.util.impl.GiftCertificateHateoasActionsAppender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -57,8 +58,8 @@ public class GiftCertificateController {
      * @return a collection of resources which correspond to search parameters
      */
     @GetMapping
-    public CollectionModel<GiftCertificateDto> read(@RequestBody(required = false) @Valid
-                                                 GiftCertificateSearchCriteriaDto criteriaDto) {
+    public CollectionModel<EntityModel<GiftCertificateDto>> read(@RequestBody(required = false)
+                                                                 @Valid GiftCertificateSearchCriteriaDto criteriaDto) {
         Page<GiftCertificateDto> certificates = giftCertificateService.query(criteriaDto);
 
         return hateoasActionsAppender.toHateoasCollectionOfEntities(certificates);

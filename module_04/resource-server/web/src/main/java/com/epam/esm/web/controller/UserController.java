@@ -10,6 +10,7 @@ import com.epam.esm.web.util.impl.UserHateoasActionsAppender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -34,7 +35,8 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('SCOPE_module_04::read') and hasRole('ADMIN')")
-    public CollectionModel<UserDto> read(@RequestBody(required = false) @Valid UserSearchCriteriaDto criteriaDto) {
+    public CollectionModel<EntityModel<UserDto>> read(@RequestBody(required = false)
+                                                      @Valid UserSearchCriteriaDto criteriaDto) {
         Page<UserDto> users = userService.query(criteriaDto);
 
         return hateoasActionsAppender.toHateoasCollectionOfEntities(users);
@@ -65,8 +67,9 @@ public class UserController {
     @GetMapping("/{id}/orders")
     @PreAuthorize("hasAuthority('SCOPE_module_04::read') " +
             "and ((hasRole('USER') and #id == authentication.principal.claims['user_id']) or hasRole('ADMIN'))")
-    public CollectionModel<OrderDto> readOrders(@PathVariable("id") @Positive @Min(1) Long id,
-                                                @RequestBody(required = false) @Valid OrderSearchCriteriaDto criteriaDto) {
+    public CollectionModel<EntityModel<OrderDto>> readOrders(@PathVariable("id") @Positive @Min(1) Long id,
+                                                             @RequestBody(required = false)
+                                                             @Valid OrderSearchCriteriaDto criteriaDto) {
         if (criteriaDto == null) {
             criteriaDto = new OrderSearchCriteriaDto();
         }

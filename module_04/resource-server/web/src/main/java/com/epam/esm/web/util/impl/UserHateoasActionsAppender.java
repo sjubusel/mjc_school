@@ -7,9 +7,8 @@ import com.epam.esm.web.controller.UserController;
 import com.epam.esm.web.util.HateoasActionsAppender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.RepresentationModel;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.*;
 import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -20,6 +19,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class UserHateoasActionsAppender implements HateoasActionsAppender<Long, UserDto> {
 
     private final OrderHateoasActionsAppender orderHateoasActionsAppender;
+    private final PagedResourcesAssembler<UserDto> pagedResourcesAssembler;
 
     @Override
     public void appendSelfReference(UserDto dto) {
@@ -44,10 +44,9 @@ public class UserHateoasActionsAppender implements HateoasActionsAppender<Long, 
     }
 
     @Override
-    public CollectionModel<UserDto> toHateoasCollectionOfEntities(Page<UserDto> users) {
+    public CollectionModel<EntityModel<UserDto>> toHateoasCollectionOfEntities(Page<UserDto> users) {
         users.forEach(this::appendAsForSecondaryEntity);
-        Link selfLink = linkTo(UserController.class).withSelfRel();
-        CollectionModel<UserDto> collectionModel = CollectionModel.of(users, selfLink);
+        PagedModel<EntityModel<UserDto>> collectionModel = pagedResourcesAssembler.toModel(users);
         appendGenericUserHateoasActions(collectionModel);
         Link postLink = linkTo(methodOn(UserController.class).createOrder(0L, new OrderDto()))
                 .withRel("POST: create a new order for a user with id 0 (change)");
@@ -59,7 +58,7 @@ public class UserHateoasActionsAppender implements HateoasActionsAppender<Long, 
         dto.add(linkTo(UserController.class).withRel("GET: receive all users"));
     }
 
-    public CollectionModel<OrderDto> toHateoasCollectionOfOrders(Page<OrderDto> orders) {
+    public CollectionModel<EntityModel<OrderDto>> toHateoasCollectionOfOrders(Page<OrderDto> orders) {
         return orderHateoasActionsAppender.toHateoasCollectionOfEntities(orders);
     }
 }

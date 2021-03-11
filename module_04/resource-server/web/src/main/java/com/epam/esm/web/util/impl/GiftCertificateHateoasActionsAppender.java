@@ -5,8 +5,10 @@ import com.epam.esm.web.controller.GiftCertificateController;
 import com.epam.esm.web.util.HateoasActionsAppender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Link;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class GiftCertificateHateoasActionsAppender implements HateoasActionsAppender<Long, GiftCertificateDto> {
 
     private final TagHateoasActionsAppender tagHateoasActionsAppender;
+    private final PagedResourcesAssembler<GiftCertificateDto> pagedResourcesAssembler;
 
     @Override
     public void appendSelfReference(GiftCertificateDto giftCertificate) {
@@ -41,10 +44,10 @@ public class GiftCertificateHateoasActionsAppender implements HateoasActionsAppe
     }
 
     @Override
-    public CollectionModel<GiftCertificateDto> toHateoasCollectionOfEntities(Page<GiftCertificateDto> certificates) {
+    public CollectionModel<EntityModel<GiftCertificateDto>> toHateoasCollectionOfEntities(Page<GiftCertificateDto>
+                                                                                                      certificates) {
         certificates.forEach(this::appendAsForSecondaryEntity);
-        Link selfLink = linkTo(GiftCertificateController.class).withSelfRel();
-        CollectionModel<GiftCertificateDto> collectionModel = CollectionModel.of(certificates, selfLink);
+        PagedModel<EntityModel<GiftCertificateDto>> collectionModel = pagedResourcesAssembler.toModel(certificates);
         appendGenericCreateAndReadAllHateoasActions(collectionModel);
         return collectionModel;
     }
