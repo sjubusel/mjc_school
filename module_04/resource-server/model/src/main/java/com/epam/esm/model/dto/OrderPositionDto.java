@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.hateoas.server.core.Relation;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Relation(itemRelation = "orderPosition", collectionRelation = "orderPositions")
 public class OrderPositionDto extends EntityDto<Long, OrderPositionDto> {
 
     @Null(message = "price of an order position cannot be specified by users")

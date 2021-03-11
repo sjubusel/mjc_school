@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.hateoas.server.core.Relation;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -28,6 +29,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Validated
+@Relation(itemRelation = "giftCertificate", collectionRelation = "giftCertificates")
 public class GiftCertificateDto extends EntityDto<Long, GiftCertificateDto> {
 
     @NotBlank(message = "name must be not blank")

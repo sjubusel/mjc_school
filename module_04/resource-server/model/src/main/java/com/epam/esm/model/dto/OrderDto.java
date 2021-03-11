@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.hateoas.server.core.Relation;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -21,6 +22,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Validated
+@Relation(itemRelation = "order", collectionRelation = "orders")
 public class OrderDto extends EntityDto<Long, OrderDto> {
 
     @Null(message = "order price cannot be defined by users")
