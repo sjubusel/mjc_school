@@ -4,6 +4,8 @@ import com.epam.esm.model.dto.OrderDto;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.dto.OrderSearchCriteriaDto;
 import com.epam.esm.web.util.impl.OrderHateoasActionsAppender;
+import com.epam.esm.web.validation.ValidPage;
+import com.epam.esm.web.validation.ValidPageSize;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -39,7 +42,9 @@ public class OrderController {
             "? (#criteriaDto.userId == authentication.principal.claims['user_id']) " +
             ": false)) or hasRole('ADMIN'))")
     public CollectionModel<EntityModel<OrderDto>> read(@RequestBody(required = false)
-                                                       @Valid OrderSearchCriteriaDto criteriaDto) {
+                                                       @Valid OrderSearchCriteriaDto criteriaDto,
+                                                       @RequestParam(required = false) @ValidPage Integer page,
+                                                       @RequestParam(required = false) @ValidPageSize Integer size) {
         Page<OrderDto> orders = orderService.query(criteriaDto);
 
         return hateoasActionsAppender.toHateoasCollectionOfEntities(orders);

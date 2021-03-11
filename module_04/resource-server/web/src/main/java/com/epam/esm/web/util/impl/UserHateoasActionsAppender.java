@@ -37,7 +37,7 @@ public class UserHateoasActionsAppender implements HateoasActionsAppender<Long, 
         appendSelfReference(dto);
         dto.add(linkTo(methodOn(UserController.class).createOrder(dto.getId(), new OrderDto()))
                 .withRel("POST: create a new order for a current user"));
-        dto.add(linkTo(methodOn(UserController.class).readOrders(dto.getId(), new OrderSearchCriteriaDto()))
+        dto.add(linkTo(methodOn(UserController.class).readOrders(dto.getId(), new OrderSearchCriteriaDto(), null, null))
                 .withRel("GET: receive all orders for a current user"));
         dto.add(linkTo(methodOn(UserController.class).readOrder(dto.getId(), 0L))
                 .withRel("GET: receive an order with a number instead of 0 if it belongs to a current user"));

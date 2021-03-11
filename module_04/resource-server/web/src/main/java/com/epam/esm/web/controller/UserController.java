@@ -7,6 +7,8 @@ import com.epam.esm.service.UserService;
 import com.epam.esm.service.dto.OrderSearchCriteriaDto;
 import com.epam.esm.service.dto.UserSearchCriteriaDto;
 import com.epam.esm.web.util.impl.UserHateoasActionsAppender;
+import com.epam.esm.web.validation.ValidPage;
+import com.epam.esm.web.validation.ValidPageSize;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
@@ -36,7 +38,11 @@ public class UserController {
     @GetMapping
     @PreAuthorize("hasAuthority('SCOPE_module_04::read') and hasRole('ADMIN')")
     public CollectionModel<EntityModel<UserDto>> read(@RequestBody(required = false)
-                                                      @Valid UserSearchCriteriaDto criteriaDto) {
+                                                      @Valid UserSearchCriteriaDto criteriaDto,
+                                                      @RequestParam(required = false)
+                                                      @ValidPage Integer page,
+                                                      @RequestParam(required = false)
+                                                      @ValidPageSize Integer size) {
         Page<UserDto> users = userService.query(criteriaDto);
 
         return hateoasActionsAppender.toHateoasCollectionOfEntities(users);
@@ -69,7 +75,11 @@ public class UserController {
             "and ((hasRole('USER') and #id == authentication.principal.claims['user_id']) or hasRole('ADMIN'))")
     public CollectionModel<EntityModel<OrderDto>> readOrders(@PathVariable("id") @Positive @Min(1) Long id,
                                                              @RequestBody(required = false)
-                                                             @Valid OrderSearchCriteriaDto criteriaDto) {
+                                                             @Valid OrderSearchCriteriaDto criteriaDto,
+                                                             @RequestParam(required = false)
+                                                             @ValidPage Integer page,
+                                                             @RequestParam(required = false)
+                                                             @ValidPageSize Integer size) {
         if (criteriaDto == null) {
             criteriaDto = new OrderSearchCriteriaDto();
         }

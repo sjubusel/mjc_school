@@ -5,6 +5,8 @@ import com.epam.esm.model.dto.GiftCertificateUpdateDto;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
 import com.epam.esm.web.util.impl.GiftCertificateHateoasActionsAppender;
+import com.epam.esm.web.validation.ValidPage;
+import com.epam.esm.web.validation.ValidPageSize;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.hateoas.CollectionModel;
@@ -59,7 +61,11 @@ public class GiftCertificateController {
      */
     @GetMapping
     public CollectionModel<EntityModel<GiftCertificateDto>> read(@RequestBody(required = false)
-                                                                 @Valid GiftCertificateSearchCriteriaDto criteriaDto) {
+                                                                 @Valid GiftCertificateSearchCriteriaDto criteriaDto,
+                                                                 @RequestParam(required = false)
+                                                                 @ValidPage Integer page,
+                                                                 @RequestParam(required = false)
+                                                                 @ValidPageSize Integer size) {
         Page<GiftCertificateDto> certificates = giftCertificateService.query(criteriaDto);
 
         return hateoasActionsAppender.toHateoasCollectionOfEntities(certificates);
