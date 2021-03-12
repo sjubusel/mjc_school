@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 
 @SuppressWarnings("unused")
 @Min(value = 1, message = "page size must be greater than 1")
-@Digits(integer = 20, fraction = 0)
+@Digits(integer = 20, fraction = 0, message = "page size number must consist of less then 20 digits")
 @Constraint(validatedBy = {})
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
