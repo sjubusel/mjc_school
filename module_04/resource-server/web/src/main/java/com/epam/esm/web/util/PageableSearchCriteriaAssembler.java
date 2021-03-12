@@ -9,8 +9,13 @@ public abstract class PageableSearchCriteriaAssembler<T extends Entity<ID>, ID e
 
     public SearchCriteriaDto<T> toSearchCriteria(SearchCriteriaDto<T> searchCriteriaDto, Integer page,
                                                  Integer pageSize) {
+        if (searchCriteriaDto == null) {
+            searchCriteriaDto = receiveEmptySearchCriteria();
+        }
         searchCriteriaDto.setPage(page);
         searchCriteriaDto.setPageSize(pageSize);
         return searchCriteriaDto;
     }
+
+    protected abstract SearchCriteriaDto<T> receiveEmptySearchCriteria();
 }
