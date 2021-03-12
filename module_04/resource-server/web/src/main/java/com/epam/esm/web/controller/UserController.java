@@ -88,12 +88,9 @@ public class UserController {
                                                              @ValidPage Integer page,
                                                              @RequestParam(required = false)
                                                              @ValidPageSize Integer size) {
-        if (criteriaDto == null) {
-            criteriaDto = new OrderSearchCriteriaDto();
-        }
-        criteriaDto.setUserId(id);
-        SearchCriteriaDto<Order> searchCriteria = orderPageableSearchCriteriaAssembler.toSearchCriteria(criteriaDto,
-                page, size);
+        OrderSearchCriteriaDto searchCriteria = (OrderSearchCriteriaDto) orderPageableSearchCriteriaAssembler
+                .toSearchCriteria(criteriaDto, page, size);
+        searchCriteria.setUserId(id);
         Page<OrderDto> orders = orderService.query(searchCriteria);
         return hateoasActionsAppender.toHateoasCollectionOfOrders(orders);
     }
