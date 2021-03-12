@@ -6,8 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
@@ -31,11 +30,9 @@ public class GiftCertificateSearchCriteriaDto implements SearchCriteriaDto<GiftC
     private List<@Pattern(regexp = "([-+]name)|([-+]createDate)|([-+]updateDate)")
             String> sortParams;
 
-    @Min(value = 1, message = "page must be greater than 1")
-    @Digits(integer = 20, fraction = 0)
+    @Null(message = "page must be specified as a query parameter")
     private Integer page;
 
-    @Min(value = 1, message = "page size must be greater than 1")
-    @Digits(integer = 20, fraction = 0)
+    @Null(message = "page size must be specified as a query parameter")
     private Integer pageSize;
 }
