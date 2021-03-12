@@ -72,4 +72,9 @@ public class UserServiceImpl extends GeneralCrudService<UserDto, User, Long, Use
     protected User receiveUpdatingDomain(User sourceDomain, UserDto dto) {
         throw new RuntimeException("this method has not been implemented yet, because of task requirements");
     }
+
+    @Override
+    protected void processDuplicateIfNecessary(UserDto dto) {
+        dto.setPassword(null);
+    }
 }

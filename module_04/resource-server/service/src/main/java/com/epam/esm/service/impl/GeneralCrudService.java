@@ -64,6 +64,7 @@ public abstract class GeneralCrudService<DTO extends EntityDto<ID, DTO>, DOMAIN 
     @Override
     public ID create(DTO dto) {
         if (crudRepository.exists(receiveUniqueConstraints(dto))) {
+            processDuplicateIfNecessary(dto);
             throw new DuplicateResourceException(dto.toString());
         }
         DOMAIN entity = converter.convertToDomain(dto);
@@ -88,6 +89,9 @@ public abstract class GeneralCrudService<DTO extends EntityDto<ID, DTO>, DOMAIN 
     }
 
     protected void deleteAssociationsWithRelatedEntitiesIfNecessary(DOMAIN sourceDomain) {
+    }
+
+    protected void processDuplicateIfNecessary(DTO dto){
     }
 
     protected abstract Specification<DOMAIN> assembleJpaSpecification(SearchCriteriaDto<DOMAIN> searchCriteria);
