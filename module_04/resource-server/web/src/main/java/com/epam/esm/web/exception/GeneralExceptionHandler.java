@@ -147,7 +147,8 @@ public class GeneralExceptionHandler {
                                                                       HttpServletRequest request,
                                                                       Locale locale) {
         String errorMessagePart = messageSource.getMessage(METHOD_ARGUMENT_TYPE_MISMATCH_EXCEPTION, null, locale);
-        String errorMessage = e.getName() + errorMessagePart + Objects.requireNonNull(e.getRequiredType()).getName();
+        String errorMessage = e.getName() + " " + errorMessagePart +
+                Objects.requireNonNull(e.getRequiredType()).getName();
         ErrorInfo errorInfo = generateStandardErrorInfo(40050L, errorMessage, request.getRequestURI());
         log.error("Unexpected argument of a method is called: errorInfo → {}; exception → {}", errorInfo, e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorInfo);
