@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TagRepository extends GeneralCrudRepository<Tag, Long> {
 
@@ -36,7 +37,7 @@ public interface TagRepository extends GeneralCrudRepository<Tag, Long> {
     @Query(value = RECEIVE_MOST_WIDELY_USED_TAG_OF_USER_WITH_MAX_COST_OF_ORDERS, nativeQuery = true)
     List<Tag> receiveMostWidelyUsedTagOfUserWithMaxCostOfOrders();
 
-    Long findIdByNameAndIsDeleted(String name, Boolean isDeleted);
+    Optional<Tag> findIdByNameAndIsDeleted(String name, Boolean isDeleted);
 
     @Override
     @Modifying

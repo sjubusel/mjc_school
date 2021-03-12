@@ -158,16 +158,8 @@ public class GiftCertificateServiceImpl extends GeneralCrudService<GiftCertifica
     }
 
     private void refreshStateOfTagsByTheirName(List<Tag> tagsToRefresh) {
-        tagsToRefresh.forEach(tag -> {
-            Long tagId = tagRepository.findIdByNameAndIsDeleted(tag.getName(), Boolean.FALSE);
-            // TODO verify
-//            Long tagId = entityManager.createQuery("SELECT t.id FROM Tag t WHERE t.name=:name " +
-//                    "AND t.isDeleted=:isDeleted", Long.class)
-//                    .setParameter("name", tag.getName())
-//                    .setParameter("isDeleted", Boolean.FALSE)
-//                    .getSingleResult();
-            tag.setId(tagId);
-        });
+        tagsToRefresh.forEach(tag -> tagRepository.findIdByNameAndIsDeleted(tag.getName(), Boolean.FALSE)
+                .ifPresent(persistentTag -> tag.setId(persistentTag.getId())));
     }
 
     private void checkIfUpdatingIsPossibleOrThrow(GiftCertificate sourceDomain, GiftCertificate targetDomain,
