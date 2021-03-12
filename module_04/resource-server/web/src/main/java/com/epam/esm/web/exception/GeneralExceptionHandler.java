@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -54,6 +55,7 @@ public class GeneralExceptionHandler {
     private static final String AUTHENTICATION_EXCEPTION = "authentication.exception";
     private static final String INSUFFICIENT_AUTHENTICATION_EXCEPTION = "insufficient.authentication.exception";
     private static final String ACCESS_DENIED_EXCEPTION = "access.denied.exception";
+    private static final String INVALID_BEARER_TOKEN_EXCEPTION = "invalid.bearer.token.exception";
 
     private final MessageSource messageSource;
 
@@ -226,6 +228,16 @@ public class GeneralExceptionHandler {
         String errorMessage = messageSource.getMessage(AUTHENTICATION_EXCEPTION, null, locale);
         ErrorInfo errorInfo = generateStandardErrorInfo(40320L, errorMessage, request.getRequestURI());
         log.error("Access is forbidden → {}; exception → {}", errorInfo, e);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorInfo);
+    }
+
+    @ExceptionHandler(InvalidBearerTokenException.class)
+    protected ResponseEntity<Object> handleAuthenticationException(InvalidBearerTokenException e,
+                                                                   HttpServletRequest request,
+                                                                   Locale locale) {
+        String errorMessage = messageSource.getMessage(INVALID_BEARER_TOKEN_EXCEPTION, null, locale);
+        ErrorInfo errorInfo = generateStandardErrorInfo(40330L, errorMessage, request.getRequestURI());
+        log.error("Invalid token is passed → {}; exception → {}", errorInfo, e);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorInfo);
     }
 

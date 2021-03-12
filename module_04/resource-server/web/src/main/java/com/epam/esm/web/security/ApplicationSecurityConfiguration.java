@@ -86,12 +86,13 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .oauth2ResourceServer()
+                .authenticationEntryPoint(authenticationEntryPoint)
                 .jwt()
                 .jwtAuthenticationConverter(customJwtAuthenticationConverter());
     }
 
     private Converter<Jwt, ? extends AbstractAuthenticationToken> customJwtAuthenticationConverter() {
-        return new JwtAuthenticationConverter(){
+        return new JwtAuthenticationConverter() {
             @SuppressWarnings("deprecation")
             @Override
             protected Collection<GrantedAuthority> extractAuthorities(Jwt jwt) {
