@@ -172,7 +172,7 @@ public class GeneralExceptionHandler {
                                                                          HttpServletRequest request,
                                                                          Locale locale) {
         String errorMessagePart = messageSource.getMessage(HTTP_REQUEST_METHOD_NOT_SUPPORTED_EXCEPTION, null, locale);
-        String errorMessage = e.getMethod() + errorMessagePart;
+        String errorMessage = e.getMethod() + " " + errorMessagePart;
         ErrorInfo errorInfo = generateStandardErrorInfo(40510L, errorMessage, request.getRequestURI());
         log.error("Incompatible http method is called: errorInfo → {}; exception → {}", errorInfo, e);
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(errorInfo);
