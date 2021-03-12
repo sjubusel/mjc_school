@@ -58,7 +58,7 @@ public class OrderController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_module_04::read') and (hasRole('USER') or hasRole('ADMIN'))")
-    @PostAuthorize("returnObject.user.login == authentication.principal.claims['user_name']")
+    @PostAuthorize("(returnObject.user.login == authentication.principal.claims['user_name']) or hasRole('ADMIN')")
     public OrderDto readOne(@PathVariable("id") @Positive @Min(1) Long id) {
         OrderDto order = orderService.findOne(id);
 
