@@ -43,4 +43,8 @@ public interface TagRepository extends GeneralCrudRepository<Tag, Long> {
     @Modifying
     @Query("UPDATE #{#entityName} AS e SET e.isDeleted=true, e.deleteDate=CURRENT_TIMESTAMP WHERE e.id=?1")
     void deleteById(Long id);
+
+    @Override
+    @Query("SELECT e FROM #{#entityName} AS e WHERE e.id=?1 and e.isDeleted=false")
+    Optional<Tag> findById(Long id);
 }
