@@ -1,9 +1,12 @@
 package com.epam.esm.web.controller;
 
+import com.epam.esm.model.domain.GiftCertificate;
 import com.epam.esm.model.dto.GiftCertificateDto;
 import com.epam.esm.model.dto.GiftCertificateUpdateDto;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.dto.GiftCertificateSearchCriteriaDto;
+import com.epam.esm.service.dto.SearchCriteriaDto;
+import com.epam.esm.web.util.PageableSearchCriteriaAssembler;
 import com.epam.esm.web.util.impl.GiftCertificateHateoasActionsAppender;
 import com.epam.esm.web.validation.ValidPage;
 import com.epam.esm.web.validation.ValidPageSize;
@@ -32,8 +35,8 @@ import java.net.URI;
 public class GiftCertificateController {
 
     private final GiftCertificateService giftCertificateService;
-
     private final GiftCertificateHateoasActionsAppender hateoasActionsAppender;
+    private final PageableSearchCriteriaAssembler<GiftCertificate, Long> pageableSearchCriteriaAssembler;
 
     /**
      * a method which realizes REST's CREATE operation
@@ -66,7 +69,9 @@ public class GiftCertificateController {
                                                                  @ValidPage Integer page,
                                                                  @RequestParam(required = false)
                                                                  @ValidPageSize Integer size) {
-        Page<GiftCertificateDto> certificates = giftCertificateService.query(criteriaDto);
+        SearchCriteriaDto<GiftCertificate> searchCriteria = pageableSearchCriteriaAssembler
+                .toSearchCriteria(criteriaDto, page, size);
+        Page<GiftCertificateDto> certificates = giftCertificateService.query(searchCriteria);
 
         return hateoasActionsAppender.toHateoasCollectionOfEntities(certificates);
     }

@@ -7,8 +7,8 @@ import java.io.Serializable;
 
 public abstract class PageableSearchCriteriaAssembler<T extends Entity<ID>, ID extends Serializable> {
 
-    public SearchCriteriaDto<T> assemblePageableSearchCriteria(SearchCriteriaDto<T> searchCriteriaDto,
-                                                               Integer page, Integer pageSize) {
+    public SearchCriteriaDto<T> toSearchCriteria(SearchCriteriaDto<T> searchCriteriaDto, Integer page,
+                                                 Integer pageSize) {
         searchCriteriaDto.setPage(page);
         searchCriteriaDto.setPageSize(pageSize);
         return searchCriteriaDto;

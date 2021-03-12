@@ -1,8 +1,11 @@
 package com.epam.esm.web.controller;
 
+import com.epam.esm.model.domain.Tag;
 import com.epam.esm.model.dto.TagDto;
 import com.epam.esm.service.TagService;
+import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.dto.TagSearchCriteriaDto;
+import com.epam.esm.web.util.PageableSearchCriteriaAssembler;
 import com.epam.esm.web.util.impl.TagHateoasActionsAppender;
 import com.epam.esm.web.validation.ValidPage;
 import com.epam.esm.web.validation.ValidPageSize;
@@ -31,8 +34,8 @@ import java.util.List;
 public class TagController {
 
     private final TagService tagService;
-
     private final TagHateoasActionsAppender hateoasActionsAppender;
+    private final PageableSearchCriteriaAssembler<Tag, Long> pageableSearchCriteriaAssembler;
 
     /**
      * a method which realizes REST's CREATE operation
@@ -63,7 +66,9 @@ public class TagController {
                                                      @Valid TagSearchCriteriaDto searchCriteriaDto,
                                                      @RequestParam(required = false) @ValidPage Integer page,
                                                      @RequestParam(required = false) @ValidPageSize Integer size) {
-        Page<TagDto> tags = tagService.query(searchCriteriaDto);
+        SearchCriteriaDto<Tag> searchCriteria = pageableSearchCriteriaAssembler
+                .toSearchCriteria(searchCriteriaDto, page, size);
+        Page<TagDto> tags = tagService.query(searchCriteria);
 
         return hateoasActionsAppender.toHateoasCollectionOfEntities(tags);
     }

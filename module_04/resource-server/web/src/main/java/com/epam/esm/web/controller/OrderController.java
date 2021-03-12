@@ -1,8 +1,11 @@
 package com.epam.esm.web.controller;
 
+import com.epam.esm.model.domain.Order;
 import com.epam.esm.model.dto.OrderDto;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.dto.OrderSearchCriteriaDto;
+import com.epam.esm.service.dto.SearchCriteriaDto;
+import com.epam.esm.web.util.PageableSearchCriteriaAssembler;
 import com.epam.esm.web.util.impl.OrderHateoasActionsAppender;
 import com.epam.esm.web.validation.ValidPage;
 import com.epam.esm.web.validation.ValidPageSize;
@@ -35,6 +38,7 @@ public class OrderController {
 
     private final OrderService orderService;
     private final OrderHateoasActionsAppender hateoasActionsAppender;
+    private final PageableSearchCriteriaAssembler<Order, Long> pageableSearchCriteriaAssembler;
 
     @GetMapping
     @PreAuthorize("hasAuthority('SCOPE_module_04::read') and " +
@@ -45,7 +49,9 @@ public class OrderController {
                                                        @Valid OrderSearchCriteriaDto criteriaDto,
                                                        @RequestParam(required = false) @ValidPage Integer page,
                                                        @RequestParam(required = false) @ValidPageSize Integer size) {
-        Page<OrderDto> orders = orderService.query(criteriaDto);
+        SearchCriteriaDto<Order> searchCriteria = pageableSearchCriteriaAssembler.toSearchCriteria(criteriaDto,
+                page, size);
+        Page<OrderDto> orders = orderService.query(searchCriteria);
 
         return hateoasActionsAppender.toHateoasCollectionOfEntities(orders);
     }

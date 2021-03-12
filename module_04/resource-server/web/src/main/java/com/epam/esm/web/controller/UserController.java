@@ -1,11 +1,15 @@
 package com.epam.esm.web.controller;
 
+import com.epam.esm.model.domain.Order;
+import com.epam.esm.model.domain.User;
 import com.epam.esm.model.dto.OrderDto;
 import com.epam.esm.model.dto.UserDto;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.UserService;
 import com.epam.esm.service.dto.OrderSearchCriteriaDto;
+import com.epam.esm.service.dto.SearchCriteriaDto;
 import com.epam.esm.service.dto.UserSearchCriteriaDto;
+import com.epam.esm.web.util.PageableSearchCriteriaAssembler;
 import com.epam.esm.web.util.impl.UserHateoasActionsAppender;
 import com.epam.esm.web.validation.ValidPage;
 import com.epam.esm.web.validation.ValidPageSize;
@@ -34,6 +38,8 @@ public class UserController {
     private final OrderService orderService;
     private final UserService userService;
     private final UserHateoasActionsAppender hateoasActionsAppender;
+    private final PageableSearchCriteriaAssembler<User, Long> userPageableSearchCriteriaAssembler;
+    private final PageableSearchCriteriaAssembler<Order, Long> orderPageableSearchCriteriaAssembler;
 
     @GetMapping
     @PreAuthorize("hasAuthority('SCOPE_module_04::read') and hasRole('ADMIN')")
@@ -43,7 +49,9 @@ public class UserController {
                                                       @ValidPage Integer page,
                                                       @RequestParam(required = false)
                                                       @ValidPageSize Integer size) {
-        Page<UserDto> users = userService.query(criteriaDto);
+        SearchCriteriaDto<User> searchCriteria = userPageableSearchCriteriaAssembler
+                .toSearchCriteria(criteriaDto, page, size);
+        Page<UserDto> users = userService.query(searchCriteria);
 
         return hateoasActionsAppender.toHateoasCollectionOfEntities(users);
     }
@@ -84,7 +92,9 @@ public class UserController {
             criteriaDto = new OrderSearchCriteriaDto();
         }
         criteriaDto.setUserId(id);
-        Page<OrderDto> orders = orderService.query(criteriaDto);
+        SearchCriteriaDto<Order> searchCriteria = orderPageableSearchCriteriaAssembler.toSearchCriteria(criteriaDto,
+                page, size);
+        Page<OrderDto> orders = orderService.query(searchCriteria);
         return hateoasActionsAppender.toHateoasCollectionOfOrders(orders);
     }
 
