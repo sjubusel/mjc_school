@@ -19,6 +19,7 @@ dependencies {
 
 bootJar {
     enabled = true
+    archiveFileName = 'module04.jar'
 }
 
 jar {
