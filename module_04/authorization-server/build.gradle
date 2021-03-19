@@ -67,3 +67,7 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+bootJar{
+    archiveFileName = 'aserver.jar';
+}
