@@ -1,0 +1,17 @@
+plugins {
+    id 'maven'
+}
+
+dependencies {
+    implementation project(':model')
+    runtimeOnly 'mysql:mysql-connector-java'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}

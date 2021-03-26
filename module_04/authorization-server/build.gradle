@@ -1,0 +1,73 @@
+buildscript {
+    ext {
+        main_application_version = '0.0.1-SNAPSHOT'
+        nimbus_jose_jwt_version = '9.7'
+        spring_security_oauth2_version = '2.5.0.RELEASE'
+        spring_security_oauth2_jose_version = '5.4.2'
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version "${spring_boot_version}"
+    id 'io.spring.dependency-management' version "${spring_dependency_management_version}"
+    id 'java'
+}
+
+group = 'com.epam.esm'
+version = '0.0.1-SNAPSHOT'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    implementation group: 'org.springframework.security.oauth', name: 'spring-security-oauth2',
+            version: spring_security_oauth2_version
+    implementation group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure',
+            version: spring_boot_version
+    implementation group: 'org.springframework.security', name: 'spring-security-oauth2-jose',
+            version: spring_security_oauth2_jose_version
+    implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: nimbus_jose_jwt_version
+
+
+    implementation group: 'com.epam.esm', name: 'model', version: main_application_version
+    implementation group: 'com.epam.esm', name: 'repository', version: main_application_version
+    implementation group: 'com.epam.esm', name: 'service', version: main_application_version
+    implementation group: 'com.epam.esm', name: 'web', version: main_application_version
+
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootJar{
+    archiveFileName = 'aserver.jar';
+}

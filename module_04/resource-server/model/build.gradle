@@ -1,0 +1,11 @@
+plugins {
+    id 'maven'
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}

@@ -1,0 +1,32 @@
+server:
+  port: 9999
+  servlet:
+    context-path: "/"
+spring:
+  application:
+    name: "authZ-server"
+  datasource:
+    url: "jdbc:mysql://localhost:3306/gift_certificates_system?logger=com.mysql.cj.log.StandardLogger&profileSQL=true"
+    username: "root"
+    password: "rootroot"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  jackson:
+    default-property-inclusion: non_null
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: "/actuator"
+page:
+  default-page-size: 20
